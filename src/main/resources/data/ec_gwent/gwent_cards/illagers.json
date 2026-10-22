@@ -82,7 +82,12 @@
    "strength": 10,
    "abilities": [],
    "count": 1,
-   "entity": "illagerinvasion:inquisitor"
+   "entity": "illagerinvasion:inquisitor",
+   "image": "ec_gwent:textures/cards/illagers/inquisitor.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "necromancer",
@@ -95,7 +100,12 @@
     "medic"
    ],
    "count": 1,
-   "entity": "illagerinvasion:necromancer"
+   "entity": "illagerinvasion:necromancer",
+   "image": "ec_gwent:textures/cards/illagers/necromancer.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "ravager_warbeast",
@@ -106,7 +116,12 @@
    "strength": 10,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:ravager"
+   "entity": "minecraft:ravager",
+   "image": "ec_gwent:textures/cards/illagers/ravager_warbeast.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "pillager_captain",
@@ -118,7 +133,12 @@
    "abilities": [],
    "count": 1,
    "entity": "minecraft:pillager",
-   "banner": true
+   "banner": true,
+   "image": "ec_gwent:textures/cards/illagers/pillager_captain.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "surrendered",
@@ -131,7 +151,12 @@
     "spy"
    ],
    "count": 1,
-   "entity": "illagerinvasion:surrendered"
+   "entity": "illagerinvasion:surrendered",
+   "image": "ec_gwent:textures/cards/illagers/surrendered.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "archivist",
@@ -144,7 +169,12 @@
     "spy"
    ],
    "count": 1,
-   "entity": "illagerinvasion:archivist"
+   "entity": "illagerinvasion:archivist",
+   "image": "ec_gwent:textures/cards/illagers/archivist.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "guard_of_the_legion_mercenary",
@@ -157,7 +187,12 @@
     "spy"
    ],
    "count": 1,
-   "entity": "the_pillager_legion_:mercenary_guard_tpl"
+   "entity": "the_pillager_legion_:mercenary_guard_tpl",
+   "image": "ec_gwent:textures/cards/illagers/guard_of_the_legion_mercenary.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "alchemist",
@@ -170,7 +205,12 @@
     "medic"
    ],
    "count": 2,
-   "entity": "illagerinvasion:alchemist"
+   "entity": "illagerinvasion:alchemist",
+   "image": "ec_gwent:textures/cards/illagers/alchemist.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "provoker",
@@ -183,7 +223,12 @@
     "medic"
    ],
    "count": 1,
-   "entity": "illagerinvasion:provoker"
+   "entity": "illagerinvasion:provoker",
+   "image": "ec_gwent:textures/cards/illagers/provoker.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "infantryman_of_the_legion",
@@ -196,7 +241,12 @@
     "bond"
    ],
    "count": 4,
-   "entity": "the_pillager_legion_:infantryman_tpl"
+   "entity": "the_pillager_legion_:infantryman_tpl",
+   "image": "ec_gwent:textures/cards/illagers/infantryman_of_the_legion.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "gladiator_of_the_legion",
@@ -209,7 +259,12 @@
     "bond"
    ],
    "count": 3,
-   "entity": "the_pillager_legion_:gladuisman_tpl"
+   "entity": "the_pillager_legion_:gladuisman_tpl",
+   "image": "ec_gwent:textures/cards/illagers/gladiator_of_the_legion.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "veteran_infantryman_of_the_legion",
@@ -222,7 +277,12 @@
     "bond"
    ],
    "count": 2,
-   "entity": "the_pillager_legion_:veteran_infantryman_tpl"
+   "entity": "the_pillager_legion_:veteran_infantryman_tpl",
+   "image": "ec_gwent:textures/cards/illagers/veteran_infantryman_of_the_legion.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "pillager",
@@ -233,7 +293,12 @@
    "strength": 2,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:pillager"
+   "entity": "minecraft:pillager",
+   "image": "ec_gwent:textures/cards/illagers/pillager.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "evoker",
@@ -244,7 +309,12 @@
    "strength": 6,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:evoker"
+   "entity": "minecraft:evoker",
+   "image": "ec_gwent:textures/cards/illagers/evoker.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "nether_archer_of_the_legion",
@@ -255,7 +325,12 @@
    "strength": 10,
    "abilities": [],
    "count": 2,
-   "entity": "the_pillager_legion_:archer_nether_tpl"
+   "entity": "the_pillager_legion_:archer_nether_tpl",
+   "image": "ec_gwent:textures/cards/illagers/nether_archer_of_the_legion.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "vindicator",
@@ -266,7 +341,12 @@
    "strength": 6,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:vindicator"
+   "entity": "minecraft:vindicator",
+   "image": "ec_gwent:textures/cards/illagers/vindicator.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "sorcerer",
@@ -277,7 +357,12 @@
    "strength": 4,
    "abilities": [],
    "count": 1,
-   "entity": "illagerinvasion:sorcerer"
+   "entity": "illagerinvasion:sorcerer",
+   "image": "ec_gwent:textures/cards/illagers/sorcerer.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "firecaller",
@@ -288,7 +373,12 @@
    "strength": 6,
    "abilities": [],
    "count": 1,
-   "entity": "illagerinvasion:firecaller"
+   "entity": "illagerinvasion:firecaller",
+   "image": "ec_gwent:textures/cards/illagers/firecaller.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "giant_infantryman_of_the_legion",
@@ -299,7 +389,12 @@
    "strength": 10,
    "abilities": [],
    "count": 1,
-   "entity": "the_pillager_legion_:giant_infantryman_tpl"
+   "entity": "the_pillager_legion_:giant_infantryman_tpl",
+   "image": "ec_gwent:textures/cards/illagers/giant_infantryman_of_the_legion.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "marauder",
@@ -310,7 +405,12 @@
    "strength": 5,
    "abilities": [],
    "count": 1,
-   "entity": "illagerinvasion:marauder"
+   "entity": "illagerinvasion:marauder",
+   "image": "ec_gwent:textures/cards/illagers/marauder.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "basher",
@@ -321,7 +421,12 @@
    "strength": 3,
    "abilities": [],
    "count": 1,
-   "entity": "illagerinvasion:basher"
+   "entity": "illagerinvasion:basher",
+   "image": "ec_gwent:textures/cards/illagers/basher.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "heavy_infantryman_of_the_legion",
@@ -332,7 +437,12 @@
    "strength": 6,
    "abilities": [],
    "count": 1,
-   "entity": "the_pillager_legion_:heavy_infantryman_tpl"
+   "entity": "the_pillager_legion_:heavy_infantryman_tpl",
+   "image": "ec_gwent:textures/cards/illagers/heavy_infantryman_of_the_legion.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "guard_of_the_legion",
@@ -343,7 +453,12 @@
    "strength": 3,
    "abilities": [],
    "count": 1,
-   "entity": "the_pillager_legion_:guard_legion_tpl"
+   "entity": "the_pillager_legion_:guard_legion_tpl",
+   "image": "ec_gwent:textures/cards/illagers/guard_of_the_legion.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "pillager_sharpshooter",
@@ -354,7 +469,12 @@
    "strength": 3,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:pillager"
+   "entity": "minecraft:pillager",
+   "image": "ec_gwent:textures/cards/illagers/pillager_sharpshooter.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "pillager_lookout",
@@ -365,7 +485,12 @@
    "strength": 2,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:pillager"
+   "entity": "minecraft:pillager",
+   "image": "ec_gwent:textures/cards/illagers/pillager_lookout.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "illusioner",
@@ -376,7 +501,12 @@
    "strength": 4,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:illusioner"
+   "entity": "minecraft:illusioner",
+   "image": "ec_gwent:textures/cards/illagers/illusioner.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "pillager_veteran",
@@ -387,7 +517,12 @@
    "strength": 5,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:pillager"
+   "entity": "minecraft:pillager",
+   "image": "ec_gwent:textures/cards/illagers/pillager_veteran.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "nether_heavy_gladiator_of_the_legion",
@@ -398,7 +533,12 @@
    "strength": 4,
    "abilities": [],
    "count": 1,
-   "entity": "the_pillager_legion_:heavy_gladiators_nether_tpl"
+   "entity": "the_pillager_legion_:heavy_gladiators_nether_tpl",
+   "image": "ec_gwent:textures/cards/illagers/nether_heavy_gladiator_of_the_legion.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "nether_gladiator_of_the_legion",
@@ -409,7 +549,12 @@
    "strength": 2,
    "abilities": [],
    "count": 1,
-   "entity": "the_pillager_legion_:gladiators_nether_tpl"
+   "entity": "the_pillager_legion_:gladiators_nether_tpl",
+   "image": "ec_gwent:textures/cards/illagers/nether_gladiator_of_the_legion.png",
+   "image_size": [
+    144,
+    200
+   ]
   }
  ]
 }
