@@ -11,7 +11,12 @@
    "ability": "play_weather:fog",
    "count": 1,
    "entity": "valarian_conquest:soldier",
-   "item": "minecraft:golden_sword"
+   "item": "minecraft:golden_sword",
+   "image": "ec_gwent:textures/cards/valarians/the_valarian_king_king_of_valaria.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "the_valarian_king_lord_commander",
@@ -21,7 +26,12 @@
    "ability": "clear_weather",
    "count": 1,
    "entity": "valarian_conquest:soldier",
-   "item": "minecraft:golden_sword"
+   "item": "minecraft:golden_sword",
+   "image": "ec_gwent:textures/cards/valarians/the_valarian_king_lord_commander.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "the_valarian_king_heir_to_the_crown",
@@ -31,7 +41,12 @@
    "ability": "scorch_row:ranged",
    "count": 1,
    "entity": "valarian_conquest:soldier",
-   "item": "minecraft:golden_sword"
+   "item": "minecraft:golden_sword",
+   "image": "ec_gwent:textures/cards/valarians/the_valarian_king_heir_to_the_crown.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "the_valarian_king_the_siegemaster",
@@ -41,7 +56,12 @@
    "ability": "double_row:siege",
    "count": 1,
    "entity": "valarian_conquest:soldier",
-   "item": "minecraft:golden_sword"
+   "item": "minecraft:golden_sword",
+   "image": "ec_gwent:textures/cards/valarians/the_valarian_king_the_siegemaster.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "the_valarian_king_the_steel_forged",
@@ -51,7 +71,12 @@
    "ability": "scorch_row:siege",
    "count": 1,
    "entity": "valarian_conquest:soldier",
-   "item": "minecraft:golden_sword"
+   "item": "minecraft:golden_sword",
+   "image": "ec_gwent:textures/cards/valarians/the_valarian_king_the_steel_forged.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "valarian_troll",
