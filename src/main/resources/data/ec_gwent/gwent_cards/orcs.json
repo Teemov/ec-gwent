@@ -10,7 +10,12 @@
    "type": "leader",
    "ability": "scorch_row:close",
    "count": 1,
-   "entity": "wandering_orc:orc_chief"
+   "entity": "wandering_orc:orc_chief",
+   "image": "ec_gwent:textures/cards/orcs/orc_chieftain_queen_of_the_clans.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "orc_chieftain_the_fearsome",
@@ -19,7 +24,12 @@
    "type": "leader",
    "ability": "double_row:ranged",
    "count": 1,
-   "entity": "wandering_orc:orc_chief"
+   "entity": "wandering_orc:orc_chief",
+   "image": "ec_gwent:textures/cards/orcs/orc_chieftain_the_fearsome.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "orc_chieftain_pride_of_the_camp",
@@ -28,7 +38,12 @@
    "type": "leader",
    "ability": "extra_draw",
    "count": 1,
-   "entity": "wandering_orc:orc_chief"
+   "entity": "wandering_orc:orc_chief",
+   "image": "ec_gwent:textures/cards/orcs/orc_chieftain_pride_of_the_camp.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "orc_chieftain_pureblood",
@@ -37,7 +52,12 @@
    "type": "leader",
    "ability": "play_weather:frost",
    "count": 1,
-   "entity": "wandering_orc:orc_chief"
+   "entity": "wandering_orc:orc_chief",
+   "image": "ec_gwent:textures/cards/orcs/orc_chieftain_pureblood.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "orc_chieftain_hope_of_the_horde",
@@ -46,7 +66,12 @@
    "type": "leader",
    "ability": "optimise_agile",
    "count": 1,
-   "entity": "wandering_orc:orc_chief"
+   "entity": "wandering_orc:orc_chief",
+   "image": "ec_gwent:textures/cards/orcs/orc_chieftain_hope_of_the_horde.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "orc_boss",
