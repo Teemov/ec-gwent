@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -14,6 +15,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashMap;
@@ -47,6 +50,7 @@ public final class CardArt {
         int nameH = big ? Math.max(12, h / 7) : 0;
         int artBottom = y + h - 1 - nameH;
         g.enableScissor(x + 1, y + 1, x + w - 1, artBottom);
+        backdrop(g, d.faction, x + 1, y + 1, w - 2, artBottom - y - 1);
         drawSubject(g, entitySpec(d), d.heldItem, x + 1, y + 1, w - 2, artBottom - y - 1, lookX, lookY);
         g.disableScissor();
         if (big) {
@@ -74,6 +78,25 @@ public final class CardArt {
             g.fill(x, y, x + 1, y + h, 0xFFFFFF80);
             g.fill(x + w - 1, y, x + w, y + h, 0xFFFFFF80);
         }
+    }
+
+    /** The block each faction's card art is painted on. */
+    private static final Map<String, Block> BACKDROP = Map.of(
+            "monsters", Blocks.SCULK, "illagers", Blocks.DARK_OAK_PLANKS, "valarians", Blocks.STONE_BRICKS,
+            "orcs", Blocks.MOSSY_COBBLESTONE, "islanders", Blocks.PRISMARINE_BRICKS, "neutral", Blocks.SPRUCE_PLANKS,
+            "special", Blocks.AMETHYST_BLOCK);
+
+    /** Tiles the faction's block texture over the art area, darkened so the mob stands out. Caller sets the scissor. */
+    public static void backdrop(GuiGraphics g, String faction, int x, int y, int w, int h) {
+        Block block = BACKDROP.get(faction);
+        if (block == null || w <= 0 || h <= 0) return;
+        TextureAtlasSprite sprite = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getParticleIcon(block.defaultBlockState());
+        int tile = Math.max(8, Math.min(32, w / 2));
+        for (int ty = y; ty < y + h; ty += tile)
+            for (int tx = x; tx < x + w; tx += tile)
+                g.blit(tx, ty, 0, tile, tile, sprite);
+        g.fill(x, y, x + w, y + h, 0x99000000);
+        g.fillGradient(x, y + h / 2, x + w, y + h, 0x00000000, 0x80000000);
     }
 
     public static String entitySpec(CardDef d) {

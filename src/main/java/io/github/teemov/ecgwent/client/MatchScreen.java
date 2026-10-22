@@ -248,6 +248,7 @@ public final class MatchScreen extends Screen {
         if (!mine) {
             String ent = str(m(), "opponentEntity");
             g.enableScissor(x + w - 40, y + 14, x + w - 2, y + 90);
+            CardArt.backdrop(g, str(s, "faction"), x + w - 40, y + 14, 38, 76);
             CardArt.drawSubject(g, ent, null, x + w - 40, y + 14, 38, 76, x + w - 21 - mx, y + 30 - my);
             g.disableScissor();
         }
