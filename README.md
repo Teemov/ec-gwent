@@ -1,11 +1,62 @@
 # EC Gwent
 
 A Minecraft-themed reskin of Gwent from The Witcher 3, for the **Expanded Civilizations** server
-(Forge 1.20.1). Players collect cards, build decks and challenge Easy NPCs to matches.
+(Forge 1.20.1). Players collect cards, build decks and challenge Easy NPCs and villagers to matches.
 
-Design notes (rules, factions, neutral cards): [Teemov/maindev docs/gwent-design.md](https://github.com/Teemov/maindev/blob/main/docs/gwent-design.md).
+- Design notes (rules, factions, neutral cards): [Teemov/maindev docs/gwent-design.md](https://github.com/Teemov/maindev/blob/main/docs/gwent-design.md)
+- Card list: [docs/cards.md](docs/cards.md)
+
+This is a **client + server** mod: every player needs it installed.
+
+## Playing
+
+| What | How |
+|---|---|
+| Card book (collection, deck builder) | **K**, or `/gwent book`. The first time, you pick a starting faction and get its starter deck |
+| Back to a running match | **K** |
+| Challenge a villager | Sneak + right-click an adult villager. Costs 2 emeralds; higher-level villagers play stronger decks |
+| Give up a match | `/gwent forfeit` |
+
+On the board: click a hand card, then the highlighted row (or the card again). Agile units go on your close or ranged
+row, horns and Junk Brew on one of your rows, a Decoy on one of your units. Right-click cancels. Click your leader to use it.
+
+## Commands for operators (level 2)
+
+| Command | Purpose |
+|---|---|
+| `/gwent challenge <players> <opponent>` | Start a match against a story NPC. Put this on an Easy NPC dialog button: `/gwent challenge @initiator stuve` |
+| `/gwent config villagerReward emeralds\|cards` | What beating a villager gives besides the returned bet: an extra emerald (default) or a random card from its deck |
+| `/gwent give <players> <card>` | Give a card, e.g. `neutral:stuve` |
+| `/gwent giveall <players>` | Every card at its full copy count (testing) |
+| `/gwent reset <players>` | Wipe card collections (testing) |
+| `/gwent version` | Version and how many cards and opponents are loaded |
+
+## Data
+
+- `data/ec_gwent/gwent_cards/<faction>.json`: the cards. Strength, row, abilities and copies follow Witcher 3.
+- `data/ec_gwent/gwent_opponents/<id>.json`: story-NPC opponents:
+  `{"name", "npc": "<Easy NPC UUID>", "faction", "quality": 0..1, "reward": "<card key>"}`.
+  Instead of `quality` you can give a fixed deck with `"leader"` and `"cards": [...]`.
+  The first win against an opponent gives the reward card; rematches give nothing.
+
+Both can be overridden or extended by a data pack.
+
+## Code
+
+- `engine/`: the rules engine, AI and deck generation. Pure Java with no Minecraft code, tested by
+  `src/test/java/.../EngineSelfTest.java` (scoring and ability checks plus 3000 AI-vs-AI matches).
+- `server/`: card data loading, player collections (stored in the player's persisted data, so they survive death),
+  matches, commands, per-world config.
+- `client/`: card book, match board, villager prompt, card drawing with live mob models.
+- `net/`: packets.
 
 ## Building
 
-GitHub Actions builds every push. On `main`, the jar and `build.log` are force-pushed to the **`builds`** branch.
-This is a client + server mod: every player needs it installed.
+GitHub Actions builds every push and runs the engine self-test. On `main`, the jar and `build.log` are force-pushed
+to the **`builds`** branch (`git fetch origin +builds:refs/remotes/origin/builds`).
+Run the engine test locally without Minecraft:
+
+```
+javac --release 17 -d /tmp/eng src/main/java/io/github/teemov/ecgwent/engine/*.java src/test/java/io/github/teemov/ecgwent/engine/*.java
+java -cp /tmp/eng io.github.teemov.ecgwent.engine.EngineSelfTest
+```
