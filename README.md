@@ -42,6 +42,10 @@ row, horns and Junk Brew on one of your rows, a Decoy on one of your units. Righ
 
 Both can be overridden or extended by a data pack.
 
+A card can use a hand-made face instead of the generated one: add `"image": "ec_gwent:textures/cards/<faction>/<id>.png"`
+and `"image_size": [width, height]` to it (the Valarian troops use 144×200 pixel art). The printed strength is part of the
+image; when the strength on the board differs, a green or red badge shows the current value over it.
+
 ## Code
 
 - `engine/`: the rules engine, AI and deck generation. Pure Java with no Minecraft code, tested by

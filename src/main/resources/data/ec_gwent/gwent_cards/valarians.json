@@ -62,7 +62,12 @@
    "strength": 10,
    "abilities": [],
    "count": 1,
-   "entity": "valarian_conquest:troll"
+   "entity": "valarian_conquest:troll",
+   "image": "ec_gwent:textures/cards/valarians/valarian_troll.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "valarian_officer",
@@ -74,7 +79,12 @@
    "abilities": [],
    "count": 1,
    "entity": "valarian_conquest:soldier",
-   "item": "minecraft:diamond_sword"
+   "item": "minecraft:diamond_sword",
+   "image": "ec_gwent:textures/cards/valarians/valarian_officer.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "valarian_guard_captain",
@@ -86,7 +96,12 @@
    "abilities": [],
    "count": 1,
    "entity": "valarian_conquest:soldier",
-   "item": "minecraft:netherite_axe"
+   "item": "minecraft:netherite_axe",
+   "image": "ec_gwent:textures/cards/valarians/valarian_guard_captain.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "valarian_master_archer",
@@ -98,7 +113,12 @@
    "abilities": [],
    "count": 1,
    "entity": "valarian_conquest:archer",
-   "item": "minecraft:bow"
+   "item": "minecraft:bow",
+   "image": "ec_gwent:textures/cards/valarians/valarian_master_archer.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "valarian_pikeman",
@@ -112,7 +132,12 @@
    ],
    "count": 3,
    "entity": "valarian_conquest:soldier",
-   "item": "minecraft:trident"
+   "item": "minecraft:trident",
+   "image": "ec_gwent:textures/cards/valarians/valarian_pikeman.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "valarian_crossbowman",
@@ -126,7 +151,12 @@
    ],
    "count": 3,
    "entity": "valarian_conquest:archer",
-   "item": "minecraft:crossbow"
+   "item": "minecraft:crossbow",
+   "image": "ec_gwent:textures/cards/valarians/valarian_crossbowman.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "valarian_levy",
@@ -140,7 +170,12 @@
    ],
    "count": 4,
    "entity": "valarian_conquest:male_citizen",
-   "item": "minecraft:wooden_sword"
+   "item": "minecraft:wooden_sword",
+   "image": "ec_gwent:textures/cards/valarians/valarian_levy.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "catapult",
@@ -153,7 +188,12 @@
     "bond"
    ],
    "count": 2,
-   "entity": "valarian_conquest:catapult"
+   "entity": "valarian_conquest:catapult",
+   "image": "ec_gwent:textures/cards/valarians/catapult.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "valarian_deserter",
@@ -167,7 +207,12 @@
    ],
    "count": 1,
    "entity": "valarian_conquest:soldier",
-   "item": "minecraft:stone_axe"
+   "item": "minecraft:stone_axe",
+   "image": "ec_gwent:textures/cards/valarians/valarian_deserter.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "valarian_spymaster",
@@ -181,7 +226,12 @@
    ],
    "count": 1,
    "entity": "valarian_conquest:male_citizen",
-   "item": "minecraft:spyglass"
+   "item": "minecraft:spyglass",
+   "image": "ec_gwent:textures/cards/valarians/valarian_spymaster.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "valarian_informant",
@@ -194,7 +244,12 @@
     "spy"
    ],
    "count": 1,
-   "entity": "valarian_conquest:female_citizen"
+   "entity": "valarian_conquest:female_citizen",
+   "image": "ec_gwent:textures/cards/valarians/valarian_informant.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "valarian_field_surgeon",
@@ -208,7 +263,12 @@
    ],
    "count": 1,
    "entity": "valarian_conquest:female_citizen",
-   "item": "minecraft:golden_apple"
+   "item": "minecraft:golden_apple",
+   "image": "ec_gwent:textures/cards/valarians/valarian_field_surgeon.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "valarian_siege_engineer",
@@ -222,7 +282,12 @@
    ],
    "count": 3,
    "entity": "valarian_conquest:male_citizen",
-   "item": "minecraft:iron_pickaxe"
+   "item": "minecraft:iron_pickaxe",
+   "image": "ec_gwent:textures/cards/valarians/valarian_siege_engineer.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "ballista",
@@ -233,7 +298,12 @@
    "strength": 6,
    "abilities": [],
    "count": 2,
-   "entity": "valarian_conquest:ballista"
+   "entity": "valarian_conquest:ballista",
+   "image": "ec_gwent:textures/cards/valarians/ballista.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "cannon",
@@ -244,7 +314,12 @@
    "strength": 6,
    "abilities": [],
    "count": 2,
-   "entity": "valarian_conquest:cannon"
+   "entity": "valarian_conquest:cannon",
+   "image": "ec_gwent:textures/cards/valarians/cannon.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "battering_ram",
@@ -255,7 +330,12 @@
    "strength": 6,
    "abilities": [],
    "count": 1,
-   "entity": "valarian_conquest:battering_ram"
+   "entity": "valarian_conquest:battering_ram",
+   "image": "ec_gwent:textures/cards/valarians/battering_ram.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "valarian_soldier",
@@ -267,7 +347,12 @@
    "abilities": [],
    "count": 2,
    "entity": "valarian_conquest:soldier",
-   "item": "minecraft:stone_sword"
+   "item": "minecraft:stone_sword",
+   "image": "ec_gwent:textures/cards/valarians/valarian_soldier.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "valarian_axeman",
@@ -279,7 +364,12 @@
    "abilities": [],
    "count": 1,
    "entity": "valarian_conquest:soldier",
-   "item": "minecraft:iron_axe"
+   "item": "minecraft:iron_axe",
+   "image": "ec_gwent:textures/cards/valarians/valarian_axeman.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "valarian_swordsman",
@@ -291,7 +381,12 @@
    "abilities": [],
    "count": 1,
    "entity": "valarian_conquest:soldier",
-   "item": "minecraft:iron_sword"
+   "item": "minecraft:iron_sword",
+   "image": "ec_gwent:textures/cards/valarians/valarian_swordsman.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "valarian_spearman",
@@ -303,7 +398,12 @@
    "abilities": [],
    "count": 1,
    "entity": "valarian_conquest:soldier",
-   "item": "minecraft:iron_shovel"
+   "item": "minecraft:iron_shovel",
+   "image": "ec_gwent:textures/cards/valarians/valarian_spearman.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "valarian_longbowman",
@@ -315,7 +415,12 @@
    "abilities": [],
    "count": 1,
    "entity": "valarian_conquest:archer",
-   "item": "minecraft:bow"
+   "item": "minecraft:bow",
+   "image": "ec_gwent:textures/cards/valarians/valarian_longbowman.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "valarian_archer",
@@ -326,7 +431,12 @@
    "strength": 5,
    "abilities": [],
    "count": 1,
-   "entity": "valarian_conquest:archer"
+   "entity": "valarian_conquest:archer",
+   "image": "ec_gwent:textures/cards/valarians/valarian_archer.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "valarian_marksman",
@@ -338,7 +448,12 @@
    "abilities": [],
    "count": 1,
    "entity": "valarian_conquest:archer",
-   "item": "minecraft:crossbow"
+   "item": "minecraft:crossbow",
+   "image": "ec_gwent:textures/cards/valarians/valarian_marksman.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "valarian_hunter",
@@ -350,7 +465,12 @@
    "abilities": [],
    "count": 1,
    "entity": "valarian_conquest:archer",
-   "item": "minecraft:bow"
+   "item": "minecraft:bow",
+   "image": "ec_gwent:textures/cards/valarians/valarian_hunter.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "valarian_javelineer",
@@ -362,7 +482,12 @@
    "abilities": [],
    "count": 1,
    "entity": "valarian_conquest:soldier",
-   "item": "minecraft:trident"
+   "item": "minecraft:trident",
+   "image": "ec_gwent:textures/cards/valarians/valarian_javelineer.png",
+   "image_size": [
+    144,
+    200
+   ]
   }
  ]
 }

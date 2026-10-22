@@ -30,6 +30,9 @@ public final class CardDef {
     public final String npc;
     public final String heldItem;
     public final String w3Name;
+    /** Optional hand-made card face (texture location) and its pixel size; null = generated card. */
+    public String image;
+    public int imageW, imageH;
 
     CardDef(String key, String id, String name, String faction, Type type, String placement, int strength,
             Set<String> abilities, int count, String musterGroup, String avengerKey, String transformKey,

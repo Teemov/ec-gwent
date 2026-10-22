@@ -64,6 +64,10 @@ public final class CardArt {
      */
     public static void draw(GuiGraphics g, CardDef d, int x, int y, int w, int h, int strength, boolean highlight, float lookX, float lookY) {
         Font font = Minecraft.getInstance().font;
+        if (d.image != null) {
+            drawImage(g, font, d, x, y, w, h, strength, highlight);
+            return;
+        }
         g.fill(x, y, x + w, y + h, highlight ? 0xFFFFE070 : Texts.color(d));
         boolean named = h >= 52;
         int nameH = named ? 11 : 0;
@@ -91,6 +95,37 @@ public final class CardArt {
             g.pose().translate(x + 1 + (bs - font.width(t) * fs) / 2f + 0.5f, y + 1 + (bs - 7 * fs) / 2f, 0);
             g.pose().scale(fs, fs, 1);
             g.drawString(font, t, 0, 0, col, false);
+            g.pose().popPose();
+        }
+        g.pose().popPose();
+    }
+
+    /** A hand-made card face. The printed strength is part of the image; a changed strength gets a badge on top. */
+    private static void drawImage(GuiGraphics g, Font font, CardDef d, int x, int y, int w, int h, int strength, boolean highlight) {
+        g.blit(new ResourceLocation(d.image), x, y, w, h, 0f, 0f, d.imageW, d.imageH, d.imageW, d.imageH);
+        g.pose().pushPose();
+        g.pose().translate(0, 0, 200);
+        if (highlight) {
+            int c = 0xFFFFE070;
+            g.fill(x - 1, y - 1, x + w + 1, y, c);
+            g.fill(x - 1, y + h, x + w + 1, y + h + 1, c);
+            g.fill(x - 1, y, x, y + h, c);
+            g.fill(x + w, y, x + w + 1, y + h, c);
+        }
+        if (d.isUnit() && strength != Integer.MIN_VALUE && strength != d.strength) {
+            // Same spot as the printed strength circle (top-left of the face).
+            float bs = Math.max(9f, w * 0.2f);
+            float bx = x + w * 0.13f - bs / 2f, by = y + h * 0.095f - bs / 2f;
+            g.pose().pushPose();
+            g.pose().translate(bx, by, 0);
+            int b = Math.round(bs);
+            g.fill(0, 0, b, b, 0xFF1F1A1A);
+            g.fill(1, 1, b - 1, b - 1, strength > d.strength ? 0xFF2E8B2E : 0xFFB02020);
+            String t = String.valueOf(strength);
+            float fs = Math.min(1f, (b - 2) / (float) Math.max(6, font.width(t)));
+            g.pose().translate(b / 2f - font.width(t) * fs / 2f, b / 2f - 3.5f * fs, 0);
+            g.pose().scale(fs, fs, 1);
+            g.drawString(font, t, 0, 0, 0xFFFFFFFF, false);
             g.pose().popPose();
         }
         g.pose().popPose();

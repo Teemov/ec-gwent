@@ -40,7 +40,13 @@ public final class CardRegistry {
                     (String) c.get("muster"), avenger == null ? null : faction + ":" + avenger,
                     transform == null ? null : faction + ":" + transform, (String) c.get("ability"),
                     (String) c.get("entity"), (String) c.get("npc"), (String) c.get("item"), (String) c.get("w3"));
-            if (cards.put(def.key, def) != null) throw new IllegalStateException("Duplicate card " + def.key);
+            if (c.get("image") instanceof String img) {
+                def.image = img;
+                List<Object> size = (List<Object>) c.get("image_size");
+                def.imageW = size == null ? 144 : ((Double) size.get(0)).intValue();
+                def.imageH = size == null ? 200 : ((Double) size.get(1)).intValue();
+            }
+                        if (cards.put(def.key, def) != null) throw new IllegalStateException("Duplicate card " + def.key);
         }
     }
 
