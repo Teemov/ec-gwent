@@ -42,6 +42,21 @@ public final class EngineSelfTest {
             expect(err == null, "starter " + f + ": " + err);
         }
 
+        // NPC opponents: reward exists, generated deck is legal (same seed rule as GwentData.deckOf).
+        Path ops = dir.resolveSibling("gwent_opponents");
+        if (Files.isDirectory(ops)) {
+            try (var files = Files.list(ops)) {
+                for (Path p : files.sorted().toList()) {
+                    @SuppressWarnings("unchecked")
+                    java.util.Map<String, Object> o = (java.util.Map<String, Object>) Json.parse(Files.readString(p));
+                    String id = p.getFileName().toString().replace(".json", "");
+                    expect(reg.get((String) o.get("reward")) != null, id + " reward " + o.get("reward"));
+                    Deck d = Decks.random(reg, (String) o.get("faction"), (Double) o.get("quality"), new Random(id.hashCode()));
+                    expect(d.validate(reg, null) == null, id + " deck: " + d.validate(reg, null));
+                }
+            }
+        }
+
         scoringTests(reg);
         abilityTests(reg);
 
@@ -59,6 +74,7 @@ public final class EngineSelfTest {
             try {
                 while (g.phase != Game.Phase.OVER && steps++ < 2000) {
                     boolean acted = Ai.act(g, 0) | Ai.act(g, 1);
+                    if (steps % 7 == 0) { Json.parse(View.of(g, 0, "minecraft:villager", null)); Json.parse(View.of(g, 1, "x", "r")); }
                     if (!acted) { expect(false, "stuck in " + g.phase); break; }
                 }
             } catch (RuntimeException e) {

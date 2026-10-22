@@ -1,33 +1,84 @@
 package io.github.teemov.ecgwent;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.Component;
+import io.github.teemov.ecgwent.net.Net;
+import io.github.teemov.ecgwent.server.Collection;
+import io.github.teemov.ecgwent.server.GwentCommands;
+import io.github.teemov.ecgwent.server.GwentData;
+import io.github.teemov.ecgwent.server.Matches;
+import io.github.teemov.ecgwent.server.ServerHooks;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
-/** EC Gwent: a Gwent-style card game played against Easy NPCs. */
+/** EC Gwent: a Gwent-style card game played against Easy NPCs and villagers. */
 @Mod(EcGwent.MODID)
 public class EcGwent {
     public static final String MODID = "ec_gwent";
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public EcGwent() {
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         MinecraftForge.EVENT_BUS.register(this);
     }
 
+    private void setup(FMLCommonSetupEvent e) {
+        e.enqueueWork(Net::register);
+    }
+
     @SubscribeEvent
-    public void onRegisterCommands(RegisterCommandsEvent event) {
-        event.getDispatcher().register(Commands.literal("gwent")
-                .then(Commands.literal("version").executes(ctx -> {
-                    String version = ModList.get().getModContainerById(MODID)
-                            .map(c -> c.getModInfo().getVersion().toString()).orElse("?");
-                    ctx.getSource().sendSuccess(() -> Component.literal("EC Gwent " + version), false);
-                    return 1;
-                })));
+    public void onRegisterCommands(RegisterCommandsEvent e) {
+        GwentCommands.register(e.getDispatcher());
+    }
+
+    @SubscribeEvent
+    public void onReloadListeners(AddReloadListenerEvent e) {
+        e.addListener(new GwentData.CardsListener());
+        e.addListener(new GwentData.OpponentsListener());
+    }
+
+    /** Sends the card list on login and after /reload. */
+    @SubscribeEvent
+    public void onDatapackSync(OnDatapackSyncEvent e) {
+        if (e.getPlayer() != null) ServerHooks.syncCards(e.getPlayer());
+        else for (ServerPlayer p : e.getPlayerList().getPlayers()) ServerHooks.syncCards(p);
+    }
+
+    @SubscribeEvent
+    public void onServerTick(TickEvent.ServerTickEvent e) {
+        if (e.phase == TickEvent.Phase.END) Matches.tick(e.getServer());
+    }
+
+    @SubscribeEvent
+    public void onLogout(PlayerEvent.PlayerLoggedOutEvent e) {
+        if (e.getEntity() instanceof ServerPlayer p) Matches.logout(p);
+    }
+
+    @SubscribeEvent
+    public void onClone(PlayerEvent.Clone e) {
+        Collection.copy(e.getOriginal(), e.getEntity());
+    }
+
+    /** Sneak + right-click a villager to challenge it. */
+    @SubscribeEvent
+    public void onInteract(PlayerInteractEvent.EntityInteract e) {
+        if (e.getHand() != InteractionHand.MAIN_HAND || !(e.getTarget() instanceof Villager v) || v.isBaby()
+                || !e.getEntity().isShiftKeyDown()) return;
+        e.setCanceled(true);
+        e.setCancellationResult(InteractionResult.SUCCESS);
+        if (e.getEntity() instanceof ServerPlayer p) Matches.offerVillager(p, v);
     }
 }

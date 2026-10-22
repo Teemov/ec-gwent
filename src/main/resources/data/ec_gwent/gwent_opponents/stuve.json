@@ -1,0 +1,8 @@
+{
+ "name": "Stuve",
+ "npc": "3046f8c8-c88c-43dd-9ac8-571f8bce1dbc",
+ "entity": "easy_npc:humanoid",
+ "faction": "islanders",
+ "quality": 0.4,
+ "reward": "neutral:stuve"
+}

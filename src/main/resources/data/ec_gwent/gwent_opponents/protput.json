@@ -1,0 +1,8 @@
+{
+ "name": "Protput",
+ "npc": "839acacb-e1e3-4a3c-b7b5-3599d8e3e410",
+ "entity": "easy_npc:humanoid",
+ "faction": "monsters",
+ "quality": 0.3,
+ "reward": "neutral:protput"
+}

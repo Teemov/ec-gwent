@@ -1,0 +1,8 @@
+{
+ "name": "Rudy the Bartender",
+ "npc": "c6055f21-3ad1-4eed-be3c-643d05db898e",
+ "entity": "easy_npc:humanoid",
+ "faction": "valarians",
+ "quality": 0.35,
+ "reward": "neutral:rudy_the_bartender"
+}

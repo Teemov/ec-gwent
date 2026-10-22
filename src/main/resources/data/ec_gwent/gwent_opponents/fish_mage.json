@@ -1,0 +1,8 @@
+{
+ "name": "Fish Mage",
+ "npc": "2d637c69-8343-4d55-bad8-db1b640ba5d9",
+ "entity": "easy_npc:humanoid",
+ "faction": "islanders",
+ "quality": 0.7,
+ "reward": "neutral:fish_mage"
+}

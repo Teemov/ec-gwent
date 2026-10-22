@@ -1,0 +1,8 @@
+{
+ "name": "Head Mage",
+ "npc": "85212c7d-1551-4da0-906f-19f1f20618fe",
+ "entity": "easy_npc:humanoid",
+ "faction": "illagers",
+ "quality": 0.85,
+ "reward": "neutral:head_mage"
+}

@@ -1,0 +1,8 @@
+{
+ "name": "Bug Hunter",
+ "npc": "6c6957de-5e48-472a-9929-33b5912dba88",
+ "entity": "easy_npc:humanoid",
+ "faction": "monsters",
+ "quality": 0.55,
+ "reward": "neutral:bug_hunter"
+}

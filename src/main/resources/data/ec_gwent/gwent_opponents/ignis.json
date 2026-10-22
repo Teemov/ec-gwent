@@ -1,0 +1,8 @@
+{
+ "name": "Ignis",
+ "npc": "46f38b6c-ef52-487a-b0a6-aa9a2015615d",
+ "entity": "easy_npc:humanoid",
+ "faction": "orcs",
+ "quality": 0.75,
+ "reward": "neutral:ignis"
+}

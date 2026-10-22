@@ -22,6 +22,9 @@ jobs:
         run: |
           set -o pipefail
           gradle build --no-daemon --stacktrace 2>&1 | tee build.log
+          mkdir -p /tmp/eng
+          javac --release 17 -d /tmp/eng src/main/java/io/github/teemov/ecgwent/engine/*.java src/test/java/io/github/teemov/ecgwent/engine/*.java 2>&1 | tee -a build.log
+          java -cp /tmp/eng io.github.teemov.ecgwent.engine.EngineSelfTest 2>&1 | tee -a build.log
       - name: Upload jar
         if: success()
         uses: actions/upload-artifact@v5

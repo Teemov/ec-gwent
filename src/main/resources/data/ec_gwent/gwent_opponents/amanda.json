@@ -1,0 +1,8 @@
+{
+ "name": "Amanda the Fairy",
+ "npc": "21919ac4-65a3-4a5c-937b-7407efd8c80c",
+ "entity": "easy_npc:humanoid",
+ "faction": "valarians",
+ "quality": 0.25,
+ "reward": "neutral:amanda_the_fairy"
+}

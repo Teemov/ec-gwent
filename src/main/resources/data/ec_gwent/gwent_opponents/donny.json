@@ -1,0 +1,8 @@
+{
+ "name": "Donny",
+ "npc": "97a1956b-9c47-4488-9f31-fb74c43ea191",
+ "entity": "easy_npc:humanoid",
+ "faction": "illagers",
+ "quality": 0.5,
+ "reward": "neutral:donny"
+}

@@ -1,0 +1,8 @@
+{
+ "name": "Nightblade",
+ "npc": "3fda027b-6055-4656-9506-b6864f884822",
+ "entity": "easy_npc:humanoid",
+ "faction": "orcs",
+ "quality": 0.65,
+ "reward": "neutral:nightblade"
+}
