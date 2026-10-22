@@ -1,0 +1,19 @@
+modLoader = "javafml"
+loaderVersion = "[47,)"
+license = "All rights reserved"
+
+[[mods]]
+modId = "ec_gwent"
+version = "${version}"
+displayName = "EC Gwent"
+authors = "Teemov"
+description = '''
+A Gwent-style card game for the Expanded Civilizations server: collect cards, build decks and challenge NPCs.
+'''
+
+[[dependencies.ec_gwent]]
+modId = "forge"
+mandatory = true
+versionRange = "[47,)"
+ordering = "NONE"
+side = "BOTH"

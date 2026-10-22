@@ -1,0 +1,42 @@
+name: Build
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.8'
+      - name: Build
+        run: |
+          set -o pipefail
+          gradle build --no-daemon --stacktrace 2>&1 | tee build.log
+      - name: Upload jar
+        if: success()
+        uses: actions/upload-artifact@v5
+        with:
+          name: ec_gwent
+          path: build/libs/ec_gwent-*.jar
+      - name: Publish jar and build log to the "builds" branch
+        if: always() && github.ref == 'refs/heads/main'
+        run: |
+          mkdir out && cp build.log out/ || true
+          cp build/libs/ec_gwent-*.jar out/ 2>/dev/null || true
+          cd out
+          git init -q -b builds
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          echo "Built from ${GITHUB_SHA}" > BUILD.txt
+          git add -A && git commit -qm "Build ${GITHUB_SHA::7}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git" builds
