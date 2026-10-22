@@ -16,6 +16,7 @@ This is a **client + server** mod: every player needs it installed.
 | Back to a running match | **K** |
 | Challenge a villager | Sneak + right-click an adult villager. Costs 2 emeralds; higher-level villagers play stronger decks |
 | Give up a match | `/gwent forfeit` |
+| Safety | While a match runs, you and your opponent (villager or NPC) take no damage, except from `/kill` and the void. It ends with the match |
 
 On the board: click a hand card, then the highlighted row (or the card again). Agile units go on your close or ranged
 row, horns and Junk Brew on one of your rows, a Decoy on one of your units. Right-click cancels. Click your leader to use it.

@@ -8,6 +8,7 @@ import io.github.teemov.ecgwent.server.GwentData;
 import io.github.teemov.ecgwent.server.Matches;
 import io.github.teemov.ecgwent.server.ServerHooks;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.npc.Villager;
@@ -16,6 +17,7 @@ import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -70,6 +72,13 @@ public class EcGwent {
     @SubscribeEvent
     public void onClone(PlayerEvent.Clone e) {
         Collection.copy(e.getOriginal(), e.getEntity());
+    }
+
+    /** Nobody in a running match can be hurt, so a creeper or a stray arrow can't end it. */
+    @SubscribeEvent
+    public void onAttack(LivingAttackEvent e) {
+        if (e.getEntity().level().isClientSide || e.getSource().is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return;
+        if (Matches.isProtected(e.getEntity())) e.setCanceled(true);
     }
 
     /** Sneak + right-click a villager to challenge it. */

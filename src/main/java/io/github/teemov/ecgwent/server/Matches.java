@@ -46,6 +46,8 @@ public final class Matches {
         final Kind kind;
         final String opponentId;
         final String opponentEntity;
+        /** The villager or NPC being played against; protected from damage while the match runs. */
+        UUID opponentUuid;
         final String reward;
         final Deck opponentDeck;
         int aiWait = AI_DELAY;
@@ -62,6 +64,15 @@ public final class Matches {
             this.reward = reward;
             this.opponentDeck = opponentDeck;
         }
+    }
+
+    /** Players in a running match and their opponents take no damage (except /kill and the void). */
+    public static boolean isProtected(Entity e) {
+        if (matches.isEmpty()) return false;
+        Match own = matches.get(e.getUUID());
+        if (own != null && !own.finished) return true;
+        for (Match m : matches.values()) if (!m.finished && e.getUUID().equals(m.opponentUuid)) return true;
+        return false;
     }
 
     public static boolean inMatch(ServerPlayer p) {
@@ -87,8 +98,10 @@ public final class Matches {
         if (err != null) return "Opponent " + opponentId + " has an invalid deck: " + err;
         String reward = Collection.beatNpc(p, opponentId) ? null : op.reward;
         String entity = op.npc != null ? "npc:" + op.npc + "|" + op.entity : op.entity;
-        start(p, new Match(p.getUUID(), new Game(GwentData.cards(), mine, p.getName().getString(), theirs, op.name, rng.nextLong()),
-                Kind.NPC, opponentId, entity, reward, theirs));
+        Match match = new Match(p.getUUID(), new Game(GwentData.cards(), mine, p.getName().getString(), theirs, op.name, rng.nextLong()),
+                Kind.NPC, opponentId, entity, reward, theirs);
+        try { if (op.npc != null) match.opponentUuid = UUID.fromString(op.npc); } catch (IllegalArgumentException ignored) {}
+        start(p, match);
         p.sendSystemMessage(Component.literal(op.name + " accepts your challenge!"
                 + (reward != null ? " Win to earn their card." : " (No card to win this time.)")).withStyle(ChatFormatting.GOLD));
         return null;
@@ -123,8 +136,10 @@ public final class Matches {
         String faction = CardRegistry.PLAYABLE_FACTIONS.get(rng.nextInt(CardRegistry.PLAYABLE_FACTIONS.size()));
         Deck theirs = Decks.random(GwentData.cards(), faction, quality, rng);
         String name = v.getDisplayName().getString();
-        start(p, new Match(p.getUUID(), new Game(GwentData.cards(), mine, p.getName().getString(), theirs, name, rng.nextLong()),
-                Kind.VILLAGER, "villager", "entity:" + v.getId() + "|minecraft:villager", null, theirs));
+        Match match = new Match(p.getUUID(), new Game(GwentData.cards(), mine, p.getName().getString(), theirs, name, rng.nextLong()),
+                Kind.VILLAGER, "villager", "entity:" + v.getId() + "|minecraft:villager", null, theirs);
+        match.opponentUuid = v.getUUID();
+        start(p, match);
     }
 
     private static void start(ServerPlayer p, Match m) {
