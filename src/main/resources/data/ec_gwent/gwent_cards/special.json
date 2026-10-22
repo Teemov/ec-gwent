@@ -12,7 +12,12 @@
     "decoy"
    ],
    "count": 3,
-   "entity": "minecraft:armor_stand"
+   "entity": "minecraft:armor_stand",
+   "image": "ec_gwent:textures/cards/special/armor_stand.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "lightning_strike",
@@ -23,7 +28,12 @@
     "scorch"
    ],
    "count": 3,
-   "entity": "minecraft:lightning_bolt"
+   "entity": "minecraft:lightning_bolt",
+   "image": "ec_gwent:textures/cards/special/lightning_strike.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "goat_horn",
@@ -34,7 +44,12 @@
     "horn"
    ],
    "count": 3,
-   "entity": "minecraft:goat"
+   "entity": "minecraft:goat",
+   "image": "ec_gwent:textures/cards/special/goat_horn.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "snowstorm",
@@ -45,7 +60,12 @@
     "frost"
    ],
    "count": 3,
-   "entity": "minecraft:snow_golem"
+   "entity": "minecraft:snow_golem",
+   "image": "ec_gwent:textures/cards/special/snowstorm.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "thick_fog",
@@ -56,7 +76,12 @@
     "fog"
    ],
    "count": 3,
-   "entity": "minecraft:allay"
+   "entity": "minecraft:allay",
+   "image": "ec_gwent:textures/cards/special/thick_fog.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "thunderstorm",
@@ -67,7 +92,12 @@
     "rain"
    ],
    "count": 3,
-   "entity": "minecraft:villager"
+   "entity": "minecraft:villager",
+   "image": "ec_gwent:textures/cards/special/thunderstorm.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "clear_skies",
@@ -78,7 +108,12 @@
     "clear"
    ],
    "count": 3,
-   "entity": "minecraft:wandering_trader"
+   "entity": "minecraft:wandering_trader",
+   "image": "ec_gwent:textures/cards/special/clear_skies.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "ocean_storm",
@@ -89,7 +124,12 @@
     "storm"
    ],
    "count": 3,
-   "entity": "eoh:effect_tornado_water"
+   "entity": "eoh:effect_tornado_water",
+   "image": "ec_gwent:textures/cards/special/ocean_storm.png",
+   "image_size": [
+    144,
+    200
+   ]
   }
  ]
 }
