@@ -10,7 +10,12 @@
    "type": "leader",
    "ability": "play_weather:rain",
    "count": 1,
-   "entity": "illagerinvasion:invoker"
+   "entity": "illagerinvasion:invoker",
+   "image": "ec_gwent:textures/cards/illagers/the_invoker_lord_of_the_raid.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "the_invoker_emperor_of_the_illagers",
@@ -19,7 +24,12 @@
    "type": "leader",
    "ability": "peek_hand:3",
    "count": 1,
-   "entity": "illagerinvasion:invoker"
+   "entity": "illagerinvasion:invoker",
+   "image": "ec_gwent:textures/cards/illagers/the_invoker_emperor_of_the_illagers.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "the_invoker_the_white_flame",
@@ -28,7 +38,12 @@
    "type": "leader",
    "ability": "cancel_enemy_leader",
    "count": 1,
-   "entity": "illagerinvasion:invoker"
+   "entity": "illagerinvasion:invoker",
+   "image": "ec_gwent:textures/cards/illagers/the_invoker_the_white_flame.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "the_invoker_the_relentless",
@@ -37,7 +52,12 @@
    "type": "leader",
    "ability": "draw_from_enemy_discard",
    "count": 1,
-   "entity": "illagerinvasion:invoker"
+   "entity": "illagerinvasion:invoker",
+   "image": "ec_gwent:textures/cards/illagers/the_invoker_the_relentless.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "the_invoker_invader_of_the_north",
@@ -46,7 +66,12 @@
    "type": "leader",
    "ability": "random_revive",
    "count": 1,
-   "entity": "illagerinvasion:invoker"
+   "entity": "illagerinvasion:invoker",
+   "image": "ec_gwent:textures/cards/illagers/the_invoker_invader_of_the_north.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "inquisitor",

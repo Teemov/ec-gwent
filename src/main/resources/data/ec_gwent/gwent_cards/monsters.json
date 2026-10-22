@@ -10,7 +10,12 @@
    "type": "leader",
    "ability": "double_row:close",
    "count": 1,
-   "entity": "minecraft:warden"
+   "entity": "minecraft:warden",
+   "image": "ec_gwent:textures/cards/monsters/the_warden_herald_of_the_deep.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "the_warden_bringer_of_death",
@@ -19,7 +24,12 @@
    "type": "leader",
    "ability": "restore_discard_to_hand",
    "count": 1,
-   "entity": "minecraft:warden"
+   "entity": "minecraft:warden",
+   "image": "ec_gwent:textures/cards/monsters/the_warden_bringer_of_death.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "the_warden_destroyer_of_worlds",
@@ -28,7 +38,12 @@
    "type": "leader",
    "ability": "discard_two_pick_one",
    "count": 1,
-   "entity": "minecraft:warden"
+   "entity": "minecraft:warden",
+   "image": "ec_gwent:textures/cards/monsters/the_warden_destroyer_of_worlds.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "the_warden_king_of_the_dark",
@@ -37,7 +52,12 @@
    "type": "leader",
    "ability": "play_weather:any",
    "count": 1,
-   "entity": "minecraft:warden"
+   "entity": "minecraft:warden",
+   "image": "ec_gwent:textures/cards/monsters/the_warden_king_of_the_dark.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "the_warden_the_treacherous",
@@ -46,7 +66,12 @@
    "type": "leader",
    "ability": "double_spies",
    "count": 1,
-   "entity": "minecraft:warden"
+   "entity": "minecraft:warden",
+   "image": "ec_gwent:textures/cards/monsters/the_warden_the_treacherous.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "giant_zombie",
@@ -57,7 +82,12 @@
    "strength": 10,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:giant"
+   "entity": "minecraft:giant",
+   "image": "ec_gwent:textures/cards/monsters/giant_zombie.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "wither_skeleton_warlord",
@@ -68,7 +98,12 @@
    "strength": 10,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:wither_skeleton"
+   "entity": "minecraft:wither_skeleton",
+   "image": "ec_gwent:textures/cards/monsters/wither_skeleton_warlord.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "the_wither",
@@ -79,7 +114,12 @@
    "strength": 10,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:wither"
+   "entity": "minecraft:wither",
+   "image": "ec_gwent:textures/cards/monsters/the_wither.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "elder_guardian",
@@ -92,7 +132,12 @@
     "morale"
    ],
    "count": 1,
-   "entity": "minecraft:elder_guardian"
+   "entity": "minecraft:elder_guardian",
+   "image": "ec_gwent:textures/cards/monsters/elder_guardian.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "zombie",
@@ -106,7 +151,12 @@
    ],
    "count": 3,
    "entity": "minecraft:zombie",
-   "muster": "zombie"
+   "muster": "zombie",
+   "image": "ec_gwent:textures/cards/monsters/zombie.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "drowned",
@@ -134,7 +184,12 @@
    ],
    "count": 3,
    "entity": "minecraft:spider",
-   "muster": "spider"
+   "muster": "spider",
+   "image": "ec_gwent:textures/cards/monsters/spider.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "spider_jockey",
@@ -148,7 +203,12 @@
    ],
    "count": 1,
    "entity": "minecraft:spider",
-   "muster": "spider"
+   "muster": "spider",
+   "image": "ec_gwent:textures/cards/monsters/spider_jockey.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "witch_brewer",
@@ -162,7 +222,12 @@
    ],
    "count": 1,
    "entity": "minecraft:witch",
-   "muster": "witch"
+   "muster": "witch",
+   "image": "ec_gwent:textures/cards/monsters/witch_brewer.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "witch_weaver",
@@ -176,7 +241,12 @@
    ],
    "count": 1,
    "entity": "minecraft:witch",
-   "muster": "witch"
+   "muster": "witch",
+   "image": "ec_gwent:textures/cards/monsters/witch_weaver.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "witch_whisperer",
@@ -190,7 +260,12 @@
    ],
    "count": 1,
    "entity": "minecraft:witch",
-   "muster": "witch"
+   "muster": "witch",
+   "image": "ec_gwent:textures/cards/monsters/witch_whisperer.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "piglin",
@@ -204,7 +279,12 @@
    ],
    "count": 1,
    "entity": "minecraft:piglin",
-   "muster": "piglin"
+   "muster": "piglin",
+   "image": "ec_gwent:textures/cards/monsters/piglin.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "zombified_piglin",
@@ -218,7 +298,12 @@
    ],
    "count": 1,
    "entity": "minecraft:zombified_piglin",
-   "muster": "piglin"
+   "muster": "piglin",
+   "image": "ec_gwent:textures/cards/monsters/zombified_piglin.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "zoglin",
@@ -232,7 +317,12 @@
    ],
    "count": 1,
    "entity": "minecraft:zoglin",
-   "muster": "piglin"
+   "muster": "piglin",
+   "image": "ec_gwent:textures/cards/monsters/zoglin.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "hoglin",
@@ -246,7 +336,12 @@
    ],
    "count": 1,
    "entity": "minecraft:hoglin",
-   "muster": "piglin"
+   "muster": "piglin",
+   "image": "ec_gwent:textures/cards/monsters/hoglin.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "piglin_brute",
@@ -260,7 +355,12 @@
    ],
    "count": 1,
    "entity": "minecraft:piglin_brute",
-   "muster": "piglin"
+   "muster": "piglin",
+   "image": "ec_gwent:textures/cards/monsters/piglin_brute.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "husk",
@@ -271,7 +371,12 @@
    "strength": 4,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:husk"
+   "entity": "minecraft:husk",
+   "image": "ec_gwent:textures/cards/monsters/husk.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "zombie_villager",
@@ -282,7 +387,12 @@
    "strength": 5,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:zombie_villager"
+   "entity": "minecraft:zombie_villager",
+   "image": "ec_gwent:textures/cards/monsters/zombie_villager.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "skeleton_horseman",
@@ -293,7 +403,12 @@
    "strength": 5,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:skeleton_horse"
+   "entity": "minecraft:skeleton_horse",
+   "image": "ec_gwent:textures/cards/monsters/skeleton_horseman.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "enderman",
@@ -304,7 +419,12 @@
    "strength": 6,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:enderman"
+   "entity": "minecraft:enderman",
+   "image": "ec_gwent:textures/cards/monsters/enderman.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "cave_spider",
@@ -315,7 +435,12 @@
    "strength": 5,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:cave_spider"
+   "entity": "minecraft:cave_spider",
+   "image": "ec_gwent:textures/cards/monsters/cave_spider.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "creeper",
@@ -326,7 +451,12 @@
    "strength": 5,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:creeper"
+   "entity": "minecraft:creeper",
+   "image": "ec_gwent:textures/cards/monsters/creeper.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "phantom",
@@ -337,7 +467,12 @@
    "strength": 5,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:phantom"
+   "entity": "minecraft:phantom",
+   "image": "ec_gwent:textures/cards/monsters/phantom.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "silverfish",
@@ -348,7 +483,12 @@
    "strength": 2,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:silverfish"
+   "entity": "minecraft:silverfish",
+   "image": "ec_gwent:textures/cards/monsters/silverfish.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "blaze",
@@ -359,7 +499,12 @@
    "strength": 2,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:blaze"
+   "entity": "minecraft:blaze",
+   "image": "ec_gwent:textures/cards/monsters/blaze.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "vex",
@@ -370,7 +515,12 @@
    "strength": 2,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:vex"
+   "entity": "minecraft:vex",
+   "image": "ec_gwent:textures/cards/monsters/vex.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "guardian",
@@ -381,7 +531,12 @@
    "strength": 2,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:guardian"
+   "entity": "minecraft:guardian",
+   "image": "ec_gwent:textures/cards/monsters/guardian.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "endermite",
@@ -403,7 +558,12 @@
    "strength": 2,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:shulker"
+   "entity": "minecraft:shulker",
+   "image": "ec_gwent:textures/cards/monsters/shulker.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "magma_cube",
@@ -425,7 +585,12 @@
    "strength": 5,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:skeleton"
+   "entity": "minecraft:skeleton",
+   "image": "ec_gwent:textures/cards/monsters/skeleton.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "charged_creeper",
@@ -439,7 +604,12 @@
    ],
    "count": 1,
    "entity": "minecraft:creeper",
-   "charged": true
+   "charged": true,
+   "image": "ec_gwent:textures/cards/monsters/charged_creeper.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "slime",
@@ -450,7 +620,12 @@
    "strength": 6,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:slime"
+   "entity": "minecraft:slime",
+   "image": "ec_gwent:textures/cards/monsters/slime.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "ghast",
@@ -461,7 +636,12 @@
    "strength": 6,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:ghast"
+   "entity": "minecraft:ghast",
+   "image": "ec_gwent:textures/cards/monsters/ghast.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "stray",
@@ -472,7 +652,12 @@
    "strength": 5,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:stray"
+   "entity": "minecraft:stray",
+   "image": "ec_gwent:textures/cards/monsters/stray.png",
+   "image_size": [
+    144,
+    200
+   ]
   }
  ]
 }

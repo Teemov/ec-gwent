@@ -10,7 +10,12 @@
    "type": "leader",
    "ability": "shuffle_graveyards",
    "count": 1,
-   "entity": "eoh:axol_chief"
+   "entity": "eoh:axol_chief",
+   "image": "ec_gwent:textures/cards/islanders/axol_chief.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "mermaid_queen",
@@ -19,7 +24,12 @@
    "type": "leader",
    "ability": "half_weather_loss",
    "count": 1,
-   "entity": "eoh:mermaid"
+   "entity": "eoh:mermaid",
+   "image": "ec_gwent:textures/cards/islanders/mermaid_queen.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "triton_sentinel",
@@ -33,7 +43,12 @@
    ],
    "count": 1,
    "entity": "eoh:triton_sentinel",
-   "muster": "triton"
+   "muster": "triton",
+   "image": "ec_gwent:textures/cards/islanders/triton_sentinel.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "axol_shaman",
@@ -46,7 +61,12 @@
     "mardroeme"
    ],
    "count": 1,
-   "entity": "eoh:axol_shaman"
+   "entity": "eoh:axol_shaman",
+   "image": "ec_gwent:textures/cards/islanders/axol_shaman.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "karkinos",
@@ -57,7 +77,12 @@
    "strength": 10,
    "abilities": [],
    "count": 1,
-   "entity": "eoh:karkinos"
+   "entity": "eoh:karkinos",
+   "image": "ec_gwent:textures/cards/islanders/karkinos.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "junkpig_skeleton_cyclops",
@@ -69,7 +94,12 @@
    "abilities": [],
    "count": 0,
    "entity": "eoh:junkpig_cyclops",
-   "summoned_only": true
+   "summoned_only": true,
+   "image": "ec_gwent:textures/cards/islanders/junkpig_skeleton_cyclops.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "broken_skeleton_cyclops",
@@ -83,7 +113,12 @@
    ],
    "count": 1,
    "entity": "eoh:broken_junkpig_cyclops",
-   "avenger": "junkpig_skeleton_cyclops"
+   "avenger": "junkpig_skeleton_cyclops",
+   "image": "ec_gwent:textures/cards/islanders/broken_skeleton_cyclops.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "triton",
@@ -97,7 +132,12 @@
    ],
    "count": 3,
    "entity": "eoh:triton",
-   "muster": "triton"
+   "muster": "triton",
+   "image": "ec_gwent:textures/cards/islanders/triton.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "junkpig",
@@ -111,7 +151,12 @@
    ],
    "count": 1,
    "entity": "eoh:junkpig",
-   "transforms": "junkbrute"
+   "transforms": "junkbrute",
+   "image": "ec_gwent:textures/cards/islanders/junkpig.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "junkbrute",
@@ -125,7 +170,12 @@
    ],
    "count": 0,
    "entity": "eoh:junkbrute",
-   "summoned_only": true
+   "summoned_only": true,
+   "image": "ec_gwent:textures/cards/islanders/junkbrute.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "junk_tictak",
@@ -139,7 +189,12 @@
    ],
    "count": 3,
    "entity": "eoh:junk_tictak",
-   "transforms": "junkpig_magic"
+   "transforms": "junkpig_magic",
+   "image": "ec_gwent:textures/cards/islanders/junk_tictak.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "junkpig_magic",
@@ -153,7 +208,12 @@
    ],
    "count": 0,
    "entity": "eoh:junkpig_magic",
-   "summoned_only": true
+   "summoned_only": true,
+   "image": "ec_gwent:textures/cards/islanders/junkpig_magic.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "junk_brew",
@@ -164,7 +224,12 @@
     "mardroeme"
    ],
    "count": 3,
-   "entity": "eoh:junkpig_magic"
+   "entity": "eoh:junkpig_magic",
+   "image": "ec_gwent:textures/cards/islanders/junk_brew.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "axol",
@@ -177,7 +242,12 @@
     "bond"
    ],
    "count": 3,
-   "entity": "eoh:axol"
+   "entity": "eoh:axol",
+   "image": "ec_gwent:textures/cards/islanders/axol.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "axol_skeleton",
@@ -188,7 +258,12 @@
    "strength": 6,
    "abilities": [],
    "count": 2,
-   "entity": "eoh:axol_skeleton"
+   "entity": "eoh:axol_skeleton",
+   "image": "ec_gwent:textures/cards/islanders/axol_skeleton.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "pyrocrag",
@@ -201,7 +276,12 @@
     "scorch"
    ],
    "count": 1,
-   "entity": "eoh:pyrocrag"
+   "entity": "eoh:pyrocrag",
+   "image": "ec_gwent:textures/cards/islanders/pyrocrag.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "mermaid",
@@ -214,7 +294,12 @@
     "medic"
    ],
    "count": 1,
-   "entity": "eoh:mermaid"
+   "entity": "eoh:mermaid",
+   "image": "ec_gwent:textures/cards/islanders/mermaid.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "greedy_crab",
@@ -225,7 +310,12 @@
    "strength": 6,
    "abilities": [],
    "count": 1,
-   "entity": "eoh:greedy_crab"
+   "entity": "eoh:greedy_crab",
+   "image": "ec_gwent:textures/cards/islanders/greedy_crab.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "sharky",
@@ -236,7 +326,12 @@
    "strength": 6,
    "abilities": [],
    "count": 1,
-   "entity": "eoh:sharky"
+   "entity": "eoh:sharky",
+   "image": "ec_gwent:textures/cards/islanders/sharky.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "calamar",
@@ -249,7 +344,12 @@
     "morale"
    ],
    "count": 1,
-   "entity": "eoh:calamar"
+   "entity": "eoh:calamar",
+   "image": "ec_gwent:textures/cards/islanders/calamar.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "brine",
@@ -260,7 +360,12 @@
    "strength": 4,
    "abilities": [],
    "count": 1,
-   "entity": "eoh:brine"
+   "entity": "eoh:brine",
+   "image": "ec_gwent:textures/cards/islanders/brine.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "rhoat",
@@ -271,7 +376,12 @@
    "strength": 4,
    "abilities": [],
    "count": 1,
-   "entity": "eoh:rhoat"
+   "entity": "eoh:rhoat",
+   "image": "ec_gwent:textures/cards/islanders/rhoat.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "tider",
@@ -282,7 +392,12 @@
    "strength": 4,
    "abilities": [],
    "count": 1,
-   "entity": "eoh:tider"
+   "entity": "eoh:tider",
+   "image": "ec_gwent:textures/cards/islanders/tider.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "skeleton_junkpig",
@@ -293,7 +408,12 @@
    "strength": 4,
    "abilities": [],
    "count": 1,
-   "entity": "eoh:skeleton_junkpig"
+   "entity": "eoh:skeleton_junkpig",
+   "image": "ec_gwent:textures/cards/islanders/skeleton_junkpig.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "coral_crab",
@@ -304,7 +424,12 @@
    "strength": 4,
    "abilities": [],
    "count": 1,
-   "entity": "eoh:coral_crab"
+   "entity": "eoh:coral_crab",
+   "image": "ec_gwent:textures/cards/islanders/coral_crab.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "junky_totem",
@@ -317,7 +442,12 @@
     "horn"
    ],
    "count": 1,
-   "entity": "eoh:junky_totem"
+   "entity": "eoh:junky_totem",
+   "image": "ec_gwent:textures/cards/islanders/junky_totem.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "axol_whale",
@@ -328,7 +458,12 @@
    "strength": 4,
    "abilities": [],
    "count": 1,
-   "entity": "eoh:axol_whale"
+   "entity": "eoh:axol_whale",
+   "image": "ec_gwent:textures/cards/islanders/axol_whale.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "junkpig_cog",
@@ -342,7 +477,12 @@
    ],
    "count": 3,
    "entity": "smallships:cog",
-   "muster": "junkpig_cog"
+   "muster": "junkpig_cog",
+   "image": "ec_gwent:textures/cards/islanders/junkpig_cog.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "junkpig_brigg",
@@ -355,7 +495,12 @@
     "bond"
    ],
    "count": 3,
-   "entity": "smallships:brigg"
+   "entity": "smallships:brigg",
+   "image": "ec_gwent:textures/cards/islanders/junkpig_brigg.png",
+   "image_size": [
+    144,
+    200
+   ]
   }
  ]
 }
