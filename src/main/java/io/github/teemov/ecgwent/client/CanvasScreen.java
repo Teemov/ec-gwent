@@ -105,6 +105,25 @@ public abstract class CanvasScreen extends Screen {
         buttons.add(new Btn(x, y, w, h, enabled, action));
     }
 
+    /** A filled circle. */
+    protected static void disc(GuiGraphics g, int cx, int cy, int r, int color) {
+        for (int dy = -r; dy <= r; dy++) {
+            int w = (int) Math.round(Math.sqrt(r * r - dy * dy + 0.5));
+            g.fill(cx - w, cy + dy, cx + w + 1, cy + dy + 1, color);
+        }
+    }
+
+    /** Tiles a block texture over an area, clipped to it. */
+    protected static void tile(GuiGraphics g, net.minecraft.world.level.block.Block block, int x, int y, int w, int h, int size) {
+        net.minecraft.client.renderer.texture.TextureAtlasSprite sprite = net.minecraft.client.Minecraft.getInstance()
+                .getBlockRenderer().getBlockModelShaper().getParticleIcon(block.defaultBlockState());
+        CardArt.scissor(g, x, y, x + w, y + h);
+        for (int ty = y; ty < y + h; ty += size)
+            for (int tx = x; tx < x + w; tx += size)
+                g.blit(tx, ty, 0, size, size, sprite);
+        g.disableScissor();
+    }
+
     /** A dark panel with a thin gold edge. */
     protected static void panel(GuiGraphics g, int x, int y, int w, int h) {
         g.fill(x, y, x + w, y + h, 0xFF6A5A30);

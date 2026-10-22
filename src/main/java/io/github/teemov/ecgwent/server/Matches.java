@@ -31,7 +31,7 @@ import java.util.UUID;
 public final class Matches {
     public static final int BET = 2;
     /** Ticks between AI moves, so players can follow what happens. */
-    private static final int AI_DELAY = 18;
+    private static final int AI_DELAY = 30;
 
     private static final Map<UUID, Match> matches = new HashMap<>();
     private static final Random rng = new Random();

@@ -15,6 +15,9 @@ public final class View {
         field(b, "round", g.round);
         field(b, "myTurn", g.phase == Game.Phase.PLAY && g.current == me);
         field(b, "weather", weather(g));
+        List<Card> wc = new java.util.ArrayList<>();
+        for (Side s : g.sides) wc.addAll(s.weatherPlayed);
+        b.append("\"weatherCards\":").append(cards(wc)).append(',');
         field(b, "opponentEntity", opponentEntity);
         if (g.winner != null) field(b, "winner", g.winner < 0 ? "draw" : (g.winner == me ? "me" : "them"));
         if (result != null) field(b, "result", result);
