@@ -170,7 +170,12 @@
    ],
    "count": 3,
    "entity": "minecraft:drowned",
-   "muster": "drowned"
+   "muster": "drowned",
+   "image": "ec_gwent:textures/cards/monsters/drowned.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "spider",
@@ -547,7 +552,12 @@
    "strength": 2,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:endermite"
+   "entity": "minecraft:endermite",
+   "image": "ec_gwent:textures/cards/monsters/endermite.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "shulker",
@@ -574,7 +584,12 @@
    "strength": 2,
    "abilities": [],
    "count": 1,
-   "entity": "minecraft:magma_cube"
+   "entity": "minecraft:magma_cube",
+   "image": "ec_gwent:textures/cards/monsters/magma_cube.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "skeleton",
