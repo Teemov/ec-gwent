@@ -63,6 +63,9 @@ public final class MatchScreen extends CanvasScreen {
     private String lastTurnKey = "";
     private int lastMyGems = 2, lastTheirGems = 2, lastRound = 1;
     private boolean lastTheyPassed;
+    // Weather effects
+    private boolean hadWeather;
+    private long clearBurst;
     // Input
     private long spaceHeld;
     private long forfeitArmed;
@@ -135,6 +138,9 @@ public final class MatchScreen extends CanvasScreen {
             }
         }
         lastLoc = loc;
+        boolean weatherNow = !str(m(), "weather").isEmpty();
+        if (hadWeather && !weatherNow && !over()) clearBurst = Util.getMillis();
+        hadWeather = weatherNow;
 
         // Banners
         int myGems = num(me(), "gems"), theirGems = num(them(), "gems"), round = num(m(), "round");
@@ -202,6 +208,7 @@ public final class MatchScreen extends CanvasScreen {
         drawPiles(g, me(), MY_PILE_Y, mx, my);
         drawControls(g, mx, my, interactive);
         if (!overlay) drawHand(g, mx, my);
+        drawWeatherFx(g);
 
         // Cards in flight go over everything on the table.
         g.pose().pushPose();
@@ -571,6 +578,108 @@ public final class MatchScreen extends CanvasScreen {
         g.pose().scale(s, s, 1);
         g.drawString(font, banner, 0, 0, color, true);
         g.pose().popPose();
+    }
+
+    // ---------------------------------------------------------------- weather effects (see-through, over the cards)
+
+    private void drawWeatherFx(GuiGraphics g) {
+        String weather = str(m(), "weather");
+        long now = Util.getMillis();
+        boolean storm = false, rain = false;
+        for (Map<String, Object> c : list(m(), "weatherCards")) {
+            CardDef d = def(str(c, "key"));
+            if (d != null && d.has("storm")) storm = true;
+            if (d != null && d.has("rain")) rain = true;
+        }
+        g.pose().pushPose();
+        g.pose().translate(0, 0, 3000);
+        for (int i = 0; i < 6; i++) {
+            boolean mine = i >= 3;
+            int ri = mine ? i - 3 : 2 - i;
+            String row = ROWS[ri];
+            if (!weather.contains(row)) continue;
+            int y = mine ? MY_Y + ri * ROW_H : OPP_Y + i * ROW_H;
+            int x0 = SLOT_X - 2, x1 = CARDS_X1 + 2, y0 = y + 1, y1 = y + ROW_H - 1;
+            CardArt.scissor(g, x0, y0, x1, y1);
+            int seed = i * 977;
+            switch (row) {
+                case "close" -> snow(g, x0, y0, x1 - x0, y1 - y0, now, seed);
+                case "ranged" -> { fog(g, x0, y0, x1 - x0, y1 - y0, now, seed); if (storm) rain(g, x0, y0, x1 - x0, y1 - y0, now, seed, false); }
+                default -> { rain(g, x0, y0, x1 - x0, y1 - y0, now, seed, true); if (storm && !rain) fog(g, x0, y0, x1 - x0, y1 - y0, now, seed); }
+            }
+            g.disableScissor();
+        }
+        // Clear Skies: a burst of warm light over the board that fades out
+        long t = now - clearBurst;
+        if (clearBurst > 0 && t < 1200) {
+            float a = t < 200 ? t / 200f : 1 - (t - 200) / 1000f;
+            int alpha = (int) (a * 0x70);
+            g.fill(BOARD_X0 - 3, OPP_Y - 3, BOARD_X1 + 3, MY_Y + ROW_H * 3 + 3, (alpha << 24) | 0xFFE8A0);
+            for (int k = 0; k < 6; k++) {
+                int bx = BOARD_X0 + 30 + k * 60 + (int) (t / 20);
+                for (int yy = OPP_Y; yy < MY_Y + ROW_H * 3; yy += 2)
+                    g.fill(bx + (yy - OPP_Y) / 3, yy, bx + (yy - OPP_Y) / 3 + 10, yy + 2, ((int) (a * 0x30) << 24) | 0xFFFFFF);
+            }
+        }
+        g.pose().popPose();
+    }
+
+    /** Deterministic 0..1 noise so particles keep their identity from frame to frame. */
+    private static float hash(int n) {
+        n = (n << 13) ^ n;
+        return ((n * (n * n * 15731 + 789221) + 1376312589) & 0x7fffffff) / (float) 0x7fffffff;
+    }
+
+    private static void snow(GuiGraphics g, int x, int y, int w, int h, long now, int seed) {
+        g.fill(x, y, x + w, y + h, 0x18C8E8FF);
+        for (int k = 0; k < 70; k++) {
+            float sx = hash(seed + k * 3), sy = hash(seed + k * 3 + 1), sp = 0.5f + hash(seed + k * 3 + 2);
+            float fy = (sy * h + now / 1000f * 9f * sp) % h;
+            float fx = (sx * w + (float) Math.sin(now / 900.0 * sp + k) * 4 + now / 1000f * 3f) % w;
+            int px = x + (int) fx, py = y + (int) fy;
+            int size = sp > 1.2f ? 2 : 1;
+            g.fill(px, py, px + size, py + size, sp > 1.1f ? 0xE0FFFFFF : 0xA0E8F4FF);
+        }
+    }
+
+    private static void fog(GuiGraphics g, int x, int y, int w, int h, long now, int seed) {
+        g.fill(x, y, x + w, y + h, 0x30B8BEC8);
+        for (int k = 0; k < 5; k++) {
+            float speed = 4 + hash(seed + k) * 6;
+            int bw = 70 + (int) (hash(seed + k + 50) * 60);
+            int cx = x + (int) ((hash(seed + k + 100) * (w + bw) + now / 1000f * speed) % (w + bw)) - bw / 2;
+            int cy = y + (int) (hash(seed + k + 150) * h);
+            for (int layer = 0; layer < 6; layer++) {
+                int lw = bw * (6 - layer) / 6, lh = Math.max(3, h * (6 - layer) / 9);
+                g.fill(cx - lw / 2, cy - lh / 2, cx + lw / 2, cy + lh / 2, 0x10D8DEE8);
+            }
+        }
+    }
+
+    private static void rain(GuiGraphics g, int x, int y, int w, int h, long now, int seed, boolean lightning) {
+        g.fill(x, y, x + w, y + h, 0x2830486A);
+        for (int k = 0; k < 90; k++) {
+            float sx = hash(seed + k * 5), sy = hash(seed + k * 5 + 1), sp = 0.8f + hash(seed + k * 5 + 2) * 0.6f;
+            float t = now / 1000f * 70f * sp;
+            int py = y + (int) ((sy * h + t) % h);
+            int px = x + (int) ((sx * w - t * 0.35f + w * 4) % w);
+            for (int j = 0; j < 4; j++) g.fill(px - j / 2, py + j, px - j / 2 + 1, py + j + 1, 0x90A8C8F0);
+        }
+        if (lightning) {
+            long cycle = 5200 + (long) (hash(seed + 7) * 2600);
+            long t = (now + seed * 31L) % cycle;
+            if (t < 220) {
+                int a = (int) ((t < 60 ? 1f : 1 - (t - 60) / 160f) * 0x80);
+                g.fill(x, y, x + w, y + h, (a << 24) | 0xE8F0FF);
+                int bx = x + (int) (hash(seed + (int) ((now + seed * 31L) / cycle)) * (w - 20)) + 10, by = y;
+                while (by < y + h) {
+                    int nx = bx + (int) (hash(bx * 7 + by) * 7) - 3;
+                    g.fill(Math.min(bx, nx), by, Math.max(bx, nx) + 1, by + 4, (Math.min(255, a * 3) << 24) | 0xFFFFFF);
+                    bx = nx;
+                    by += 4;
+                }
+            }
+        }
     }
 
     // ---------------------------------------------------------------- overlays (redraw, choices, result)
