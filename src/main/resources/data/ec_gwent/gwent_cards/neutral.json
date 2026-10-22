@@ -1,0 +1,222 @@
+{
+ "faction": "neutral",
+ "name": "Neutral",
+ "perk": null,
+ "cards": [
+  {
+   "id": "head_mage",
+   "name": "Head Mage",
+   "w3": "Geralt of Rivia",
+   "type": "hero",
+   "row": "close",
+   "strength": 15,
+   "abilities": [
+    "muster"
+   ],
+   "count": 1,
+   "entity": "easy_npc:humanoid",
+   "muster": "trusty_horse",
+   "npc": "85212c7d-1551-4da0-906f-19f1f20618fe"
+  },
+  {
+   "id": "nightblade",
+   "name": "Nightblade",
+   "w3": "Cirilla Fiona Elen Riannon",
+   "type": "hero",
+   "row": "close",
+   "strength": 15,
+   "abilities": [
+    "muster"
+   ],
+   "count": 1,
+   "entity": "easy_npc:humanoid",
+   "muster": "trusty_horse",
+   "npc": "3fda027b-6055-4656-9506-b6864f884822"
+  },
+  {
+   "id": "fish_mage",
+   "name": "Fish Mage",
+   "w3": "Yennefer of Vengerberg",
+   "type": "hero",
+   "row": "ranged",
+   "strength": 7,
+   "abilities": [
+    "medic"
+   ],
+   "count": 1,
+   "entity": "easy_npc:humanoid",
+   "npc": "2d637c69-8343-4d55-bad8-db1b640ba5d9"
+  },
+  {
+   "id": "ignis",
+   "name": "Ignis",
+   "w3": "Triss Merigold",
+   "type": "hero",
+   "row": "close",
+   "strength": 7,
+   "abilities": [],
+   "count": 1,
+   "entity": "easy_npc:humanoid",
+   "npc": "46f38b6c-ef52-487a-b0a6-aa9a2015615d"
+  },
+  {
+   "id": "bug_hunter",
+   "name": "Bug Hunter",
+   "w3": "Mysterious Elf (Avallac'h)",
+   "type": "hero",
+   "row": "close",
+   "strength": 0,
+   "abilities": [
+    "spy"
+   ],
+   "count": 1,
+   "entity": "easy_npc:humanoid",
+   "npc": "6c6957de-5e48-472a-9929-33b5912dba88"
+  },
+  {
+   "id": "the_dragon",
+   "name": "The Dragon",
+   "w3": "Villentretenmerth",
+   "type": "unit",
+   "row": "close",
+   "strength": 7,
+   "abilities": [
+    "scorch_close"
+   ],
+   "count": 1,
+   "entity": "minecraft:ender_dragon"
+  },
+  {
+   "id": "stuve",
+   "name": "Stuve",
+   "w3": "Dandelion",
+   "type": "unit",
+   "row": "close",
+   "strength": 2,
+   "abilities": [
+    "horn"
+   ],
+   "count": 1,
+   "entity": "easy_npc:humanoid",
+   "npc": "3046f8c8-c88c-43dd-9ac8-571f8bce1dbc"
+  },
+  {
+   "id": "rudy_the_bartender",
+   "name": "Rudy the Bartender",
+   "w3": "Zoltan Chivay",
+   "type": "unit",
+   "row": "close",
+   "strength": 5,
+   "abilities": [],
+   "count": 1,
+   "entity": "easy_npc:humanoid",
+   "npc": "c6055f21-3ad1-4eed-be3c-643d05db898e"
+  },
+  {
+   "id": "amanda_the_fairy",
+   "name": "Amanda the Fairy",
+   "w3": "Vesemir",
+   "type": "unit",
+   "row": "close",
+   "strength": 6,
+   "abilities": [],
+   "count": 1,
+   "entity": "easy_npc:humanoid",
+   "npc": "21919ac4-65a3-4a5c-937b-7407efd8c80c"
+  },
+  {
+   "id": "protput",
+   "name": "Protput",
+   "w3": "Emiel Regis Rohellec Terzieff",
+   "type": "unit",
+   "row": "close",
+   "strength": 5,
+   "abilities": [],
+   "count": 1,
+   "entity": "easy_npc:humanoid",
+   "npc": "839acacb-e1e3-4a3c-b7b5-3599d8e3e410"
+  },
+  {
+   "id": "valarian_commander",
+   "name": "Valarian Commander",
+   "w3": "Olgierd von Everec",
+   "type": "unit",
+   "row": "agile",
+   "strength": 6,
+   "abilities": [
+    "morale"
+   ],
+   "count": 1,
+   "entity": "easy_npc:humanoid",
+   "npc": "b608d984-66a1-47be-8527-6a78e32930f9"
+  },
+  {
+   "id": "ronny",
+   "name": "Ronny",
+   "w3": "Gaunter O'Dimm",
+   "type": "unit",
+   "row": "siege",
+   "strength": 2,
+   "abilities": [
+    "muster"
+   ],
+   "count": 1,
+   "entity": "easy_npc:humanoid",
+   "muster": "ronny",
+   "npc": "f69d3898-5bcb-4080-9768-cf5a4a7fe995"
+  },
+  {
+   "id": "donny",
+   "name": "Donny",
+   "w3": "Gaunter O'Dimm – Darkness",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 4,
+   "abilities": [
+    "muster"
+   ],
+   "count": 3,
+   "entity": "easy_npc:humanoid",
+   "muster": "ronny",
+   "npc": "97a1956b-9c47-4488-9f31-fb74c43ea191"
+  },
+  {
+   "id": "cow",
+   "name": "Cow",
+   "w3": "Cow",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 0,
+   "abilities": [
+    "avenger"
+   ],
+   "count": 1,
+   "entity": "minecraft:cow",
+   "avenger": "village_defense_golem"
+  },
+  {
+   "id": "village_defense_golem",
+   "name": "Village Defense Golem",
+   "w3": "Bovine Defense Force",
+   "type": "unit",
+   "row": "close",
+   "strength": 8,
+   "abilities": [],
+   "count": 0,
+   "entity": "minecraft:iron_golem",
+   "summoned_only": true
+  },
+  {
+   "id": "trusty_horse",
+   "name": "Trusty Horse",
+   "w3": "Roach",
+   "type": "unit",
+   "row": "close",
+   "strength": 3,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:horse",
+   "muster": "trusty_horse"
+  }
+ ]
+}

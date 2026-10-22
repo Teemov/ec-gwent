@@ -1,0 +1,95 @@
+{
+ "faction": "special",
+ "name": "Special",
+ "perk": null,
+ "cards": [
+  {
+   "id": "armor_stand",
+   "name": "Armor Stand",
+   "w3": "Decoy",
+   "type": "special",
+   "abilities": [
+    "decoy"
+   ],
+   "count": 3,
+   "entity": "minecraft:armor_stand"
+  },
+  {
+   "id": "lightning_strike",
+   "name": "Lightning Strike",
+   "w3": "Scorch",
+   "type": "special",
+   "abilities": [
+    "scorch"
+   ],
+   "count": 3,
+   "entity": "minecraft:lightning_bolt"
+  },
+  {
+   "id": "goat_horn",
+   "name": "Goat Horn",
+   "w3": "Commander's Horn",
+   "type": "special",
+   "abilities": [
+    "horn"
+   ],
+   "count": 3,
+   "entity": "minecraft:goat"
+  },
+  {
+   "id": "snowstorm",
+   "name": "Snowstorm",
+   "w3": "Biting Frost",
+   "type": "weather",
+   "abilities": [
+    "frost"
+   ],
+   "count": 3,
+   "entity": "minecraft:snow_golem"
+  },
+  {
+   "id": "thick_fog",
+   "name": "Thick Fog",
+   "w3": "Impenetrable Fog",
+   "type": "weather",
+   "abilities": [
+    "fog"
+   ],
+   "count": 3,
+   "entity": "minecraft:allay"
+  },
+  {
+   "id": "thunderstorm",
+   "name": "Thunderstorm",
+   "w3": "Torrential Rain",
+   "type": "weather",
+   "abilities": [
+    "rain"
+   ],
+   "count": 3,
+   "entity": "minecraft:villager"
+  },
+  {
+   "id": "clear_skies",
+   "name": "Clear Skies",
+   "w3": "Clear Weather",
+   "type": "weather",
+   "abilities": [
+    "clear"
+   ],
+   "count": 3,
+   "entity": "minecraft:wandering_trader"
+  },
+  {
+   "id": "ocean_storm",
+   "name": "Ocean Storm",
+   "w3": "Skellige Storm",
+   "type": "weather",
+   "abilities": [
+    "storm"
+   ],
+   "count": 3,
+   "entity": "eoh:effect_tornado_water"
+  }
+ ]
+}

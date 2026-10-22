@@ -1,0 +1,248 @@
+# EC Gwent card list
+
+Generated from `src/main/resources/data/ec_gwent/gwent_cards/*.json`. Every card keeps the strength, row, ability and copy count of its Witcher 3 original.
+
+## Valarians (38 cards)
+
+Faction perk: draws a card after each round it wins.
+
+| Leader | Witcher 3 | Ability |
+|---|---|---|
+| The Valarian King – King of Valaria | Foltest – King of Temeria | `play_weather:fog` |
+| The Valarian King – Lord Commander | Foltest – Lord Commander of the North | `clear_weather` |
+| The Valarian King – Heir to the Crown | Foltest – Son of Medell | `scorch_row:ranged` |
+| The Valarian King – The Siegemaster | Foltest – The Siegemaster | `double_row:siege` |
+| The Valarian King – The Steel-Forged | Foltest – The Steel-Forged | `scorch_row:siege` |
+
+| Card | Witcher 3 | Row | Str | Ability | Copies | Mob |
+|---|---|---|---|---|---|---|
+| Valarian Troll | Vernon Roche | close | 10 | Hero | 1 | `valarian_conquest:troll` |
+| Valarian Officer | Esterad Thyssen | close | 10 | Hero | 1 | `valarian_conquest:valarian_officer` |
+| Valarian Guard Captain | John Natalis | close | 10 | Hero | 1 | `valarian_conquest:valarian_guard` |
+| Valarian Master Archer | Philippa Eilhart | ranged | 10 | Hero | 1 | `valarian_conquest:valarian_archer` |
+| Valarian Pikeman | Blue Stripes Commando | close | 4 | Tight Bond | 3 | `valarian_conquest:valarian_spearman` |
+| Valarian Crossbowman | Crinfrid Reavers Dragon Hunter | ranged | 5 | Tight Bond | 3 | `valarian_conquest:crossbowman` |
+| Valarian Levy | Poor Fucking Infantry | close | 1 | Tight Bond | 4 | `valarian_conquest:male_citizen` |
+| Catapult | Catapult | siege | 8 | Tight Bond | 2 | `valarian_conquest:catapult` |
+| Valarian Deserter | Prince Stennis | close | 5 | Spy | 1 | `valarian_conquest:soldier` |
+| Valarian Spymaster | Sigismund Dijkstra | close | 4 | Spy | 1 | `valarian_conquest:valarian_officer` |
+| Valarian Informant | Thaler | siege | 1 | Spy | 1 | `valarian_conquest:female_citizen` |
+| Valarian Field Surgeon | Dun Banner Medic | siege | 5 | Medic | 1 | `valarian_conquest:female_citizen` |
+| Valarian Siege Engineer | Kaedweni Siege Expert | siege | 1 | Morale | 3 | `valarian_conquest:male_citizen` |
+| Ballista | Ballista | siege | 6 |  | 2 | `valarian_conquest:ballista` |
+| Cannon | Trebuchet | siege | 6 |  | 2 | `valarian_conquest:cannon` |
+| Battering Ram | Siege Tower | siege | 6 |  | 1 | `valarian_conquest:battering_ram` |
+| Valarian Soldier | Redanian Foot Soldier | close | 1 |  | 2 | `valarian_conquest:soldier` |
+| Valarian Axeman | Yarpen Zigrin | close | 2 |  | 1 | `valarian_conquest:soldier` |
+| Valarian Swordsman | Ves | close | 5 |  | 1 | `valarian_conquest:soldier` |
+| Valarian Spearman | Siegfried of Denesle | close | 5 |  | 1 | `valarian_conquest:valarian_spearman` |
+| Valarian Longbowman | Dethmold | ranged | 6 |  | 1 | `valarian_conquest:archer` |
+| Valarian Archer | Keira Metz | ranged | 5 |  | 1 | `valarian_conquest:valarian_archer` |
+| Valarian Marksman | Síle de Tansarville | ranged | 5 |  | 1 | `valarian_conquest:crossbowman` |
+| Valarian Hunter | Sabrina Glevissig | ranged | 4 |  | 1 | `valarian_conquest:archer` |
+| Valarian Javelineer | Sheldon Skaggs | ranged | 4 |  | 1 | `valarian_conquest:soldier` |
+
+## Illagers (37 cards)
+
+Faction perk: wins any round that ends in a draw.
+
+| Leader | Witcher 3 | Ability |
+|---|---|---|
+| The Invoker – Lord of the Raid | Emhyr var Emreis – His Imperial Majesty | `play_weather:rain` |
+| The Invoker – Emperor of the Illagers | Emhyr var Emreis – Emperor of Nilfgaard | `peek_hand:3` |
+| The Invoker – The White Flame | Emhyr var Emreis – The White Flame | `cancel_enemy_leader` |
+| The Invoker – The Relentless | Emhyr var Emreis – The Relentless | `draw_from_enemy_discard` |
+| The Invoker – Invader of the North | Emhyr var Emreis – Invader of the North | `random_revive` |
+
+| Card | Witcher 3 | Row | Str | Ability | Copies | Mob |
+|---|---|---|---|---|---|---|
+| Inquisitor | Letho of Gulet | close | 10 | Hero | 1 | `illagerinvasion:inquisitor` |
+| Necromancer | Menno Coehoorn | close | 10 | Hero, Medic | 1 | `illagerinvasion:necromancer` |
+| Ravager Warbeast | Morvran Voorhis | siege | 10 | Hero | 1 | `minecraft:ravager` |
+| Pillager Captain | Tibor Eggebracht | ranged | 10 | Hero | 1 | `minecraft:pillager` |
+| Surrendered | Stefan Skellen | close | 9 | Spy | 1 | `illagerinvasion:surrendered` |
+| Archivist | Shilard Fitz-Oesterlen | close | 7 | Spy | 1 | `illagerinvasion:archivist` |
+| Guard of the Legion – Mercenary | Vattier de Rideaux | close | 4 | Spy | 1 | `the_pillager_legion_:mercenary_guard_tpl` |
+| Alchemist | Etolian Auxiliary Archers | ranged | 1 | Medic | 2 | `illagerinvasion:alchemist` |
+| Provoker | Siege Technician | siege | 0 | Medic | 1 | `illagerinvasion:provoker` |
+| Infantryman of the Legion | Impera Brigade Guard | close | 3 | Tight Bond | 4 | `the_pillager_legion_:infantryman_tpl` |
+| Gladiator of the Legion | Nausicaa Cavalry Rider | close | 2 | Tight Bond | 3 | `the_pillager_legion_:gladuisman_tpl` |
+| Veteran Infantryman of the Legion | Young Emissary | close | 5 | Tight Bond | 2 | `the_pillager_legion_:veteran_infantryman_tpl` |
+| Pillager | Albrich | ranged | 2 |  | 1 | `minecraft:pillager` |
+| Evoker | Assire var Anahid | ranged | 6 |  | 1 | `minecraft:evoker` |
+| Nether Archer of the Legion | Black Infantry Archer | ranged | 10 |  | 2 | `the_pillager_legion_:archer_nether_tpl` |
+| Vindicator | Cahir Mawr Dyffryn aep Ceallach | close | 6 |  | 1 | `minecraft:vindicator` |
+| Sorcerer | Cynthia | ranged | 4 |  | 1 | `illagerinvasion:sorcerer` |
+| Firecaller | Fringilla Vigo | ranged | 6 |  | 1 | `illagerinvasion:firecaller` |
+| Giant Infantryman of the Legion | Heavy Zerrikanian Fire Scorpion | siege | 10 |  | 1 | `the_pillager_legion_:giant_infantryman_tpl` |
+| Marauder | Zerrikanian Fire Scorpion | siege | 5 |  | 1 | `illagerinvasion:marauder` |
+| Basher | Rotten Mangonel | siege | 3 |  | 1 | `illagerinvasion:basher` |
+| Heavy Infantryman of the Legion | Siege Engineer | siege | 6 |  | 1 | `the_pillager_legion_:heavy_infantryman_tpl` |
+| Guard of the Legion | Morteisen | close | 3 |  | 1 | `the_pillager_legion_:guard_legion_tpl` |
+| Pillager Sharpshooter | Puttkammer | ranged | 3 |  | 1 | `minecraft:pillager` |
+| Pillager Lookout | Sweers | ranged | 2 |  | 1 | `minecraft:pillager` |
+| Illusioner | Vanhemar | ranged | 4 |  | 1 | `minecraft:illusioner` |
+| Pillager Veteran | Renuald aep Matsen | ranged | 5 |  | 1 | `minecraft:pillager` |
+| Nether Heavy Gladiator of the Legion | Rainfarn | close | 4 |  | 1 | `the_pillager_legion_:heavy_gladiators_nether_tpl` |
+| Nether Gladiator of the Legion | Vreemde | close | 2 |  | 1 | `the_pillager_legion_:gladiators_nether_tpl` |
+
+## Monsters (41 cards)
+
+Faction perk: keeps one random unit on the board after each round.
+
+| Leader | Witcher 3 | Ability |
+|---|---|---|
+| The Warden – Herald of the Deep | Eredin – Commander of the Red Riders | `double_row:close` |
+| The Warden – Bringer of Death | Eredin – Bringer of Death | `restore_discard_to_hand` |
+| The Warden – Destroyer of Worlds | Eredin – Destroyer of Worlds | `discard_two_pick_one` |
+| The Warden – King of the Dark | Eredin – King of the Wild Hunt | `play_weather:any` |
+| The Warden – The Treacherous | Eredin Bréacc Glas – The Treacherous | `double_spies` |
+
+| Card | Witcher 3 | Row | Str | Ability | Copies | Mob |
+|---|---|---|---|---|---|---|
+| Giant Zombie | Imlerith | close | 10 | Hero | 1 | `minecraft:giant` |
+| Wither Skeleton Warlord | Draug | close | 10 | Hero | 1 | `minecraft:wither_skeleton` |
+| The Wither | Leshen | ranged | 10 | Hero | 1 | `minecraft:wither` |
+| Elder Guardian | Kayran | agile | 8 | Hero, Morale | 1 | `minecraft:elder_guardian` |
+| Zombie | Ghoul | close | 1 | Muster (group `zombie`) | 3 | `minecraft:zombie` |
+| Drowned | Nekker | close | 2 | Muster (group `drowned`) | 3 | `minecraft:drowned` |
+| Spider | Arachas | close | 4 | Muster (group `spider`) | 3 | `minecraft:spider` |
+| Spider Jockey | Arachas Behemoth | siege | 6 | Muster (group `spider`) | 1 | `minecraft:spider` |
+| Witch – Brewer | Crone – Brewess | close | 6 | Muster (group `witch`) | 1 | `minecraft:witch` |
+| Witch – Weaver | Crone – Weavess | close | 6 | Muster (group `witch`) | 1 | `minecraft:witch` |
+| Witch – Whisperer | Crone – Whispess | close | 6 | Muster (group `witch`) | 1 | `minecraft:witch` |
+| Piglin | Vampire – Bruxa | close | 4 | Muster (group `piglin`) | 1 | `minecraft:piglin` |
+| Zombified Piglin | Vampire – Ekimmara | close | 4 | Muster (group `piglin`) | 1 | `minecraft:zombified_piglin` |
+| Zoglin | Vampire – Fleder | close | 4 | Muster (group `piglin`) | 1 | `minecraft:zoglin` |
+| Hoglin | Vampire – Garkain | close | 4 | Muster (group `piglin`) | 1 | `minecraft:hoglin` |
+| Piglin Brute | Vampire – Katakan | close | 5 | Muster (group `piglin`) | 1 | `minecraft:piglin_brute` |
+| Husk | Botchling | close | 4 |  | 1 | `minecraft:husk` |
+| Zombie Villager | Plague Maiden | close | 5 |  | 1 | `minecraft:zombie_villager` |
+| Skeleton Horseman | Werewolf | close | 5 |  | 1 | `minecraft:skeleton_horse` |
+| Enderman | Fiend | close | 6 |  | 1 | `minecraft:enderman` |
+| Cave Spider | Forktail | close | 5 |  | 1 | `minecraft:cave_spider` |
+| Creeper | Frightener | close | 5 |  | 1 | `minecraft:creeper` |
+| Phantom | Griffin | close | 5 |  | 1 | `minecraft:phantom` |
+| Silverfish | Foglet | close | 2 |  | 1 | `minecraft:silverfish` |
+| Blaze | Celaeno Harpy | agile | 2 |  | 1 | `minecraft:blaze` |
+| Vex | Harpy | agile | 2 |  | 1 | `minecraft:vex` |
+| Guardian | Cockatrice | ranged | 2 |  | 1 | `minecraft:guardian` |
+| Endermite | Endrega | ranged | 2 |  | 1 | `minecraft:endermite` |
+| Shulker | Gargoyle | ranged | 2 |  | 1 | `minecraft:shulker` |
+| Magma Cube | Wyvern | ranged | 2 |  | 1 | `minecraft:magma_cube` |
+| Skeleton | Grave Hag | ranged | 5 |  | 1 | `minecraft:skeleton` |
+| Charged Creeper | Toad | ranged | 7 | Scorch – Ranged | 1 | `minecraft:creeper` |
+| Slime | Earth Elemental | siege | 6 |  | 1 | `minecraft:slime` |
+| Ghast | Fire Elemental | siege | 6 |  | 1 | `minecraft:ghast` |
+| Stray | Ice Giant | siege | 5 |  | 1 | `minecraft:stray` |
+
+## Orcs (38 cards)
+
+Faction perk: chooses who goes first.
+
+| Leader | Witcher 3 | Ability |
+|---|---|---|
+| Orc Chieftain – Queen of the Clans | Francesca Findabair – Queen of Dol Blathanna | `scorch_row:close` |
+| Orc Chieftain – The Fearsome | Francesca Findabair – The Beautiful | `double_row:ranged` |
+| Orc Chieftain – Pride of the Camp | Francesca Findabair – Daisy of the Valley | `extra_draw` |
+| Orc Chieftain – Pureblood | Francesca Findabair – Pureblood Elf | `play_weather:frost` |
+| Orc Chieftain – Hope of the Horde | Francesca Findabair – Hope of the Aen Seidhe | `optimise_agile` |
+
+| Card | Witcher 3 | Row | Str | Ability | Copies | Mob |
+|---|---|---|---|---|---|---|
+| Orc Boss | Isengrim Faoiltiarna | close | 10 | Hero, Morale | 1 | `theorcs:orc_boss` |
+| Elder Treant | Eithné | ranged | 10 | Hero | 1 | `wandering_orc:treant` |
+| Orc Warlock | Iorveth | ranged | 10 | Hero | 1 | `wandering_orc:orc_warlock` |
+| Minotaur | Saesenthessis | ranged | 10 | Hero | 1 | `wandering_orc:minotaur` |
+| Orc Ranger | Milva | ranged | 10 | Morale | 1 | `theorcs:orc_ranger` |
+| Ogre | Schirrú | siege | 8 | Scorch – Siege | 1 | `wandering_orc:ogre` |
+| Wild Goblin | Dwarven Skirmisher | close | 3 | Muster (group `goblin`) | 3 | `wandering_orc:goblin` |
+| Orc Archer | Elven Skirmisher | ranged | 2 | Muster (group `orc_archer`) | 3 | `wandering_orc:orc_archer` |
+| Goblin Trader | Havekar Smuggler | close | 5 | Muster (group `goblin_trader`) | 3 | `wandering_orc:goblin_trader` |
+| Troll Doctor | Havekar Healer | ranged | 0 | Medic | 3 | `wandering_orc:troll_doctor` |
+| Orc Grunt | Mahakaman Defender | close | 5 |  | 5 | `theorcs:orc_grunt` |
+| Orc Direwolf Rider | Dol Blathanna Scout | agile | 6 |  | 3 | `wandering_orc:orc_direwolf` |
+| Female Orc Warrior | Vrihedd Brigade Veteran | agile | 5 |  | 2 | `wandering_orc:female_orc_warrior` |
+| Spriggan | Vrihedd Brigade Recruit | ranged | 4 |  | 1 | `wandering_orc:spriggan` |
+| Orc Warrior | Barclay Els | agile | 6 |  | 1 | `wandering_orc:orc_warrior` |
+| Firelink | Ciaran aep Easnillien | agile | 3 |  | 1 | `wandering_orc:firelink` |
+| Female Orc Elite | Dennis Cranmer | close | 6 |  | 1 | `wandering_orc:female_orc_elite` |
+| Female Orc | Dol Blathanna Archer | ranged | 4 |  | 1 | `wandering_orc:female_orc` |
+| Orc Ravager | Filavandrel aen Fidhail | agile | 6 |  | 1 | `wandering_orc:orc_ravager` |
+| Orc Shaman | Ida Emean aep Sivney | ranged | 6 |  | 1 | `theorcs:orc_shaman` |
+| Troll | Riordain | ranged | 1 |  | 1 | `wandering_orc:troll` |
+| Crawler | Toruviel | ranged | 2 |  | 1 | `wandering_orc:crawler` |
+| Orc Champion | Yaevinn | agile | 6 |  | 1 | `wandering_orc:orc_champion` |
+
+## Islanders (37 cards)
+
+Faction perk: two random units return from the graveyard at the start of round 3.
+
+| Leader | Witcher 3 | Ability |
+|---|---|---|
+| Axol Chief | Crach an Craite | `shuffle_graveyards` |
+| Mermaid Queen | King Bran | `half_weather_loss` |
+
+| Card | Witcher 3 | Row | Str | Ability | Copies | Mob |
+|---|---|---|---|---|---|---|
+| Triton Sentinel | Cerys | close | 10 | Hero, Muster (group `triton`) | 1 | `eoh:triton_sentinel` |
+| Axol Shaman | Ermion | ranged | 8 | Hero, Mardroeme | 1 | `eoh:axol_shaman` |
+| Karkinos | Hjalmar | ranged | 10 | Hero | 1 | `eoh:karkinos` |
+| Junkpig Skeleton Cyclops | Hemdall | close | 11 | Hero (only summoned) | 0 | `eoh:junkpig_cyclops` |
+| Broken Skeleton Cyclops | Kambi | close | 0 | Avenger (becomes junkpig_skeleton_cyclops) | 1 | `eoh:broken_junkpig_cyclops` |
+| Triton | Cerys – Clan Drummond Shield Maiden | close | 4 | Tight Bond (group `triton`) | 3 | `eoh:triton` |
+| Junkpig | Berserker | close | 4 | Berserker (becomes junkbrute) | 1 | `eoh:junkpig` |
+| Junkbrute | Transformed Vildkaarl | close | 14 | Morale (only summoned) | 0 | `eoh:junkbrute` |
+| Junk Tictak | Young Berserker | ranged | 2 | Berserker (becomes junkpig_magic) | 3 | `eoh:junk_tictak` |
+| Junkpig Magic | Transformed Young Vildkaarl | ranged | 8 | Tight Bond (only summoned) | 0 | `eoh:junkpig_magic` |
+| Junk Brew | Mardroeme | – | – | Mardroeme | 3 | `eoh:junkpig_magic` |
+| Axol | Clan an Craite Warrior | close | 6 | Tight Bond | 3 | `eoh:axol` |
+| Axol Skeleton | Clan Brokva Archer | ranged | 6 |  | 2 | `eoh:axol_skeleton` |
+| Pyrocrag | Clan Dimun Pirate | ranged | 6 | Scorch (whole board) | 1 | `eoh:pyrocrag` |
+| Mermaid | Birna Bran | close | 2 | Medic | 1 | `eoh:mermaid` |
+| Greedy Crab | Blueboy Lugos | close | 6 |  | 1 | `eoh:greedy_crab` |
+| Sharky | Madman Lugos | close | 6 |  | 1 | `eoh:sharky` |
+| Calamar | Olaf | agile | 12 | Morale | 1 | `eoh:calamar` |
+| Brine | Clan Heymaey Skald | close | 4 |  | 1 | `eoh:brine` |
+| Rhoat | Clan Tordarroch Armorsmith | close | 4 |  | 1 | `eoh:rhoat` |
+| Tider | Donar an Hindar | close | 4 |  | 1 | `eoh:tider` |
+| Skeleton Junkpig | Udalryk | close | 4 |  | 1 | `eoh:skeleton_junkpig` |
+| Coral Crab | Svanrige | close | 4 |  | 1 | `eoh:coral_crab` |
+| Junky Totem | Draig Bon-Dhu | siege | 2 | Horn | 1 | `eoh:junky_totem` |
+| Axol Whale | Holger Blackhand | siege | 4 |  | 1 | `eoh:axol_whale` |
+| Junkpig Cog | Light Longship | ranged | 4 | Muster (group `junkpig_cog`) | 3 | `smallships:cog` |
+| Junkpig Brigg | War Longship | siege | 6 | Tight Bond | 3 | `smallships:brigg` |
+
+## Neutral (17 cards)
+
+| Card | Witcher 3 | Row | Str | Ability | Copies | Mob |
+|---|---|---|---|---|---|---|
+| Head Mage | Geralt of Rivia | close | 15 | Hero, Muster (group `trusty_horse`) | 1 | `easy_npc:humanoid` |
+| Nightblade | Cirilla Fiona Elen Riannon | close | 15 | Hero, Muster (group `trusty_horse`) | 1 | `easy_npc:humanoid` |
+| Fish Mage | Yennefer of Vengerberg | ranged | 7 | Hero, Medic | 1 | `easy_npc:humanoid` |
+| Ignis | Triss Merigold | close | 7 | Hero | 1 | `easy_npc:humanoid` |
+| Bug Hunter | Mysterious Elf (Avallac'h) | close | 0 | Hero, Spy | 1 | `easy_npc:humanoid` |
+| The Dragon | Villentretenmerth | close | 7 | Scorch – Close | 1 | `minecraft:ender_dragon` |
+| Stuve | Dandelion | close | 2 | Horn | 1 | `easy_npc:humanoid` |
+| Rudy the Bartender | Zoltan Chivay | close | 5 |  | 1 | `easy_npc:humanoid` |
+| Amanda the Fairy | Vesemir | close | 6 |  | 1 | `easy_npc:humanoid` |
+| Protput | Emiel Regis Rohellec Terzieff | close | 5 |  | 1 | `easy_npc:humanoid` |
+| Valarian Commander | Olgierd von Everec | agile | 6 | Morale | 1 | `easy_npc:humanoid` |
+| Ronny | Gaunter O'Dimm | siege | 2 | Muster (group `ronny`) | 1 | `easy_npc:humanoid` |
+| Donny | Gaunter O'Dimm – Darkness | ranged | 4 | Muster (group `ronny`) | 3 | `easy_npc:humanoid` |
+| Cow | Cow | ranged | 0 | Avenger (becomes village_defense_golem) | 1 | `minecraft:cow` |
+| Village Defense Golem | Bovine Defense Force | close | 8 |  (only summoned) | 0 | `minecraft:iron_golem` |
+| Trusty Horse | Roach | close | 3 |  (group `trusty_horse`) | 1 | `minecraft:horse` |
+
+## Special (24 cards)
+
+| Card | Witcher 3 | Row | Str | Ability | Copies | Mob |
+|---|---|---|---|---|---|---|
+| Armor Stand | Decoy | – | – | Decoy | 3 | `minecraft:armor_stand` |
+| Lightning Strike | Scorch | – | – | Scorch (whole board) | 3 | `minecraft:lightning_bolt` |
+| Goat Horn | Commander's Horn | – | – | Horn | 3 | `minecraft:goat` |
+| Snowstorm | Biting Frost | – | – | Frost (Close) | 3 | `minecraft:snow_golem` |
+| Thick Fog | Impenetrable Fog | – | – | Fog (Ranged) | 3 | `minecraft:allay` |
+| Thunderstorm | Torrential Rain | – | – | Rain (Siege) | 3 | `minecraft:villager` |
+| Clear Skies | Clear Weather | – | – | Clear weather | 3 | `minecraft:wandering_trader` |
+| Ocean Storm | Skellige Storm | – | – | Storm (Ranged + Siege) | 3 | `eoh:effect_tornado_water` |

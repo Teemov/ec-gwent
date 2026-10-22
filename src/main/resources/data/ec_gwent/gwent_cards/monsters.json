@@ -1,0 +1,478 @@
+{
+ "faction": "monsters",
+ "name": "Monsters",
+ "perk": "keep_random_unit",
+ "cards": [
+  {
+   "id": "the_warden_herald_of_the_deep",
+   "name": "The Warden – Herald of the Deep",
+   "w3": "Eredin – Commander of the Red Riders",
+   "type": "leader",
+   "ability": "double_row:close",
+   "count": 1,
+   "entity": "minecraft:warden"
+  },
+  {
+   "id": "the_warden_bringer_of_death",
+   "name": "The Warden – Bringer of Death",
+   "w3": "Eredin – Bringer of Death",
+   "type": "leader",
+   "ability": "restore_discard_to_hand",
+   "count": 1,
+   "entity": "minecraft:warden"
+  },
+  {
+   "id": "the_warden_destroyer_of_worlds",
+   "name": "The Warden – Destroyer of Worlds",
+   "w3": "Eredin – Destroyer of Worlds",
+   "type": "leader",
+   "ability": "discard_two_pick_one",
+   "count": 1,
+   "entity": "minecraft:warden"
+  },
+  {
+   "id": "the_warden_king_of_the_dark",
+   "name": "The Warden – King of the Dark",
+   "w3": "Eredin – King of the Wild Hunt",
+   "type": "leader",
+   "ability": "play_weather:any",
+   "count": 1,
+   "entity": "minecraft:warden"
+  },
+  {
+   "id": "the_warden_the_treacherous",
+   "name": "The Warden – The Treacherous",
+   "w3": "Eredin Bréacc Glas – The Treacherous",
+   "type": "leader",
+   "ability": "double_spies",
+   "count": 1,
+   "entity": "minecraft:warden"
+  },
+  {
+   "id": "giant_zombie",
+   "name": "Giant Zombie",
+   "w3": "Imlerith",
+   "type": "hero",
+   "row": "close",
+   "strength": 10,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:giant"
+  },
+  {
+   "id": "wither_skeleton_warlord",
+   "name": "Wither Skeleton Warlord",
+   "w3": "Draug",
+   "type": "hero",
+   "row": "close",
+   "strength": 10,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:wither_skeleton"
+  },
+  {
+   "id": "the_wither",
+   "name": "The Wither",
+   "w3": "Leshen",
+   "type": "hero",
+   "row": "ranged",
+   "strength": 10,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:wither"
+  },
+  {
+   "id": "elder_guardian",
+   "name": "Elder Guardian",
+   "w3": "Kayran",
+   "type": "hero",
+   "row": "agile",
+   "strength": 8,
+   "abilities": [
+    "morale"
+   ],
+   "count": 1,
+   "entity": "minecraft:elder_guardian"
+  },
+  {
+   "id": "zombie",
+   "name": "Zombie",
+   "w3": "Ghoul",
+   "type": "unit",
+   "row": "close",
+   "strength": 1,
+   "abilities": [
+    "muster"
+   ],
+   "count": 3,
+   "entity": "minecraft:zombie",
+   "muster": "zombie"
+  },
+  {
+   "id": "drowned",
+   "name": "Drowned",
+   "w3": "Nekker",
+   "type": "unit",
+   "row": "close",
+   "strength": 2,
+   "abilities": [
+    "muster"
+   ],
+   "count": 3,
+   "entity": "minecraft:drowned",
+   "muster": "drowned"
+  },
+  {
+   "id": "spider",
+   "name": "Spider",
+   "w3": "Arachas",
+   "type": "unit",
+   "row": "close",
+   "strength": 4,
+   "abilities": [
+    "muster"
+   ],
+   "count": 3,
+   "entity": "minecraft:spider",
+   "muster": "spider"
+  },
+  {
+   "id": "spider_jockey",
+   "name": "Spider Jockey",
+   "w3": "Arachas Behemoth",
+   "type": "unit",
+   "row": "siege",
+   "strength": 6,
+   "abilities": [
+    "muster"
+   ],
+   "count": 1,
+   "entity": "minecraft:spider",
+   "muster": "spider"
+  },
+  {
+   "id": "witch_brewer",
+   "name": "Witch – Brewer",
+   "w3": "Crone – Brewess",
+   "type": "unit",
+   "row": "close",
+   "strength": 6,
+   "abilities": [
+    "muster"
+   ],
+   "count": 1,
+   "entity": "minecraft:witch",
+   "muster": "witch"
+  },
+  {
+   "id": "witch_weaver",
+   "name": "Witch – Weaver",
+   "w3": "Crone – Weavess",
+   "type": "unit",
+   "row": "close",
+   "strength": 6,
+   "abilities": [
+    "muster"
+   ],
+   "count": 1,
+   "entity": "minecraft:witch",
+   "muster": "witch"
+  },
+  {
+   "id": "witch_whisperer",
+   "name": "Witch – Whisperer",
+   "w3": "Crone – Whispess",
+   "type": "unit",
+   "row": "close",
+   "strength": 6,
+   "abilities": [
+    "muster"
+   ],
+   "count": 1,
+   "entity": "minecraft:witch",
+   "muster": "witch"
+  },
+  {
+   "id": "piglin",
+   "name": "Piglin",
+   "w3": "Vampire – Bruxa",
+   "type": "unit",
+   "row": "close",
+   "strength": 4,
+   "abilities": [
+    "muster"
+   ],
+   "count": 1,
+   "entity": "minecraft:piglin",
+   "muster": "piglin"
+  },
+  {
+   "id": "zombified_piglin",
+   "name": "Zombified Piglin",
+   "w3": "Vampire – Ekimmara",
+   "type": "unit",
+   "row": "close",
+   "strength": 4,
+   "abilities": [
+    "muster"
+   ],
+   "count": 1,
+   "entity": "minecraft:zombified_piglin",
+   "muster": "piglin"
+  },
+  {
+   "id": "zoglin",
+   "name": "Zoglin",
+   "w3": "Vampire – Fleder",
+   "type": "unit",
+   "row": "close",
+   "strength": 4,
+   "abilities": [
+    "muster"
+   ],
+   "count": 1,
+   "entity": "minecraft:zoglin",
+   "muster": "piglin"
+  },
+  {
+   "id": "hoglin",
+   "name": "Hoglin",
+   "w3": "Vampire – Garkain",
+   "type": "unit",
+   "row": "close",
+   "strength": 4,
+   "abilities": [
+    "muster"
+   ],
+   "count": 1,
+   "entity": "minecraft:hoglin",
+   "muster": "piglin"
+  },
+  {
+   "id": "piglin_brute",
+   "name": "Piglin Brute",
+   "w3": "Vampire – Katakan",
+   "type": "unit",
+   "row": "close",
+   "strength": 5,
+   "abilities": [
+    "muster"
+   ],
+   "count": 1,
+   "entity": "minecraft:piglin_brute",
+   "muster": "piglin"
+  },
+  {
+   "id": "husk",
+   "name": "Husk",
+   "w3": "Botchling",
+   "type": "unit",
+   "row": "close",
+   "strength": 4,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:husk"
+  },
+  {
+   "id": "zombie_villager",
+   "name": "Zombie Villager",
+   "w3": "Plague Maiden",
+   "type": "unit",
+   "row": "close",
+   "strength": 5,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:zombie_villager"
+  },
+  {
+   "id": "skeleton_horseman",
+   "name": "Skeleton Horseman",
+   "w3": "Werewolf",
+   "type": "unit",
+   "row": "close",
+   "strength": 5,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:skeleton_horse"
+  },
+  {
+   "id": "enderman",
+   "name": "Enderman",
+   "w3": "Fiend",
+   "type": "unit",
+   "row": "close",
+   "strength": 6,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:enderman"
+  },
+  {
+   "id": "cave_spider",
+   "name": "Cave Spider",
+   "w3": "Forktail",
+   "type": "unit",
+   "row": "close",
+   "strength": 5,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:cave_spider"
+  },
+  {
+   "id": "creeper",
+   "name": "Creeper",
+   "w3": "Frightener",
+   "type": "unit",
+   "row": "close",
+   "strength": 5,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:creeper"
+  },
+  {
+   "id": "phantom",
+   "name": "Phantom",
+   "w3": "Griffin",
+   "type": "unit",
+   "row": "close",
+   "strength": 5,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:phantom"
+  },
+  {
+   "id": "silverfish",
+   "name": "Silverfish",
+   "w3": "Foglet",
+   "type": "unit",
+   "row": "close",
+   "strength": 2,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:silverfish"
+  },
+  {
+   "id": "blaze",
+   "name": "Blaze",
+   "w3": "Celaeno Harpy",
+   "type": "unit",
+   "row": "agile",
+   "strength": 2,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:blaze"
+  },
+  {
+   "id": "vex",
+   "name": "Vex",
+   "w3": "Harpy",
+   "type": "unit",
+   "row": "agile",
+   "strength": 2,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:vex"
+  },
+  {
+   "id": "guardian",
+   "name": "Guardian",
+   "w3": "Cockatrice",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 2,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:guardian"
+  },
+  {
+   "id": "endermite",
+   "name": "Endermite",
+   "w3": "Endrega",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 2,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:endermite"
+  },
+  {
+   "id": "shulker",
+   "name": "Shulker",
+   "w3": "Gargoyle",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 2,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:shulker"
+  },
+  {
+   "id": "magma_cube",
+   "name": "Magma Cube",
+   "w3": "Wyvern",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 2,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:magma_cube"
+  },
+  {
+   "id": "skeleton",
+   "name": "Skeleton",
+   "w3": "Grave Hag",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 5,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:skeleton"
+  },
+  {
+   "id": "charged_creeper",
+   "name": "Charged Creeper",
+   "w3": "Toad",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 7,
+   "abilities": [
+    "scorch_ranged"
+   ],
+   "count": 1,
+   "entity": "minecraft:creeper",
+   "charged": true
+  },
+  {
+   "id": "slime",
+   "name": "Slime",
+   "w3": "Earth Elemental",
+   "type": "unit",
+   "row": "siege",
+   "strength": 6,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:slime"
+  },
+  {
+   "id": "ghast",
+   "name": "Ghast",
+   "w3": "Fire Elemental",
+   "type": "unit",
+   "row": "siege",
+   "strength": 6,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:ghast"
+  },
+  {
+   "id": "stray",
+   "name": "Stray",
+   "w3": "Ice Giant",
+   "type": "unit",
+   "row": "siege",
+   "strength": 5,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:stray"
+  }
+ ]
+}

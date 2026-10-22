@@ -1,0 +1,390 @@
+{
+ "faction": "illagers",
+ "name": "Illagers",
+ "perk": "win_draws",
+ "cards": [
+  {
+   "id": "the_invoker_lord_of_the_raid",
+   "name": "The Invoker – Lord of the Raid",
+   "w3": "Emhyr var Emreis – His Imperial Majesty",
+   "type": "leader",
+   "ability": "play_weather:rain",
+   "count": 1,
+   "entity": "illagerinvasion:invoker"
+  },
+  {
+   "id": "the_invoker_emperor_of_the_illagers",
+   "name": "The Invoker – Emperor of the Illagers",
+   "w3": "Emhyr var Emreis – Emperor of Nilfgaard",
+   "type": "leader",
+   "ability": "peek_hand:3",
+   "count": 1,
+   "entity": "illagerinvasion:invoker"
+  },
+  {
+   "id": "the_invoker_the_white_flame",
+   "name": "The Invoker – The White Flame",
+   "w3": "Emhyr var Emreis – The White Flame",
+   "type": "leader",
+   "ability": "cancel_enemy_leader",
+   "count": 1,
+   "entity": "illagerinvasion:invoker"
+  },
+  {
+   "id": "the_invoker_the_relentless",
+   "name": "The Invoker – The Relentless",
+   "w3": "Emhyr var Emreis – The Relentless",
+   "type": "leader",
+   "ability": "draw_from_enemy_discard",
+   "count": 1,
+   "entity": "illagerinvasion:invoker"
+  },
+  {
+   "id": "the_invoker_invader_of_the_north",
+   "name": "The Invoker – Invader of the North",
+   "w3": "Emhyr var Emreis – Invader of the North",
+   "type": "leader",
+   "ability": "random_revive",
+   "count": 1,
+   "entity": "illagerinvasion:invoker"
+  },
+  {
+   "id": "inquisitor",
+   "name": "Inquisitor",
+   "w3": "Letho of Gulet",
+   "type": "hero",
+   "row": "close",
+   "strength": 10,
+   "abilities": [],
+   "count": 1,
+   "entity": "illagerinvasion:inquisitor"
+  },
+  {
+   "id": "necromancer",
+   "name": "Necromancer",
+   "w3": "Menno Coehoorn",
+   "type": "hero",
+   "row": "close",
+   "strength": 10,
+   "abilities": [
+    "medic"
+   ],
+   "count": 1,
+   "entity": "illagerinvasion:necromancer"
+  },
+  {
+   "id": "ravager_warbeast",
+   "name": "Ravager Warbeast",
+   "w3": "Morvran Voorhis",
+   "type": "hero",
+   "row": "siege",
+   "strength": 10,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:ravager"
+  },
+  {
+   "id": "pillager_captain",
+   "name": "Pillager Captain",
+   "w3": "Tibor Eggebracht",
+   "type": "hero",
+   "row": "ranged",
+   "strength": 10,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:pillager",
+   "banner": true
+  },
+  {
+   "id": "surrendered",
+   "name": "Surrendered",
+   "w3": "Stefan Skellen",
+   "type": "unit",
+   "row": "close",
+   "strength": 9,
+   "abilities": [
+    "spy"
+   ],
+   "count": 1,
+   "entity": "illagerinvasion:surrendered"
+  },
+  {
+   "id": "archivist",
+   "name": "Archivist",
+   "w3": "Shilard Fitz-Oesterlen",
+   "type": "unit",
+   "row": "close",
+   "strength": 7,
+   "abilities": [
+    "spy"
+   ],
+   "count": 1,
+   "entity": "illagerinvasion:archivist"
+  },
+  {
+   "id": "guard_of_the_legion_mercenary",
+   "name": "Guard of the Legion – Mercenary",
+   "w3": "Vattier de Rideaux",
+   "type": "unit",
+   "row": "close",
+   "strength": 4,
+   "abilities": [
+    "spy"
+   ],
+   "count": 1,
+   "entity": "the_pillager_legion_:mercenary_guard_tpl"
+  },
+  {
+   "id": "alchemist",
+   "name": "Alchemist",
+   "w3": "Etolian Auxiliary Archers",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 1,
+   "abilities": [
+    "medic"
+   ],
+   "count": 2,
+   "entity": "illagerinvasion:alchemist"
+  },
+  {
+   "id": "provoker",
+   "name": "Provoker",
+   "w3": "Siege Technician",
+   "type": "unit",
+   "row": "siege",
+   "strength": 0,
+   "abilities": [
+    "medic"
+   ],
+   "count": 1,
+   "entity": "illagerinvasion:provoker"
+  },
+  {
+   "id": "infantryman_of_the_legion",
+   "name": "Infantryman of the Legion",
+   "w3": "Impera Brigade Guard",
+   "type": "unit",
+   "row": "close",
+   "strength": 3,
+   "abilities": [
+    "bond"
+   ],
+   "count": 4,
+   "entity": "the_pillager_legion_:infantryman_tpl"
+  },
+  {
+   "id": "gladiator_of_the_legion",
+   "name": "Gladiator of the Legion",
+   "w3": "Nausicaa Cavalry Rider",
+   "type": "unit",
+   "row": "close",
+   "strength": 2,
+   "abilities": [
+    "bond"
+   ],
+   "count": 3,
+   "entity": "the_pillager_legion_:gladuisman_tpl"
+  },
+  {
+   "id": "veteran_infantryman_of_the_legion",
+   "name": "Veteran Infantryman of the Legion",
+   "w3": "Young Emissary",
+   "type": "unit",
+   "row": "close",
+   "strength": 5,
+   "abilities": [
+    "bond"
+   ],
+   "count": 2,
+   "entity": "the_pillager_legion_:veteran_infantryman_tpl"
+  },
+  {
+   "id": "pillager",
+   "name": "Pillager",
+   "w3": "Albrich",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 2,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:pillager"
+  },
+  {
+   "id": "evoker",
+   "name": "Evoker",
+   "w3": "Assire var Anahid",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 6,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:evoker"
+  },
+  {
+   "id": "nether_archer_of_the_legion",
+   "name": "Nether Archer of the Legion",
+   "w3": "Black Infantry Archer",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 10,
+   "abilities": [],
+   "count": 2,
+   "entity": "the_pillager_legion_:archer_nether_tpl"
+  },
+  {
+   "id": "vindicator",
+   "name": "Vindicator",
+   "w3": "Cahir Mawr Dyffryn aep Ceallach",
+   "type": "unit",
+   "row": "close",
+   "strength": 6,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:vindicator"
+  },
+  {
+   "id": "sorcerer",
+   "name": "Sorcerer",
+   "w3": "Cynthia",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 4,
+   "abilities": [],
+   "count": 1,
+   "entity": "illagerinvasion:sorcerer"
+  },
+  {
+   "id": "firecaller",
+   "name": "Firecaller",
+   "w3": "Fringilla Vigo",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 6,
+   "abilities": [],
+   "count": 1,
+   "entity": "illagerinvasion:firecaller"
+  },
+  {
+   "id": "giant_infantryman_of_the_legion",
+   "name": "Giant Infantryman of the Legion",
+   "w3": "Heavy Zerrikanian Fire Scorpion",
+   "type": "unit",
+   "row": "siege",
+   "strength": 10,
+   "abilities": [],
+   "count": 1,
+   "entity": "the_pillager_legion_:giant_infantryman_tpl"
+  },
+  {
+   "id": "marauder",
+   "name": "Marauder",
+   "w3": "Zerrikanian Fire Scorpion",
+   "type": "unit",
+   "row": "siege",
+   "strength": 5,
+   "abilities": [],
+   "count": 1,
+   "entity": "illagerinvasion:marauder"
+  },
+  {
+   "id": "basher",
+   "name": "Basher",
+   "w3": "Rotten Mangonel",
+   "type": "unit",
+   "row": "siege",
+   "strength": 3,
+   "abilities": [],
+   "count": 1,
+   "entity": "illagerinvasion:basher"
+  },
+  {
+   "id": "heavy_infantryman_of_the_legion",
+   "name": "Heavy Infantryman of the Legion",
+   "w3": "Siege Engineer",
+   "type": "unit",
+   "row": "siege",
+   "strength": 6,
+   "abilities": [],
+   "count": 1,
+   "entity": "the_pillager_legion_:heavy_infantryman_tpl"
+  },
+  {
+   "id": "guard_of_the_legion",
+   "name": "Guard of the Legion",
+   "w3": "Morteisen",
+   "type": "unit",
+   "row": "close",
+   "strength": 3,
+   "abilities": [],
+   "count": 1,
+   "entity": "the_pillager_legion_:guard_legion_tpl"
+  },
+  {
+   "id": "pillager_sharpshooter",
+   "name": "Pillager Sharpshooter",
+   "w3": "Puttkammer",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 3,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:pillager"
+  },
+  {
+   "id": "pillager_lookout",
+   "name": "Pillager Lookout",
+   "w3": "Sweers",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 2,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:pillager"
+  },
+  {
+   "id": "illusioner",
+   "name": "Illusioner",
+   "w3": "Vanhemar",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 4,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:illusioner"
+  },
+  {
+   "id": "pillager_veteran",
+   "name": "Pillager Veteran",
+   "w3": "Renuald aep Matsen",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 5,
+   "abilities": [],
+   "count": 1,
+   "entity": "minecraft:pillager"
+  },
+  {
+   "id": "nether_heavy_gladiator_of_the_legion",
+   "name": "Nether Heavy Gladiator of the Legion",
+   "w3": "Rainfarn",
+   "type": "unit",
+   "row": "close",
+   "strength": 4,
+   "abilities": [],
+   "count": 1,
+   "entity": "the_pillager_legion_:heavy_gladiators_nether_tpl"
+  },
+  {
+   "id": "nether_gladiator_of_the_legion",
+   "name": "Nether Gladiator of the Legion",
+   "w3": "Vreemde",
+   "type": "unit",
+   "row": "close",
+   "strength": 2,
+   "abilities": [],
+   "count": 1,
+   "entity": "the_pillager_legion_:gladiators_nether_tpl"
+  }
+ ]
+}

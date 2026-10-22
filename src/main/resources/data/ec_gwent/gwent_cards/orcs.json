@@ -1,0 +1,322 @@
+{
+ "faction": "orcs",
+ "name": "Orcs",
+ "perk": "choose_first_player",
+ "cards": [
+  {
+   "id": "orc_chieftain_queen_of_the_clans",
+   "name": "Orc Chieftain – Queen of the Clans",
+   "w3": "Francesca Findabair – Queen of Dol Blathanna",
+   "type": "leader",
+   "ability": "scorch_row:close",
+   "count": 1,
+   "entity": "wandering_orc:orc_chief"
+  },
+  {
+   "id": "orc_chieftain_the_fearsome",
+   "name": "Orc Chieftain – The Fearsome",
+   "w3": "Francesca Findabair – The Beautiful",
+   "type": "leader",
+   "ability": "double_row:ranged",
+   "count": 1,
+   "entity": "wandering_orc:orc_chief"
+  },
+  {
+   "id": "orc_chieftain_pride_of_the_camp",
+   "name": "Orc Chieftain – Pride of the Camp",
+   "w3": "Francesca Findabair – Daisy of the Valley",
+   "type": "leader",
+   "ability": "extra_draw",
+   "count": 1,
+   "entity": "wandering_orc:orc_chief"
+  },
+  {
+   "id": "orc_chieftain_pureblood",
+   "name": "Orc Chieftain – Pureblood",
+   "w3": "Francesca Findabair – Pureblood Elf",
+   "type": "leader",
+   "ability": "play_weather:frost",
+   "count": 1,
+   "entity": "wandering_orc:orc_chief"
+  },
+  {
+   "id": "orc_chieftain_hope_of_the_horde",
+   "name": "Orc Chieftain – Hope of the Horde",
+   "w3": "Francesca Findabair – Hope of the Aen Seidhe",
+   "type": "leader",
+   "ability": "optimise_agile",
+   "count": 1,
+   "entity": "wandering_orc:orc_chief"
+  },
+  {
+   "id": "orc_boss",
+   "name": "Orc Boss",
+   "w3": "Isengrim Faoiltiarna",
+   "type": "hero",
+   "row": "close",
+   "strength": 10,
+   "abilities": [
+    "morale"
+   ],
+   "count": 1,
+   "entity": "theorcs:orc_boss"
+  },
+  {
+   "id": "elder_treant",
+   "name": "Elder Treant",
+   "w3": "Eithné",
+   "type": "hero",
+   "row": "ranged",
+   "strength": 10,
+   "abilities": [],
+   "count": 1,
+   "entity": "wandering_orc:treant"
+  },
+  {
+   "id": "orc_warlock",
+   "name": "Orc Warlock",
+   "w3": "Iorveth",
+   "type": "hero",
+   "row": "ranged",
+   "strength": 10,
+   "abilities": [],
+   "count": 1,
+   "entity": "wandering_orc:orc_warlock"
+  },
+  {
+   "id": "minotaur",
+   "name": "Minotaur",
+   "w3": "Saesenthessis",
+   "type": "hero",
+   "row": "ranged",
+   "strength": 10,
+   "abilities": [],
+   "count": 1,
+   "entity": "wandering_orc:minotaur"
+  },
+  {
+   "id": "orc_ranger",
+   "name": "Orc Ranger",
+   "w3": "Milva",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 10,
+   "abilities": [
+    "morale"
+   ],
+   "count": 1,
+   "entity": "theorcs:orc_ranger"
+  },
+  {
+   "id": "ogre",
+   "name": "Ogre",
+   "w3": "Schirrú",
+   "type": "unit",
+   "row": "siege",
+   "strength": 8,
+   "abilities": [
+    "scorch_siege"
+   ],
+   "count": 1,
+   "entity": "wandering_orc:ogre"
+  },
+  {
+   "id": "wild_goblin",
+   "name": "Wild Goblin",
+   "w3": "Dwarven Skirmisher",
+   "type": "unit",
+   "row": "close",
+   "strength": 3,
+   "abilities": [
+    "muster"
+   ],
+   "count": 3,
+   "entity": "wandering_orc:goblin",
+   "muster": "goblin"
+  },
+  {
+   "id": "orc_archer",
+   "name": "Orc Archer",
+   "w3": "Elven Skirmisher",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 2,
+   "abilities": [
+    "muster"
+   ],
+   "count": 3,
+   "entity": "wandering_orc:orc_archer",
+   "muster": "orc_archer"
+  },
+  {
+   "id": "goblin_trader",
+   "name": "Goblin Trader",
+   "w3": "Havekar Smuggler",
+   "type": "unit",
+   "row": "close",
+   "strength": 5,
+   "abilities": [
+    "muster"
+   ],
+   "count": 3,
+   "entity": "wandering_orc:goblin_trader",
+   "muster": "goblin_trader"
+  },
+  {
+   "id": "troll_doctor",
+   "name": "Troll Doctor",
+   "w3": "Havekar Healer",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 0,
+   "abilities": [
+    "medic"
+   ],
+   "count": 3,
+   "entity": "wandering_orc:troll_doctor"
+  },
+  {
+   "id": "orc_grunt",
+   "name": "Orc Grunt",
+   "w3": "Mahakaman Defender",
+   "type": "unit",
+   "row": "close",
+   "strength": 5,
+   "abilities": [],
+   "count": 5,
+   "entity": "theorcs:orc_grunt"
+  },
+  {
+   "id": "orc_direwolf_rider",
+   "name": "Orc Direwolf Rider",
+   "w3": "Dol Blathanna Scout",
+   "type": "unit",
+   "row": "agile",
+   "strength": 6,
+   "abilities": [],
+   "count": 3,
+   "entity": "wandering_orc:orc_direwolf"
+  },
+  {
+   "id": "female_orc_warrior",
+   "name": "Female Orc Warrior",
+   "w3": "Vrihedd Brigade Veteran",
+   "type": "unit",
+   "row": "agile",
+   "strength": 5,
+   "abilities": [],
+   "count": 2,
+   "entity": "wandering_orc:female_orc_warrior"
+  },
+  {
+   "id": "spriggan",
+   "name": "Spriggan",
+   "w3": "Vrihedd Brigade Recruit",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 4,
+   "abilities": [],
+   "count": 1,
+   "entity": "wandering_orc:spriggan"
+  },
+  {
+   "id": "orc_warrior",
+   "name": "Orc Warrior",
+   "w3": "Barclay Els",
+   "type": "unit",
+   "row": "agile",
+   "strength": 6,
+   "abilities": [],
+   "count": 1,
+   "entity": "wandering_orc:orc_warrior"
+  },
+  {
+   "id": "firelink",
+   "name": "Firelink",
+   "w3": "Ciaran aep Easnillien",
+   "type": "unit",
+   "row": "agile",
+   "strength": 3,
+   "abilities": [],
+   "count": 1,
+   "entity": "wandering_orc:firelink"
+  },
+  {
+   "id": "female_orc_elite",
+   "name": "Female Orc Elite",
+   "w3": "Dennis Cranmer",
+   "type": "unit",
+   "row": "close",
+   "strength": 6,
+   "abilities": [],
+   "count": 1,
+   "entity": "wandering_orc:female_orc_elite"
+  },
+  {
+   "id": "female_orc",
+   "name": "Female Orc",
+   "w3": "Dol Blathanna Archer",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 4,
+   "abilities": [],
+   "count": 1,
+   "entity": "wandering_orc:female_orc"
+  },
+  {
+   "id": "orc_ravager",
+   "name": "Orc Ravager",
+   "w3": "Filavandrel aen Fidhail",
+   "type": "unit",
+   "row": "agile",
+   "strength": 6,
+   "abilities": [],
+   "count": 1,
+   "entity": "wandering_orc:orc_ravager"
+  },
+  {
+   "id": "orc_shaman",
+   "name": "Orc Shaman",
+   "w3": "Ida Emean aep Sivney",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 6,
+   "abilities": [],
+   "count": 1,
+   "entity": "theorcs:orc_shaman"
+  },
+  {
+   "id": "troll",
+   "name": "Troll",
+   "w3": "Riordain",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 1,
+   "abilities": [],
+   "count": 1,
+   "entity": "wandering_orc:troll"
+  },
+  {
+   "id": "crawler",
+   "name": "Crawler",
+   "w3": "Toruviel",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 2,
+   "abilities": [],
+   "count": 1,
+   "entity": "wandering_orc:crawler"
+  },
+  {
+   "id": "orc_champion",
+   "name": "Orc Champion",
+   "w3": "Yaevinn",
+   "type": "unit",
+   "row": "agile",
+   "strength": 6,
+   "abilities": [],
+   "count": 1,
+   "entity": "wandering_orc:orc_champion"
+  }
+ ]
+}

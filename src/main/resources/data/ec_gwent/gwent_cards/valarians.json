@@ -1,0 +1,348 @@
+{
+ "faction": "valarians",
+ "name": "Valarians",
+ "perk": "draw_on_round_win",
+ "cards": [
+  {
+   "id": "the_valarian_king_king_of_valaria",
+   "name": "The Valarian King – King of Valaria",
+   "w3": "Foltest – King of Temeria",
+   "type": "leader",
+   "ability": "play_weather:fog",
+   "count": 1,
+   "entity": "valarian_conquest:valarian_officer"
+  },
+  {
+   "id": "the_valarian_king_lord_commander",
+   "name": "The Valarian King – Lord Commander",
+   "w3": "Foltest – Lord Commander of the North",
+   "type": "leader",
+   "ability": "clear_weather",
+   "count": 1,
+   "entity": "valarian_conquest:valarian_officer"
+  },
+  {
+   "id": "the_valarian_king_heir_to_the_crown",
+   "name": "The Valarian King – Heir to the Crown",
+   "w3": "Foltest – Son of Medell",
+   "type": "leader",
+   "ability": "scorch_row:ranged",
+   "count": 1,
+   "entity": "valarian_conquest:valarian_officer"
+  },
+  {
+   "id": "the_valarian_king_the_siegemaster",
+   "name": "The Valarian King – The Siegemaster",
+   "w3": "Foltest – The Siegemaster",
+   "type": "leader",
+   "ability": "double_row:siege",
+   "count": 1,
+   "entity": "valarian_conquest:valarian_officer"
+  },
+  {
+   "id": "the_valarian_king_the_steel_forged",
+   "name": "The Valarian King – The Steel-Forged",
+   "w3": "Foltest – The Steel-Forged",
+   "type": "leader",
+   "ability": "scorch_row:siege",
+   "count": 1,
+   "entity": "valarian_conquest:valarian_officer"
+  },
+  {
+   "id": "valarian_troll",
+   "name": "Valarian Troll",
+   "w3": "Vernon Roche",
+   "type": "hero",
+   "row": "close",
+   "strength": 10,
+   "abilities": [],
+   "count": 1,
+   "entity": "valarian_conquest:troll"
+  },
+  {
+   "id": "valarian_officer",
+   "name": "Valarian Officer",
+   "w3": "Esterad Thyssen",
+   "type": "hero",
+   "row": "close",
+   "strength": 10,
+   "abilities": [],
+   "count": 1,
+   "entity": "valarian_conquest:valarian_officer"
+  },
+  {
+   "id": "valarian_guard_captain",
+   "name": "Valarian Guard Captain",
+   "w3": "John Natalis",
+   "type": "hero",
+   "row": "close",
+   "strength": 10,
+   "abilities": [],
+   "count": 1,
+   "entity": "valarian_conquest:valarian_guard"
+  },
+  {
+   "id": "valarian_master_archer",
+   "name": "Valarian Master Archer",
+   "w3": "Philippa Eilhart",
+   "type": "hero",
+   "row": "ranged",
+   "strength": 10,
+   "abilities": [],
+   "count": 1,
+   "entity": "valarian_conquest:valarian_archer"
+  },
+  {
+   "id": "valarian_pikeman",
+   "name": "Valarian Pikeman",
+   "w3": "Blue Stripes Commando",
+   "type": "unit",
+   "row": "close",
+   "strength": 4,
+   "abilities": [
+    "bond"
+   ],
+   "count": 3,
+   "entity": "valarian_conquest:valarian_spearman"
+  },
+  {
+   "id": "valarian_crossbowman",
+   "name": "Valarian Crossbowman",
+   "w3": "Crinfrid Reavers Dragon Hunter",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 5,
+   "abilities": [
+    "bond"
+   ],
+   "count": 3,
+   "entity": "valarian_conquest:crossbowman"
+  },
+  {
+   "id": "valarian_levy",
+   "name": "Valarian Levy",
+   "w3": "Poor Fucking Infantry",
+   "type": "unit",
+   "row": "close",
+   "strength": 1,
+   "abilities": [
+    "bond"
+   ],
+   "count": 4,
+   "entity": "valarian_conquest:male_citizen"
+  },
+  {
+   "id": "catapult",
+   "name": "Catapult",
+   "w3": "Catapult",
+   "type": "unit",
+   "row": "siege",
+   "strength": 8,
+   "abilities": [
+    "bond"
+   ],
+   "count": 2,
+   "entity": "valarian_conquest:catapult"
+  },
+  {
+   "id": "valarian_deserter",
+   "name": "Valarian Deserter",
+   "w3": "Prince Stennis",
+   "type": "unit",
+   "row": "close",
+   "strength": 5,
+   "abilities": [
+    "spy"
+   ],
+   "count": 1,
+   "entity": "valarian_conquest:soldier"
+  },
+  {
+   "id": "valarian_spymaster",
+   "name": "Valarian Spymaster",
+   "w3": "Sigismund Dijkstra",
+   "type": "unit",
+   "row": "close",
+   "strength": 4,
+   "abilities": [
+    "spy"
+   ],
+   "count": 1,
+   "entity": "valarian_conquest:valarian_officer"
+  },
+  {
+   "id": "valarian_informant",
+   "name": "Valarian Informant",
+   "w3": "Thaler",
+   "type": "unit",
+   "row": "siege",
+   "strength": 1,
+   "abilities": [
+    "spy"
+   ],
+   "count": 1,
+   "entity": "valarian_conquest:female_citizen"
+  },
+  {
+   "id": "valarian_field_surgeon",
+   "name": "Valarian Field Surgeon",
+   "w3": "Dun Banner Medic",
+   "type": "unit",
+   "row": "siege",
+   "strength": 5,
+   "abilities": [
+    "medic"
+   ],
+   "count": 1,
+   "entity": "valarian_conquest:female_citizen"
+  },
+  {
+   "id": "valarian_siege_engineer",
+   "name": "Valarian Siege Engineer",
+   "w3": "Kaedweni Siege Expert",
+   "type": "unit",
+   "row": "siege",
+   "strength": 1,
+   "abilities": [
+    "morale"
+   ],
+   "count": 3,
+   "entity": "valarian_conquest:male_citizen"
+  },
+  {
+   "id": "ballista",
+   "name": "Ballista",
+   "w3": "Ballista",
+   "type": "unit",
+   "row": "siege",
+   "strength": 6,
+   "abilities": [],
+   "count": 2,
+   "entity": "valarian_conquest:ballista"
+  },
+  {
+   "id": "cannon",
+   "name": "Cannon",
+   "w3": "Trebuchet",
+   "type": "unit",
+   "row": "siege",
+   "strength": 6,
+   "abilities": [],
+   "count": 2,
+   "entity": "valarian_conquest:cannon"
+  },
+  {
+   "id": "battering_ram",
+   "name": "Battering Ram",
+   "w3": "Siege Tower",
+   "type": "unit",
+   "row": "siege",
+   "strength": 6,
+   "abilities": [],
+   "count": 1,
+   "entity": "valarian_conquest:battering_ram"
+  },
+  {
+   "id": "valarian_soldier",
+   "name": "Valarian Soldier",
+   "w3": "Redanian Foot Soldier",
+   "type": "unit",
+   "row": "close",
+   "strength": 1,
+   "abilities": [],
+   "count": 2,
+   "entity": "valarian_conquest:soldier"
+  },
+  {
+   "id": "valarian_axeman",
+   "name": "Valarian Axeman",
+   "w3": "Yarpen Zigrin",
+   "type": "unit",
+   "row": "close",
+   "strength": 2,
+   "abilities": [],
+   "count": 1,
+   "entity": "valarian_conquest:soldier",
+   "item": "minecraft:iron_axe"
+  },
+  {
+   "id": "valarian_swordsman",
+   "name": "Valarian Swordsman",
+   "w3": "Ves",
+   "type": "unit",
+   "row": "close",
+   "strength": 5,
+   "abilities": [],
+   "count": 1,
+   "entity": "valarian_conquest:soldier",
+   "item": "minecraft:iron_sword"
+  },
+  {
+   "id": "valarian_spearman",
+   "name": "Valarian Spearman",
+   "w3": "Siegfried of Denesle",
+   "type": "unit",
+   "row": "close",
+   "strength": 5,
+   "abilities": [],
+   "count": 1,
+   "entity": "valarian_conquest:valarian_spearman"
+  },
+  {
+   "id": "valarian_longbowman",
+   "name": "Valarian Longbowman",
+   "w3": "Dethmold",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 6,
+   "abilities": [],
+   "count": 1,
+   "entity": "valarian_conquest:archer"
+  },
+  {
+   "id": "valarian_archer",
+   "name": "Valarian Archer",
+   "w3": "Keira Metz",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 5,
+   "abilities": [],
+   "count": 1,
+   "entity": "valarian_conquest:valarian_archer"
+  },
+  {
+   "id": "valarian_marksman",
+   "name": "Valarian Marksman",
+   "w3": "Síle de Tansarville",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 5,
+   "abilities": [],
+   "count": 1,
+   "entity": "valarian_conquest:crossbowman"
+  },
+  {
+   "id": "valarian_hunter",
+   "name": "Valarian Hunter",
+   "w3": "Sabrina Glevissig",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 4,
+   "abilities": [],
+   "count": 1,
+   "entity": "valarian_conquest:archer"
+  },
+  {
+   "id": "valarian_javelineer",
+   "name": "Valarian Javelineer",
+   "w3": "Sheldon Skaggs",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 4,
+   "abilities": [],
+   "count": 1,
+   "entity": "valarian_conquest:soldier",
+   "item": "minecraft:trident"
+  }
+ ]
+}

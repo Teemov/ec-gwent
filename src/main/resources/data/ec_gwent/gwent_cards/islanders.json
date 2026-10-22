@@ -1,0 +1,361 @@
+{
+ "faction": "islanders",
+ "name": "Islanders",
+ "perk": "revive_two_in_round_three",
+ "cards": [
+  {
+   "id": "axol_chief",
+   "name": "Axol Chief",
+   "w3": "Crach an Craite",
+   "type": "leader",
+   "ability": "shuffle_graveyards",
+   "count": 1,
+   "entity": "eoh:axol_chief"
+  },
+  {
+   "id": "mermaid_queen",
+   "name": "Mermaid Queen",
+   "w3": "King Bran",
+   "type": "leader",
+   "ability": "half_weather_loss",
+   "count": 1,
+   "entity": "eoh:mermaid"
+  },
+  {
+   "id": "triton_sentinel",
+   "name": "Triton Sentinel",
+   "w3": "Cerys",
+   "type": "hero",
+   "row": "close",
+   "strength": 10,
+   "abilities": [
+    "muster"
+   ],
+   "count": 1,
+   "entity": "eoh:triton_sentinel",
+   "muster": "triton"
+  },
+  {
+   "id": "axol_shaman",
+   "name": "Axol Shaman",
+   "w3": "Ermion",
+   "type": "hero",
+   "row": "ranged",
+   "strength": 8,
+   "abilities": [
+    "mardroeme"
+   ],
+   "count": 1,
+   "entity": "eoh:axol_shaman"
+  },
+  {
+   "id": "karkinos",
+   "name": "Karkinos",
+   "w3": "Hjalmar",
+   "type": "hero",
+   "row": "ranged",
+   "strength": 10,
+   "abilities": [],
+   "count": 1,
+   "entity": "eoh:karkinos"
+  },
+  {
+   "id": "junkpig_skeleton_cyclops",
+   "name": "Junkpig Skeleton Cyclops",
+   "w3": "Hemdall",
+   "type": "hero",
+   "row": "close",
+   "strength": 11,
+   "abilities": [],
+   "count": 0,
+   "entity": "eoh:junkpig_cyclops",
+   "summoned_only": true
+  },
+  {
+   "id": "broken_skeleton_cyclops",
+   "name": "Broken Skeleton Cyclops",
+   "w3": "Kambi",
+   "type": "unit",
+   "row": "close",
+   "strength": 0,
+   "abilities": [
+    "avenger"
+   ],
+   "count": 1,
+   "entity": "eoh:broken_junkpig_cyclops",
+   "avenger": "junkpig_skeleton_cyclops"
+  },
+  {
+   "id": "triton",
+   "name": "Triton",
+   "w3": "Cerys – Clan Drummond Shield Maiden",
+   "type": "unit",
+   "row": "close",
+   "strength": 4,
+   "abilities": [
+    "bond"
+   ],
+   "count": 3,
+   "entity": "eoh:triton",
+   "muster": "triton"
+  },
+  {
+   "id": "junkpig",
+   "name": "Junkpig",
+   "w3": "Berserker",
+   "type": "unit",
+   "row": "close",
+   "strength": 4,
+   "abilities": [
+    "berserker"
+   ],
+   "count": 1,
+   "entity": "eoh:junkpig",
+   "transforms": "junkbrute"
+  },
+  {
+   "id": "junkbrute",
+   "name": "Junkbrute",
+   "w3": "Transformed Vildkaarl",
+   "type": "unit",
+   "row": "close",
+   "strength": 14,
+   "abilities": [
+    "morale"
+   ],
+   "count": 0,
+   "entity": "eoh:junkbrute",
+   "summoned_only": true
+  },
+  {
+   "id": "junk_tictak",
+   "name": "Junk Tictak",
+   "w3": "Young Berserker",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 2,
+   "abilities": [
+    "berserker"
+   ],
+   "count": 3,
+   "entity": "eoh:junk_tictak",
+   "transforms": "junkpig_magic"
+  },
+  {
+   "id": "junkpig_magic",
+   "name": "Junkpig Magic",
+   "w3": "Transformed Young Vildkaarl",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 8,
+   "abilities": [
+    "bond"
+   ],
+   "count": 0,
+   "entity": "eoh:junkpig_magic",
+   "summoned_only": true
+  },
+  {
+   "id": "junk_brew",
+   "name": "Junk Brew",
+   "w3": "Mardroeme",
+   "type": "special",
+   "abilities": [
+    "mardroeme"
+   ],
+   "count": 3,
+   "entity": "eoh:junkpig_magic"
+  },
+  {
+   "id": "axol",
+   "name": "Axol",
+   "w3": "Clan an Craite Warrior",
+   "type": "unit",
+   "row": "close",
+   "strength": 6,
+   "abilities": [
+    "bond"
+   ],
+   "count": 3,
+   "entity": "eoh:axol"
+  },
+  {
+   "id": "axol_skeleton",
+   "name": "Axol Skeleton",
+   "w3": "Clan Brokva Archer",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 6,
+   "abilities": [],
+   "count": 2,
+   "entity": "eoh:axol_skeleton"
+  },
+  {
+   "id": "pyrocrag",
+   "name": "Pyrocrag",
+   "w3": "Clan Dimun Pirate",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 6,
+   "abilities": [
+    "scorch"
+   ],
+   "count": 1,
+   "entity": "eoh:pyrocrag"
+  },
+  {
+   "id": "mermaid",
+   "name": "Mermaid",
+   "w3": "Birna Bran",
+   "type": "unit",
+   "row": "close",
+   "strength": 2,
+   "abilities": [
+    "medic"
+   ],
+   "count": 1,
+   "entity": "eoh:mermaid"
+  },
+  {
+   "id": "greedy_crab",
+   "name": "Greedy Crab",
+   "w3": "Blueboy Lugos",
+   "type": "unit",
+   "row": "close",
+   "strength": 6,
+   "abilities": [],
+   "count": 1,
+   "entity": "eoh:greedy_crab"
+  },
+  {
+   "id": "sharky",
+   "name": "Sharky",
+   "w3": "Madman Lugos",
+   "type": "unit",
+   "row": "close",
+   "strength": 6,
+   "abilities": [],
+   "count": 1,
+   "entity": "eoh:sharky"
+  },
+  {
+   "id": "calamar",
+   "name": "Calamar",
+   "w3": "Olaf",
+   "type": "unit",
+   "row": "agile",
+   "strength": 12,
+   "abilities": [
+    "morale"
+   ],
+   "count": 1,
+   "entity": "eoh:calamar"
+  },
+  {
+   "id": "brine",
+   "name": "Brine",
+   "w3": "Clan Heymaey Skald",
+   "type": "unit",
+   "row": "close",
+   "strength": 4,
+   "abilities": [],
+   "count": 1,
+   "entity": "eoh:brine"
+  },
+  {
+   "id": "rhoat",
+   "name": "Rhoat",
+   "w3": "Clan Tordarroch Armorsmith",
+   "type": "unit",
+   "row": "close",
+   "strength": 4,
+   "abilities": [],
+   "count": 1,
+   "entity": "eoh:rhoat"
+  },
+  {
+   "id": "tider",
+   "name": "Tider",
+   "w3": "Donar an Hindar",
+   "type": "unit",
+   "row": "close",
+   "strength": 4,
+   "abilities": [],
+   "count": 1,
+   "entity": "eoh:tider"
+  },
+  {
+   "id": "skeleton_junkpig",
+   "name": "Skeleton Junkpig",
+   "w3": "Udalryk",
+   "type": "unit",
+   "row": "close",
+   "strength": 4,
+   "abilities": [],
+   "count": 1,
+   "entity": "eoh:skeleton_junkpig"
+  },
+  {
+   "id": "coral_crab",
+   "name": "Coral Crab",
+   "w3": "Svanrige",
+   "type": "unit",
+   "row": "close",
+   "strength": 4,
+   "abilities": [],
+   "count": 1,
+   "entity": "eoh:coral_crab"
+  },
+  {
+   "id": "junky_totem",
+   "name": "Junky Totem",
+   "w3": "Draig Bon-Dhu",
+   "type": "unit",
+   "row": "siege",
+   "strength": 2,
+   "abilities": [
+    "horn"
+   ],
+   "count": 1,
+   "entity": "eoh:junky_totem"
+  },
+  {
+   "id": "axol_whale",
+   "name": "Axol Whale",
+   "w3": "Holger Blackhand",
+   "type": "unit",
+   "row": "siege",
+   "strength": 4,
+   "abilities": [],
+   "count": 1,
+   "entity": "eoh:axol_whale"
+  },
+  {
+   "id": "junkpig_cog",
+   "name": "Junkpig Cog",
+   "w3": "Light Longship",
+   "type": "unit",
+   "row": "ranged",
+   "strength": 4,
+   "abilities": [
+    "muster"
+   ],
+   "count": 3,
+   "entity": "smallships:cog",
+   "muster": "junkpig_cog"
+  },
+  {
+   "id": "junkpig_brigg",
+   "name": "Junkpig Brigg",
+   "w3": "War Longship",
+   "type": "unit",
+   "row": "siege",
+   "strength": 6,
+   "abilities": [
+    "bond"
+   ],
+   "count": 3,
+   "entity": "smallships:brigg"
+  }
+ ]
+}
