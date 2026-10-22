@@ -59,7 +59,12 @@
     "morale"
    ],
    "count": 1,
-   "entity": "theorcs:orc_boss"
+   "entity": "theorcs:orc_boss",
+   "image": "ec_gwent:textures/cards/orcs/orc_boss.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "elder_treant",
@@ -70,7 +75,12 @@
    "strength": 10,
    "abilities": [],
    "count": 1,
-   "entity": "wandering_orc:treant"
+   "entity": "wandering_orc:treant",
+   "image": "ec_gwent:textures/cards/orcs/elder_treant.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "orc_warlock",
@@ -81,7 +91,12 @@
    "strength": 10,
    "abilities": [],
    "count": 1,
-   "entity": "wandering_orc:orc_warlock"
+   "entity": "wandering_orc:orc_warlock",
+   "image": "ec_gwent:textures/cards/orcs/orc_warlock.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "minotaur",
@@ -92,7 +107,12 @@
    "strength": 10,
    "abilities": [],
    "count": 1,
-   "entity": "wandering_orc:minotaur"
+   "entity": "wandering_orc:minotaur",
+   "image": "ec_gwent:textures/cards/orcs/minotaur.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "orc_ranger",
@@ -105,7 +125,12 @@
     "morale"
    ],
    "count": 1,
-   "entity": "theorcs:orc_ranger"
+   "entity": "theorcs:orc_ranger",
+   "image": "ec_gwent:textures/cards/orcs/orc_ranger.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "ogre",
@@ -118,7 +143,12 @@
     "scorch_siege"
    ],
    "count": 1,
-   "entity": "wandering_orc:ogre"
+   "entity": "wandering_orc:ogre",
+   "image": "ec_gwent:textures/cards/orcs/ogre.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "wild_goblin",
@@ -132,7 +162,12 @@
    ],
    "count": 3,
    "entity": "wandering_orc:goblin",
-   "muster": "goblin"
+   "muster": "goblin",
+   "image": "ec_gwent:textures/cards/orcs/wild_goblin.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "orc_archer",
@@ -146,7 +181,12 @@
    ],
    "count": 3,
    "entity": "wandering_orc:orc_archer",
-   "muster": "orc_archer"
+   "muster": "orc_archer",
+   "image": "ec_gwent:textures/cards/orcs/orc_archer.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "goblin_trader",
@@ -160,7 +200,12 @@
    ],
    "count": 3,
    "entity": "wandering_orc:goblin_trader",
-   "muster": "goblin_trader"
+   "muster": "goblin_trader",
+   "image": "ec_gwent:textures/cards/orcs/goblin_trader.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "troll_doctor",
@@ -173,7 +218,12 @@
     "medic"
    ],
    "count": 3,
-   "entity": "wandering_orc:troll_doctor"
+   "entity": "wandering_orc:troll_doctor",
+   "image": "ec_gwent:textures/cards/orcs/troll_doctor.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "orc_grunt",
@@ -184,7 +234,12 @@
    "strength": 5,
    "abilities": [],
    "count": 5,
-   "entity": "theorcs:orc_grunt"
+   "entity": "theorcs:orc_grunt",
+   "image": "ec_gwent:textures/cards/orcs/orc_grunt.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "orc_direwolf_rider",
@@ -195,7 +250,12 @@
    "strength": 6,
    "abilities": [],
    "count": 3,
-   "entity": "wandering_orc:orc_direwolf"
+   "entity": "wandering_orc:orc_direwolf",
+   "image": "ec_gwent:textures/cards/orcs/orc_direwolf_rider.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "female_orc_warrior",
@@ -206,7 +266,12 @@
    "strength": 5,
    "abilities": [],
    "count": 2,
-   "entity": "wandering_orc:female_orc_warrior"
+   "entity": "wandering_orc:female_orc_warrior",
+   "image": "ec_gwent:textures/cards/orcs/female_orc_warrior.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "spriggan",
@@ -217,7 +282,12 @@
    "strength": 4,
    "abilities": [],
    "count": 1,
-   "entity": "wandering_orc:spriggan"
+   "entity": "wandering_orc:spriggan",
+   "image": "ec_gwent:textures/cards/orcs/spriggan.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "orc_warrior",
@@ -228,7 +298,12 @@
    "strength": 6,
    "abilities": [],
    "count": 1,
-   "entity": "wandering_orc:orc_warrior"
+   "entity": "wandering_orc:orc_warrior",
+   "image": "ec_gwent:textures/cards/orcs/orc_warrior.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "firelink",
@@ -239,7 +314,12 @@
    "strength": 3,
    "abilities": [],
    "count": 1,
-   "entity": "wandering_orc:firelink"
+   "entity": "wandering_orc:firelink",
+   "image": "ec_gwent:textures/cards/orcs/firelink.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "female_orc_elite",
@@ -250,7 +330,12 @@
    "strength": 6,
    "abilities": [],
    "count": 1,
-   "entity": "wandering_orc:female_orc_elite"
+   "entity": "wandering_orc:female_orc_elite",
+   "image": "ec_gwent:textures/cards/orcs/female_orc_elite.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "female_orc",
@@ -261,7 +346,12 @@
    "strength": 4,
    "abilities": [],
    "count": 1,
-   "entity": "wandering_orc:female_orc"
+   "entity": "wandering_orc:female_orc",
+   "image": "ec_gwent:textures/cards/orcs/female_orc.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "orc_ravager",
@@ -272,7 +362,12 @@
    "strength": 6,
    "abilities": [],
    "count": 1,
-   "entity": "wandering_orc:orc_ravager"
+   "entity": "wandering_orc:orc_ravager",
+   "image": "ec_gwent:textures/cards/orcs/orc_ravager.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "orc_shaman",
@@ -283,7 +378,12 @@
    "strength": 6,
    "abilities": [],
    "count": 1,
-   "entity": "theorcs:orc_shaman"
+   "entity": "theorcs:orc_shaman",
+   "image": "ec_gwent:textures/cards/orcs/orc_shaman.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "troll",
@@ -294,7 +394,12 @@
    "strength": 1,
    "abilities": [],
    "count": 1,
-   "entity": "wandering_orc:troll"
+   "entity": "wandering_orc:troll",
+   "image": "ec_gwent:textures/cards/orcs/troll.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "crawler",
@@ -305,7 +410,12 @@
    "strength": 2,
    "abilities": [],
    "count": 1,
-   "entity": "wandering_orc:crawler"
+   "entity": "wandering_orc:crawler",
+   "image": "ec_gwent:textures/cards/orcs/crawler.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "orc_champion",
@@ -316,7 +426,12 @@
    "strength": 6,
    "abilities": [],
    "count": 1,
-   "entity": "wandering_orc:orc_champion"
+   "entity": "wandering_orc:orc_champion",
+   "image": "ec_gwent:textures/cards/orcs/orc_champion.png",
+   "image_size": [
+    144,
+    200
+   ]
   }
  ]
 }
