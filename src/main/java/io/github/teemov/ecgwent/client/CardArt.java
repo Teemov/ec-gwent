@@ -7,6 +7,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -25,59 +26,84 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-/** Draws cards: frame, live mob model, strength badge and name. */
+/**
+ * Draws cards: frame, faction backdrop, live mob model, strength badge and name.
+ * Screens that draw on a scaled canvas call {@link #setCanvas} so clipping lands in the right place.
+ */
 public final class CardArt {
     private static final Map<String, Entity> cache = new HashMap<>();
     private static final Set<String> broken = new HashSet<>();
+    private static float cs = 1, cx = 0, cy = 0;
+
+    /** Height of the z range a card's model can occupy; stack overlapping cards this far apart. */
+    public static final int Z_STEP = 250;
 
     private CardArt() {}
 
     public static void clearCache() {
         cache.clear();
+        fresh.clear();
         broken.clear();
     }
 
+    /** The canvas transform of the current screen (scale and offset in GUI pixels). */
+    public static void setCanvas(float scale, float offsetX, float offsetY) {
+        cs = scale;
+        cx = offsetX;
+        cy = offsetY;
+    }
+
+    /** Clips to a rectangle given in canvas coordinates. */
+    public static void scissor(GuiGraphics g, int x1, int y1, int x2, int y2) {
+        g.enableScissor((int) Math.floor(cx + x1 * cs), (int) Math.floor(cy + y1 * cs), (int) Math.ceil(cx + x2 * cs), (int) Math.ceil(cy + y2 * cs));
+    }
+
     /**
-     * Draws a card. {@code strength} overrides the printed strength (board value); pass Integer.MIN_VALUE for the printed one.
-     * Small cards (h < 60) skip the name strip.
+     * Draws a card. {@code strength} overrides the printed strength (board value); Integer.MIN_VALUE = printed.
+     * Cards shorter than 52 skip the name strip.
      */
     public static void draw(GuiGraphics g, CardDef d, int x, int y, int w, int h, int strength, boolean highlight, float lookX, float lookY) {
         Font font = Minecraft.getInstance().font;
-        int frame = Texts.color(d);
-        g.fill(x, y, x + w, y + h, frame);
-        g.fill(x + 1, y + 1, x + w - 1, y + h - 1, 0xFF1C1818);
-        boolean big = h >= 60;
-        int nameH = big ? Math.max(12, h / 7) : 0;
-        int artBottom = y + h - 1 - nameH;
-        g.enableScissor(x + 1, y + 1, x + w - 1, artBottom);
-        backdrop(g, d.faction, x + 1, y + 1, w - 2, artBottom - y - 1);
-        drawSubject(g, entitySpec(d), d.heldItem, x + 1, y + 1, w - 2, artBottom - y - 1, lookX, lookY);
+        g.fill(x, y, x + w, y + h, highlight ? 0xFFFFE070 : Texts.color(d));
+        boolean named = h >= 52;
+        int nameH = named ? 11 : 0;
+        int artTop = y + 1, artBottom = y + h - 1 - nameH;
+        g.fill(x + 1, artTop, x + w - 1, y + h - 1, 0xFF1C1818);
+        scissor(g, x + 1, artTop, x + w - 1, artBottom);
+        backdrop(g, d.faction, x + 1, artTop, w - 2, artBottom - artTop);
+        drawSubject(g, entitySpec(d), d.heldItem, x + 1, artTop, w - 2, artBottom - artTop, lookX, lookY);
         g.disableScissor();
-        if (big) {
+        // Everything printed on the card sits in front of the model.
+        g.pose().pushPose();
+        g.pose().translate(0, 0, 200);
+        if (named) {
             g.fill(x + 1, artBottom, x + w - 1, y + h - 1, d.isHero() ? 0xFF2A2418 : 0xFFECE3D0);
-            g.pose().pushPose();
-            float s = Math.min(1f, (w - 6f) / Math.max(1, font.width(d.name)));
-            s = Math.max(0.5f, s);
-            g.pose().translate(x + 3, artBottom + (nameH - 8 * s) / 2f + 1, 0);
-            g.pose().scale(s, s, 1);
-            g.drawString(font, d.name, 0, 0, d.isHero() ? 0xFFE9C84A : 0xFF1F1A1A, false);
-            g.pose().popPose();
+            small(g, font, d.name, x + 3, artBottom + 2, w - 5, d.isHero() ? 0xFFE9C84A : 0xFF1F1A1A, 0.75f);
         }
         if (d.isUnit()) {
             int value = strength == Integer.MIN_VALUE ? d.strength : strength;
-            int bs = Math.max(9, Math.min(16, w / 3));
-            int bx = x + 1, by = y + 1;
-            g.fill(bx, by, bx + bs, by + bs, d.isHero() ? 0xFF1F1A1A : 0xFFF2ECE0);
             String t = String.valueOf(value);
+            int bs = w >= 40 ? 13 : 10;
+            g.fill(x + 1, y + 1, x + 1 + bs, y + 1 + bs, d.isHero() ? 0xFF1F1A1A : 0xFFF2ECE0);
             int col = d.isHero() ? 0xFFE9C84A : (value > d.strength ? 0xFF1E7A1E : value < d.strength ? 0xFFB02020 : 0xFF1F1A1A);
-            g.drawString(font, t, bx + (bs - font.width(t)) / 2 + 1, by + (bs - 8) / 2 + 1, col, false);
+            float fs = w >= 40 ? 1f : 0.75f;
+            g.pose().pushPose();
+            g.pose().translate(x + 1 + (bs - font.width(t) * fs) / 2f + 0.5f, y + 1 + (bs - 7 * fs) / 2f, 0);
+            g.pose().scale(fs, fs, 1);
+            g.drawString(font, t, 0, 0, col, false);
+            g.pose().popPose();
         }
-        if (highlight) {
-            g.fill(x, y, x + w, y + 1, 0xFFFFFF80);
-            g.fill(x, y + h - 1, x + w, y + h, 0xFFFFFF80);
-            g.fill(x, y, x + 1, y + h, 0xFFFFFF80);
-            g.fill(x + w - 1, y, x + w, y + h, 0xFFFFFF80);
-        }
+        g.pose().popPose();
+    }
+
+    /** Draws text scaled to {@code scale}, shrinking further if it doesn't fit {@code maxW}. */
+    public static void small(GuiGraphics g, Font font, String text, float x, float y, int maxW, int color, float scale) {
+        float s = Math.min(scale, maxW / (float) Math.max(1, font.width(text)));
+        g.pose().pushPose();
+        g.pose().translate(x, y, 0);
+        g.pose().scale(s, s, 1);
+        g.drawString(font, text, 0, 0, color, false);
+        g.pose().popPose();
     }
 
     /** The block each faction's card art is painted on. */
@@ -86,12 +112,12 @@ public final class CardArt {
             "orcs", Blocks.MOSSY_COBBLESTONE, "islanders", Blocks.PRISMARINE_BRICKS, "neutral", Blocks.SPRUCE_PLANKS,
             "special", Blocks.AMETHYST_BLOCK);
 
-    /** Tiles the faction's block texture over the art area, darkened so the mob stands out. Caller sets the scissor. */
+    /** Tiles the faction's block texture over an area, darkened so the mob stands out. Caller sets the clip. */
     public static void backdrop(GuiGraphics g, String faction, int x, int y, int w, int h) {
         Block block = BACKDROP.get(faction);
         if (block == null || w <= 0 || h <= 0) return;
         TextureAtlasSprite sprite = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getParticleIcon(block.defaultBlockState());
-        int tile = Math.max(8, Math.min(32, w / 2));
+        int tile = Math.max(8, Math.min(24, w / 2));
         for (int ty = y; ty < y + h; ty += tile)
             for (int tx = x; tx < x + w; tx += tile)
                 g.blit(tx, ty, 0, tile, tile, sprite);
@@ -109,10 +135,9 @@ public final class CardArt {
         Entity e = entity(spec, heldItem);
         if (e instanceof LivingEntity le && !broken.contains(spec)) {
             float eh = Math.max(0.3f, le.getBbHeight()), ew = Math.max(0.6f, le.getBbWidth());
-            int scale = (int) Math.max(2, Math.min(h * 0.82f / eh, w * 0.9f / ew));
-            int cx = x + w / 2, by = y + h - 2;
+            int scale = (int) Math.max(2, Math.min(h * 0.85f / eh, w * 0.95f / ew));
             try {
-                InventoryScreen.renderEntityInInventoryFollowsMouse(g, cx, by, scale, lookX, lookY, le);
+                InventoryScreen.renderEntityInInventoryFollowsMouse(g, x + w / 2, y + h - 2, scale, lookX, lookY, le);
             } catch (RuntimeException ex) {
                 broken.add(spec);
                 EcGwent.LOGGER.warn("Can't draw {} on a card: {}", spec, ex.toString());
@@ -120,10 +145,9 @@ public final class CardArt {
             return;
         }
         ItemStack icon = new ItemStack(iconFor(spec));
-        int size = Math.min(w, h);
-        float s = Math.max(0.5f, size * 0.7f / 16f);
+        float s = Math.max(0.5f, Math.min(w, h) * 0.6f / 16f);
         g.pose().pushPose();
-        g.pose().translate(x + w / 2f - 8 * s, y + h / 2f - 8 * s, 0);
+        g.pose().translate(x + w / 2f - 8 * s, y + h / 2f - 8 * s, 100);
         g.pose().scale(s, s, 1);
         g.renderItem(icon, 0, 0);
         g.pose().popPose();
@@ -139,11 +163,14 @@ public final class CardArt {
     private static Entity entity(String spec, String heldItem) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null) return null;
-        String fallback = spec;
+        if (spec.equals("self")) return mc.player;
+        String key = spec + (heldItem == null ? "" : "#" + heldItem);
+        if (cache.containsKey(key)) return cache.get(key);
+        String type = spec;
+        Entity live = null;
         if (spec.startsWith("npc:") || spec.startsWith("entity:")) {
             String[] parts = spec.split("\\|", 2);
-            fallback = parts.length > 1 ? parts[1] : "minecraft:villager";
-            Entity live = null;
+            type = parts.length > 1 ? parts[1] : "minecraft:villager";
             if (spec.startsWith("entity:")) {
                 try { live = mc.level.getEntity(Integer.parseInt(parts[0].substring(7))); } catch (NumberFormatException ignored) {}
             } else {
@@ -152,22 +179,52 @@ public final class CardArt {
                     for (Entity en : mc.level.entitiesForRendering()) if (en.getUUID().equals(id)) { live = en; break; }
                 } catch (IllegalArgumentException ignored) {}
             }
-            if (live != null) return live;
+            // Not loaded yet: draw the fallback for now, but try the real one again next time.
+            if (live == null) return create(type, heldItem);
         }
-        String key = fallback + (heldItem == null ? "" : "#" + heldItem);
-        if (cache.containsKey(key)) return cache.get(key);
+        Entity e = live != null ? copy(live) : create(type, heldItem);
+        cache.put(key, e);
+        return e;
+    }
+
+    /** A detached copy of a real entity: same look, without its name tag or other mods' data (no health bars). */
+    private static Entity copy(Entity live) {
+        Minecraft mc = Minecraft.getInstance();
+        try {
+            Entity e = live.getType().create(mc.level);
+            if (e == null) return null;
+            CompoundTag tag = live.saveWithoutId(new CompoundTag());
+            tag.remove("ForgeCaps");
+            tag.remove("CustomName");
+            tag.remove("Passengers");
+            e.load(tag);
+            e.setCustomName(null);
+            e.setCustomNameVisible(false);
+            return e;
+        } catch (RuntimeException ex) {
+            EcGwent.LOGGER.warn("Can't copy {} for a card: {}", live, ex.toString());
+            return create(EntityType.getKey(live.getType()).toString(), null);
+        }
+    }
+
+    private static final Map<String, Entity> fresh = new HashMap<>();
+
+    private static Entity create(String type, String heldItem) {
+        String key = type + (heldItem == null ? "" : "#" + heldItem);
+        if (fresh.containsKey(key)) return fresh.get(key);
+        Minecraft mc = Minecraft.getInstance();
         Entity e = null;
         try {
-            e = EntityType.byString(fallback).map(t -> t.create(mc.level)).orElse(null);
-            if (e == null && fallback.startsWith("easy_npc:")) e = EntityType.VILLAGER.create(mc.level);
+            e = EntityType.byString(type).map(t -> t.create(mc.level)).orElse(null);
+            if (e == null && type.startsWith("easy_npc:")) e = EntityType.VILLAGER.create(mc.level);
             if (e instanceof LivingEntity le && heldItem != null) {
                 Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(heldItem));
                 if (item != null) le.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(item));
             }
         } catch (RuntimeException ex) {
-            EcGwent.LOGGER.warn("Can't create {} for a card: {}", fallback, ex.toString());
+            EcGwent.LOGGER.warn("Can't create {} for a card: {}", type, ex.toString());
         }
-        cache.put(key, e);
+        fresh.put(key, e);
         return e;
     }
 }

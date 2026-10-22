@@ -2,10 +2,7 @@ package io.github.teemov.ecgwent.client;
 
 import io.github.teemov.ecgwent.engine.CardDef;
 import io.github.teemov.ecgwent.net.Net;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
@@ -14,8 +11,15 @@ import java.util.List;
 import java.util.Map;
 
 /** The match board. The server is in charge; this screen shows its latest snapshot and sends the player's actions. */
-public final class MatchScreen extends Screen {
+public final class MatchScreen extends CanvasScreen {
     private static final String[] ROWS = {"close", "ranged", "siege"};
+    private static final String[] ROW_NAMES = {"Close", "Ranged", "Siege"};
+    // Layout (canvas coordinates)
+    private static final int LP_X = 6, LP_W = 128;
+    private static final int BX0 = 140, BX1 = 576, BY0 = 20, ROW_H = 44;
+    private static final int RP_X = 582;
+    private static final int HAND_Y = 292, HAND_CW = 44, HAND_CH = 62;
+    private static final int SLOT_X = BX0 + 24, CARD_W = 30, CARD_H = 40, CARDS_X = SLOT_X + 36, CARDS_X1 = BX1 - 4;
 
     /** Clickable areas found while drawing. */
     private static final class Hit {
@@ -35,320 +39,359 @@ public final class MatchScreen extends Screen {
     private final List<Hit> hits = new ArrayList<>();
     private int selected = -1;
     private final List<Integer> picks = new ArrayList<>();
-    private CardDef hovered;
-    private int hoveredStrength = Integer.MIN_VALUE;
 
     public MatchScreen() {
-        super(Component.literal("Gwent"));
+        super("Gwent");
     }
+
+    // ------------------------------------------------------------------ snapshot access
 
     private static Map<String, Object> m() { return ClientHooks.match; }
 
     @SuppressWarnings("unchecked")
-    private static Map<String, Object> map(Map<String, Object> o, String k) { return (Map<String, Object>) o.get(k); }
+    private static Map<String, Object> map(Map<String, Object> o, String k) { return o == null ? null : (Map<String, Object>) o.get(k); }
 
     @SuppressWarnings("unchecked")
     private static List<Map<String, Object>> list(Map<String, Object> o, String k) {
-        Object v = o.get(k);
+        Object v = o == null ? null : o.get(k);
         return v == null ? Collections.emptyList() : (List<Map<String, Object>>) v;
     }
 
-    private static int num(Map<String, Object> o, String k) { Object v = o.get(k); return v instanceof Double ? ((Double) v).intValue() : 0; }
-    private static boolean bool(Map<String, Object> o, String k) { return Boolean.TRUE.equals(o.get(k)); }
-    private static String str(Map<String, Object> o, String k) { Object v = o.get(k); return v == null ? "" : v.toString(); }
+    private static int num(Map<String, Object> o, String k) { Object v = o == null ? null : o.get(k); return v instanceof Double ? ((Double) v).intValue() : 0; }
+    private static boolean bool(Map<String, Object> o, String k) { return o != null && Boolean.TRUE.equals(o.get(k)); }
+    private static String str(Map<String, Object> o, String k) { Object v = o == null ? null : o.get(k); return v == null ? "" : v.toString(); }
     private static CardDef def(String key) { return ClientHooks.cards.get(key); }
 
-    public void refresh() {
-        if (!(m().get("choice") instanceof Map)) picks.clear();
-        if (selected >= 0 && list(map(m(), "me"), "hand").stream().noneMatch(c -> num(c, "uid") == selected)) selected = -1;
-        init(minecraft, width, height);
-    }
-
     private String phase() { return str(m(), "phase"); }
-    private boolean over() { return m().containsKey("winner"); }
+    private boolean over() { return m() != null && m().containsKey("winner"); }
+    private Map<String, Object> me() { return map(m(), "me"); }
+    private Map<String, Object> them() { return map(m(), "them"); }
+    private Map<String, Object> choice() { return map(m(), "choice"); }
+    private boolean redrawing() { return phase().equals("REDRAW") && num(me(), "redrawsLeft") > 0; }
 
-    @Override
-    protected void init() {
-        clearWidgets();
-        Map<String, Object> me = map(m(), "me");
-        int bw = 80;
-        if (over()) {
-            addRenderableWidget(Button.builder(Component.literal("Close"), b -> {
-                Net.toServer(Net.MatchAction.of("close"));
-                ClientHooks.match = null;
-                onClose();
-            }).bounds(width / 2 - 40, height / 2 + 30, 80, 20).build());
-            return;
-        }
-        Map<String, Object> choice = map(m(), "choice");
-        if (phase().equals("CHOOSE_FIRST") && choice != null) {
-            addRenderableWidget(Button.builder(Component.literal("I go first"), b -> Net.toServer(Net.MatchAction.of("first_me")))
-                    .bounds(width / 2 - 105, height / 2, 100, 20).build());
-            addRenderableWidget(Button.builder(Component.literal("They go first"), b -> Net.toServer(Net.MatchAction.of("first_them")))
-                    .bounds(width / 2 + 5, height / 2, 100, 20).build());
-            return;
-        }
-        if (phase().equals("REDRAW") && num(me, "redrawsLeft") > 0) {
-            addRenderableWidget(Button.builder(Component.literal("Keep this hand"), b -> Net.toServer(Net.MatchAction.of("redraw_done")))
-                    .bounds(width / 2 - 50, height - 30, 100, 20).build());
-            return;
-        }
-        if (choice != null) {
-            int count = num(choice, "count");
-            String label = count == 0 ? "OK" : "Confirm";
-            addRenderableWidget(Button.builder(Component.literal(label), b -> {
-                if (picks.size() != count) return;
-                int[] arr = picks.stream().mapToInt(Integer::intValue).toArray();
-                Net.toServer(new Net.MatchAction("choose", -1, "", -1, arr));
-                picks.clear();
-            }).bounds(width / 2 - 40, height - 30, 80, 20).build());
-            return;
-        }
-        Button pass = Button.builder(Component.literal("Pass"), b -> Net.toServer(Net.MatchAction.of("pass")))
-                .bounds(6, height - 26, bw, 20).build();
-        pass.active = bool(m(), "myTurn");
-        addRenderableWidget(pass);
+    public void refresh() {
+        if (choice() == null) picks.clear();
+        if (selected >= 0 && list(me(), "hand").stream().noneMatch(c -> num(c, "uid") == selected)) selected = -1;
     }
 
     // ------------------------------------------------------------------ drawing
 
     @Override
-    public void render(GuiGraphics g, int mx, int my, float pt) {
-        renderBackground(g);
+    protected void draw(GuiGraphics g, int mx, int my, float pt) {
         hits.clear();
-        hovered = null;
-        hoveredStrength = Integer.MIN_VALUE;
         if (m() == null) return;
-        Map<String, Object> me = map(m(), "me"), them = map(m(), "them");
+        boolean overlay = over() || redrawing() || choice() != null || phase().equals("CHOOSE_FIRST") || phase().equals("REDRAW");
 
-        int lp = Math.min(130, width / 5), rp = 56;
-        int handH = Math.max(44, height / 6);
-        int bx0 = lp + 4, bx1 = width - rp - 4, by0 = 16, by1 = height - handH - 8;
-        int rowH = (by1 - by0) / 6;
-        g.fill(bx0 - 2, by0 - 2, bx1 + 2, by1 + 2, 0xC0101010);
+        drawBoard(g, mx, my, !overlay);
+        drawSide(g, them(), 6, false, mx, my);
+        drawSide(g, me(), 230, true, mx, my);
+        drawMiddle(g);
+        drawCounts(g);
+        if (!overlay) {
+            drawHand(g, mx, my);
+            String status = statusLine();
+            g.drawCenteredString(font, status, (BX0 + BX1) / 2, 6, 0xFFFFE9A0);
+        }
+        drawOverlays(g, mx, my);
+    }
 
+    private void drawBoard(GuiGraphics g, int mx, int my, boolean interactive) {
+        panel(g, BX0 - 3, BY0 - 3, BX1 - BX0 + 6, ROW_H * 6 + 6);
         String weather = str(m(), "weather");
-        CardDef sel = selectedDef();
+        CardDef sel = interactive ? selectedDef() : null;
         for (int i = 0; i < 6; i++) {
             boolean mine = i >= 3;
-            String row = mine ? ROWS[i - 3] : ROWS[2 - i];
-            int y = by0 + i * rowH;
-            Map<String, Object> side = mine ? me : them;
-            Map<String, Object> r = map(map(side, "rows"), row);
+            int ri = mine ? i - 3 : 2 - i;
+            String row = ROWS[ri];
+            int y = BY0 + i * ROW_H;
+            Map<String, Object> r = map(map(mine ? me() : them(), "rows"), row);
             boolean target = rowTargetable(sel, mine, row);
-            int bg = weather.contains(row) ? 0x60406090 : (i % 2 == 0 ? 0x30FFFFFF : 0x20FFFFFF);
-            g.fill(bx0, y + 1, bx1, y + rowH - 1, bg);
-            if (target) g.fill(bx0, y + 1, bx1, y + rowH - 1, 0x40FFE080);
-            hits.add(new Hit(bx0, y, bx1 - bx0, rowH, "row", -1, mine, row));
-            // Row score and horn slot
+            int bg = weather.contains(row) ? 0x704060A0 : (mine ? 0x30406030 : 0x30603030);
+            g.fill(BX0, y + 1, BX1, y + ROW_H - 1, bg);
+            if (target) g.fill(BX0, y + 1, BX1, y + ROW_H - 1, 0x50FFE080);
+            hits.add(new Hit(BX0, y, BX1 - BX0, ROW_H, "row", -1, mine, row));
+            // Row total and row name
+            g.fill(BX0 + 2, y + ROW_H / 2 - 9, BX0 + 20, y + ROW_H / 2 + 7, 0xFF2A2418);
             String sc = String.valueOf(num(r, "score"));
-            g.fill(bx0 + 2, y + rowH / 2 - 7, bx0 + 20, y + rowH / 2 + 7, 0xFF2A2A2A);
-            g.drawCenteredString(font, sc, bx0 + 11, y + rowH / 2 - 4, 0xFFFFFFFF);
-            int slotW = (int) ((rowH - 4) * 0.7);
-            int sx = bx0 + 24;
-            g.fill(sx, y + 2, sx + slotW, y + rowH - 2, 0x30000000);
+            text(g, sc, BX0 + 11 - font.width(sc) / 2, y + ROW_H / 2 - 5, 0xFFFFFFFF);
+            small(g, ROW_NAMES[ri], BX0 + 2, y + ROW_H / 2 + 9, 20, weather.contains(row) ? 0xFF9FC6FF : 0xFF8A8A8A);
+            // Horn / Mardroeme slot
+            g.fill(SLOT_X, y + 2, SLOT_X + CARD_W, y + 2 + CARD_H, 0x40000000);
             CardDef sp = def(str(r, "special"));
             if (sp != null) {
-                CardArt.draw(g, sp, sx, y + 2, slotW, rowH - 4, Integer.MIN_VALUE, false, 10, 0);
-                if (in(mx, my, sx, y + 2, slotW, rowH - 4)) hovered = sp;
+                CardArt.draw(g, sp, SLOT_X, y + 2, CARD_W, CARD_H, Integer.MIN_VALUE, false, 10, 0);
+                if (in(mx, my, SLOT_X, y + 2, CARD_W, CARD_H)) preview(sp, Integer.MIN_VALUE);
             }
-            g.drawString(font, row.substring(0, 1).toUpperCase(), sx + slotW + 2, y + 2, 0x60FFFFFF, false);
-            // Cards
+            // Units
             List<Map<String, Object>> cards = list(r, "cards");
-            int cw = slotW, ch = rowH - 4;
-            int areaX = sx + slotW + 10, areaW = bx1 - areaX - 4;
-            int step = cards.isEmpty() ? cw : Math.min(cw + 2, (areaW - cw) / Math.max(1, cards.size() - 1));
-            int startX = areaX + Math.max(0, (areaW - (step * (cards.size() - 1) + cw)) / 2);
+            int areaW = CARDS_X1 - CARDS_X;
+            int step = cards.size() <= 1 ? CARD_W + 2 : Math.min(CARD_W + 2, (areaW - CARD_W) / (cards.size() - 1));
+            int startX = CARDS_X + Math.max(0, (areaW - (step * (cards.size() - 1) + CARD_W)) / 2);
             for (int k = 0; k < cards.size(); k++) {
                 Map<String, Object> c = cards.get(k);
                 CardDef d = def(str(c, "key"));
                 if (d == null) continue;
                 int cx = startX + k * step;
+                int hitW = k == cards.size() - 1 ? CARD_W : Math.min(step, CARD_W);
                 boolean decoyTarget = sel != null && sel.has("decoy") && mine && !d.isHero() && !d.has("decoy");
-                boolean hov = in(mx, my, cx, y + 2, Math.min(step, cw), ch);
-                CardArt.draw(g, d, cx, y + 2, cw, ch, num(c, "strength"), decoyTarget || hov, 12, 2);
-                hits.add(new Hit(cx, y + 2, Math.min(step, cw), ch, "board", num(c, "uid"), mine, row));
-                if (hov) { hovered = d; hoveredStrength = num(c, "strength"); }
+                boolean hov = interactive && in(mx, my, cx, y + 2, hitW, CARD_H);
+                g.pose().pushPose();
+                g.pose().translate(0, 0, k * CardArt.Z_STEP);
+                CardArt.draw(g, d, cx, y + 2, CARD_W, CARD_H, num(c, "strength"), decoyTarget || hov, 14, 4);
+                g.pose().popPose();
+                hits.add(new Hit(cx, y + 2, hitW, CARD_H, "board", num(c, "uid"), mine, row));
+                if (hov) preview(d, num(c, "strength"));
             }
         }
-        g.fill(bx0, by0 + rowH * 3 - 1, bx1, by0 + rowH * 3 + 1, 0xFFC9A227);
+        g.fill(BX0, BY0 + ROW_H * 3 - 1, BX1, BY0 + ROW_H * 3 + 1, 0xFFC9A227);
+    }
 
-        drawPanel(g, them, 4, by0, lp - 4, false, mx, my);
-        drawPanel(g, me, 4, by0 + rowH * 3 + 4, lp - 4, true, mx, my);
-        // Weather and round in the middle of the left panel
-        int wy = by0 + rowH * 3 - 12;
-        g.drawString(font, "Round " + num(m(), "round") + (weather.isEmpty() ? "" : " · " + weather), 6, wy, 0xFF9FC6FF);
+    /** One player's panel: portrait, name, gems, hand size, score, leader. */
+    private void drawSide(GuiGraphics g, Map<String, Object> s, int y, boolean mine, int mx, int my) {
+        int x = LP_X;
+        panel(g, x, y, LP_W, mine ? 124 : 118);
+        // Portrait
+        int px = x + 4, py = y + 4, pw = 40, ph = 56;
+        g.fill(px - 1, py - 1, px + pw + 1, py + ph + 1, 0xFF6A5A30);
+        CardArt.scissor(g, px, py, px + pw, py + ph);
+        CardArt.backdrop(g, str(s, "faction"), px, py, pw, ph);
+        CardArt.drawSubject(g, mine ? "self" : str(m(), "opponentEntity"), null, px, py, pw, ph, px + pw / 2f - mx, py + 15 - my);
+        g.disableScissor();
+        // Info
+        int ix = x + 50;
+        small(g, str(s, "name"), ix, y + 5, LP_W - 54, mine ? 0xFF9FFF9F : 0xFFFF9F9F);
+        for (int i = 0; i < 2; i++) {
+            int gx = ix + i * 11, gy = y + 15;
+            g.fill(gx, gy, gx + 8, gy + 8, 0xFF401010);
+            if (i < num(s, "gems")) g.fill(gx + 1, gy + 1, gx + 7, gy + 7, 0xFFE03030);
+        }
+        small(g, "lives", ix + 24, y + 16, 40, 0xFF999999);
+        small(g, num(s, "handCount") + " cards in hand", ix, y + 27, LP_W - 54, 0xFFCCCCCC);
+        text(g, String.valueOf(num(s, "score")), ix, y + 38, 0xFFFFFFFF);
+        small(g, "points", ix + font.width(String.valueOf(num(s, "score"))) + 3, y + 39, 40, 0xFF999999);
+        if (bool(s, "passed")) small(g, "Passed", ix, y + 51, 60, 0xFFFFB060);
+        // Leader
+        CardDef leader = def(str(s, "leader"));
+        int ly = y + 64;
+        small(g, mine ? "Your leader" : "Their leader", x + 4, ly, 60, 0xFFFFE9A0);
+        if (leader != null) {
+            int lx = x + 4, lcy = ly + 9, lw = 32, lh = 44;
+            boolean usable = mine && bool(s, "leaderUsable");
+            boolean hov = in(mx, my, lx, lcy, lw, lh);
+            CardArt.draw(g, leader, lx, lcy, lw, lh, Integer.MIN_VALUE, usable && hov, 12, 2);
+            if (!bool(s, "leaderReady")) {
+                g.pose().pushPose();
+                g.pose().translate(0, 0, 300);
+                g.fill(lx, lcy, lx + lw, lcy + lh, 0xB0000000);
+                small(g, "used", lx + 6, lcy + 18, 30, 0xFFAAAAAA);
+                g.pose().popPose();
+            }
+            if (mine) hits.add(new Hit(lx, lcy, lw, lh, "leader", -1, true, null));
+            if (hov) preview(leader, Integer.MIN_VALUE);
+            String title = leader.name.contains("–") ? leader.name.substring(leader.name.indexOf('–') + 2) : leader.name;
+            small(g, title, lx + lw + 4, lcy, LP_W - lw - 14, 0xFFFFFFFF);
+            if (mine) {
+                if (usable) small(g, "Click it to use", lx + lw + 4, lcy + 10, 80, 0xFFFFE080);
+                button(g, lx + lw + 4, lcy + 24, LP_W - lw - 14, 18, "Pass", bool(m(), "myTurn") && !over(), mx, my,
+                        () -> Net.toServer(Net.MatchAction.of("pass")));
+            } else {
+                wrapped(g, Texts.leaderText(leader.leaderAbility), lx + lw + 4, lcy + 10, LP_W - lw - 14, 0xFFAAAAAA);
+            }
+        }
+    }
 
-        // Right panel: decks and graveyards
-        g.drawString(font, "Deck " + num(them, "deckCount"), width - rp, by0 + 2, 0xFFBBBBBB);
-        g.drawString(font, "Grave " + list(them, "grave").size(), width - rp, by0 + 14, 0xFFBBBBBB);
-        g.drawString(font, "Deck " + num(me, "deckCount"), width - rp, by1 - 22, 0xFFBBBBBB);
-        g.drawString(font, "Grave " + list(me, "grave").size(), width - rp, by1 - 10, 0xFFBBBBBB);
+    private void drawMiddle(GuiGraphics g) {
+        int y = 128;
+        panel(g, LP_X, y, LP_W, 98);
+        text(g, "Round " + num(m(), "round"), LP_X + 4, y + 4, 0xFFFFE9A0);
+        String weather = str(m(), "weather");
+        if (!weather.isEmpty()) {
+            String w = weather.replace("close", "Snowstorm").replace("ranged", "Fog").replace("siege", "Thunderstorm").replace(" ", ", ");
+            small(g, "Weather: " + w, LP_X + 4, y + 15, LP_W - 8, 0xFF9FC6FF);
+        }
+        @SuppressWarnings("unchecked")
+        List<Object> log = (List<Object>) m().get("log");
+        if (log == null) return;
+        int ly = y + 26;
+        for (int i = Math.max(0, log.size() - 5); i < log.size() && ly < y + 92; i++)
+            ly += wrapped(g, log.get(i).toString(), LP_X + 4, ly, LP_W - 8, i == log.size() - 1 ? 0xFFFFFFFF : 0xFF999999) + 2;
+    }
 
-        // Hand
-        List<Map<String, Object>> hand = list(me, "hand");
-        int hw = (int) ((handH - 6) * 0.7), hh = handH - 6;
-        int hx0 = lp + 8, hxw = width - rp - hx0 - 8;
-        int hstep = hand.isEmpty() ? hw : Math.min(hw + 3, (hxw - hw) / Math.max(1, hand.size() - 1));
-        int hstart = hx0 + Math.max(0, (hxw - (hstep * (hand.size() - 1) + hw)) / 2);
+    private void drawCounts(GuiGraphics g) {
+        int w = VW - RP_X - 4;
+        panel(g, RP_X, BY0 - 3, w, 46);
+        small(g, "Their deck", RP_X + 3, BY0 + 1, w - 4, 0xFF999999);
+        text(g, String.valueOf(num(them(), "deckCount")), RP_X + 3, BY0 + 9, 0xFFFFFFFF);
+        small(g, "Graveyard", RP_X + 3, BY0 + 21, w - 4, 0xFF999999);
+        text(g, String.valueOf(list(them(), "grave").size()), RP_X + 3, BY0 + 29, 0xFFFFFFFF);
+        int y = BY0 + ROW_H * 6 - 43;
+        panel(g, RP_X, y, w, 46);
+        small(g, "Your deck", RP_X + 3, y + 4, w - 4, 0xFF999999);
+        text(g, String.valueOf(num(me(), "deckCount")), RP_X + 3, y + 12, 0xFFFFFFFF);
+        small(g, "Graveyard", RP_X + 3, y + 24, w - 4, 0xFF999999);
+        text(g, String.valueOf(list(me(), "grave").size()), RP_X + 3, y + 32, 0xFFFFFFFF);
+    }
+
+    private void drawHand(GuiGraphics g, int mx, int my) {
+        List<Map<String, Object>> hand = list(me(), "hand");
+        int areaW = BX1 - BX0;
+        int step = hand.size() <= 1 ? HAND_CW + 3 : Math.min(HAND_CW + 3, (areaW - HAND_CW) / (hand.size() - 1));
+        int start = BX0 + Math.max(0, (areaW - (step * (hand.size() - 1) + HAND_CW)) / 2);
         for (int k = 0; k < hand.size(); k++) {
             Map<String, Object> c = hand.get(k);
             CardDef d = def(str(c, "key"));
             if (d == null) continue;
             int uid = num(c, "uid");
-            int cx = hstart + k * hstep, cy = height - handH + (uid == selected ? -6 : 0);
-            boolean hov = in(mx, my, cx, cy, Math.min(hstep, hw), hh);
-            CardArt.draw(g, d, cx, cy, hw, hh, Integer.MIN_VALUE, uid == selected || hov, cx + hw / 2f - mx, cy + 10 - my);
-            hits.add(new Hit(cx, cy, Math.min(hstep, hw), hh, "hand", uid, true, null));
-            if (hov) hovered = d;
+            int cx = start + k * step, cy = HAND_Y + (uid == selected ? -6 : 0);
+            int hitW = k == hand.size() - 1 ? HAND_CW : Math.min(step, HAND_CW);
+            boolean hov = in(mx, my, cx, cy, hitW, HAND_CH);
+            g.pose().pushPose();
+            g.pose().translate(0, 0, k * CardArt.Z_STEP);
+            CardArt.draw(g, d, cx, cy, HAND_CW, HAND_CH, Integer.MIN_VALUE, uid == selected || hov, cx + HAND_CW / 2f - mx, cy + 10 - my);
+            g.pose().popPose();
+            hits.add(new Hit(cx, cy, hitW, HAND_CH, "hand", uid, true, null));
+            if (hov) preview(d, Integer.MIN_VALUE);
         }
-
-        // Log
-        @SuppressWarnings("unchecked")
-        List<Object> log = (List<Object>) m().get("log");
-        if (log != null) {
-            int ly = 3;
-            int from = Math.max(0, log.size() - 1);
-            for (int i = from; i < log.size(); i++) {
-                g.drawCenteredString(font, log.get(i).toString(), (bx0 + bx1) / 2, ly, 0xFFFFE9A0);
-                ly += 10;
-            }
-        }
-        String status = statusLine();
-        if (!status.isEmpty()) g.drawString(font, status, lp + 8, by1 + 1, 0xFFDDDDDD);
-
-        super.render(g, mx, my, pt);
-        drawOverlays(g, mx, my);
-        if (hovered != null) drawPreview(g, hovered, hoveredStrength, mx, my);
     }
 
     private String statusLine() {
-        if (over()) return "";
         CardDef sel = selectedDef();
         if (sel != null) {
-            if (sel.has("decoy")) return "Click one of your units to take it back.";
+            if (sel.has("decoy")) return "Click one of your units to take it back into your hand.";
             if (sel.has("horn") || sel.has("mardroeme")) return "Click one of your rows.";
-            if (sel.type == CardDef.Type.WEATHER || sel.has("scorch") && !sel.isUnit()) return "Click the board (or the card again) to play it.";
+            if (!sel.isUnit()) return "Click the board, or the card again, to play it.";
             if (sel.isAgile()) return "Click your close or ranged row.";
-            return "Click the highlighted row (or the card again) to play it. Right-click to cancel.";
+            if (sel.has("spy")) return "Spy: click the highlighted enemy row, or the card again.";
+            return "Click the highlighted row, or the card again. Right-click cancels.";
         }
-        if (m().containsKey("waiting") || (phase().equals("PLAY") && !bool(m(), "myTurn"))) return "Opponent is thinking…";
-        if (bool(m(), "myTurn")) return "Your turn: pick a card" + (bool(map(m(), "me"), "leaderUsable") ? ", use your leader" : "") + " or pass.";
-        return "";
-    }
-
-    private void drawPanel(GuiGraphics g, Map<String, Object> s, int x, int y, int w, boolean mine, int mx, int my) {
-        g.fill(x, y, x + w, y + 92, 0xA0101010);
-        g.drawString(font, str(s, "name"), x + 4, y + 4, mine ? 0xFF9FFF9F : 0xFFFF9F9F);
-        String gems = "";
-        for (int i = 0; i < 2; i++) gems += i < num(s, "gems") ? "◆" : "◇";
-        g.drawString(font, gems + "  " + num(s, "handCount") + " cards", x + 4, y + 16, 0xFFE05050);
-        g.drawString(font, String.valueOf(num(s, "score")), x + w - 4 - font.width(String.valueOf(num(s, "score"))), y + 4, 0xFFFFFFFF);
-        if (bool(s, "passed")) g.drawString(font, "Passed", x + 4, y + 28, 0xFFAAAAAA);
-        if (!mine) {
-            String ent = str(m(), "opponentEntity");
-            g.enableScissor(x + w - 40, y + 14, x + w - 2, y + 90);
-            CardArt.backdrop(g, str(s, "faction"), x + w - 40, y + 14, 38, 76);
-            CardArt.drawSubject(g, ent, null, x + w - 40, y + 14, 38, 76, x + w - 21 - mx, y + 30 - my);
-            g.disableScissor();
-        }
-        CardDef leader = def(str(s, "leader"));
-        if (leader != null) {
-            int lw = 30, lh = 44, lx = x + 4, ly = y + 42;
-            boolean usable = mine && bool(s, "leaderUsable");
-            CardArt.draw(g, leader, lx, ly, lw, lh, Integer.MIN_VALUE, usable, 10, 2);
-            if (!bool(s, "leaderReady")) g.fill(lx, ly, lx + lw, ly + lh, 0xA0000000);
-            if (mine) hits.add(new Hit(lx, ly, lw, lh, "leader", -1, true, null));
-            if (in(mx, my, lx, ly, lw, lh)) hovered = leader;
-            if (usable) g.drawString(font, "Click to use", lx + lw + 4, ly + 18, 0xFFFFE080);
-        }
+        if (bool(m(), "myTurn")) return "Your turn: play a card" + (bool(me(), "leaderUsable") ? ", use your leader" : "") + " or pass.";
+        if (bool(me(), "passed")) return "You passed. Waiting for your opponent to finish the round…";
+        return "Your opponent is thinking…";
     }
 
     private void drawOverlays(GuiGraphics g, int mx, int my) {
-        Map<String, Object> me = map(m(), "me");
-        if (over()) {
-            g.fill(0, 0, width, height, 0xB0000000);
-            String w = str(m(), "winner");
-            g.drawCenteredString(font, w.equals("me") ? "Victory!" : w.equals("them") ? "Defeat" : "Draw", width / 2, height / 2 - 40, 0xFFFFE080);
-            String scores = "";
-            g.drawCenteredString(font, str(m(), "result"), width / 2, height / 2 - 20, 0xFFFFFFFF);
-            g.drawCenteredString(font, scores, width / 2, height / 2, 0xFFAAAAAA);
-            return;
+        g.pose().pushPose();
+        g.pose().translate(0, 0, CanvasScreen.Z_OVERLAY);
+        try {
+            if (over()) { drawResult(g, mx, my); return; }
+            if (phase().equals("CHOOSE_FIRST")) {
+                dim(g);
+                if (choice() != null) {
+                    g.drawCenteredString(font, "Orc perk: you decide who goes first.", VW / 2, 140, 0xFFFFE9A0);
+                    button(g, VW / 2 - 106, 162, 100, 20, "I go first", true, mx, my, () -> Net.toServer(Net.MatchAction.of("first_me")));
+                    button(g, VW / 2 + 6, 162, 100, 20, "They go first", true, mx, my, () -> Net.toServer(Net.MatchAction.of("first_them")));
+                } else {
+                    g.drawCenteredString(font, "Your opponent decides who goes first…", VW / 2, 160, 0xFFFFE9A0);
+                }
+                return;
+            }
+            if (redrawing()) {
+                dim(g);
+                g.drawCenteredString(font, "Your starting hand", VW / 2, 24, 0xFFFFE9A0);
+                small(g, "Click up to " + num(me(), "redrawsLeft") + " card(s) to swap them for random cards from your deck.", VW / 2 - 150, 38, 300, 0xFFCCCCCC);
+                drawOptions(g, list(me(), "hand"), mx, my, 56);
+                button(g, VW / 2 - 60, 328, 120, 20, "Keep this hand", true, mx, my, () -> Net.toServer(Net.MatchAction.of("redraw_done")));
+                return;
+            }
+            if (phase().equals("REDRAW")) {
+                dim(g);
+                g.drawCenteredString(font, "Waiting for your opponent to pick their hand…", VW / 2, 170, 0xFFFFE9A0);
+                return;
+            }
+            Map<String, Object> ch = choice();
+            if (ch != null) {
+                dim(g);
+                int count = num(ch, "count");
+                g.drawCenteredString(font, choiceTitle(str(ch, "kind"), count), VW / 2, 24, 0xFFFFE9A0);
+                drawOptions(g, list(ch, "options"), mx, my, 56);
+                button(g, VW / 2 - 50, 328, 100, 20, count == 0 ? "OK" : "Confirm (" + picks.size() + "/" + count + ")", picks.size() == count, mx, my, () -> {
+                    int[] arr = picks.stream().mapToInt(Integer::intValue).toArray();
+                    Net.toServer(new Net.MatchAction("choose", -1, "", -1, arr));
+                    picks.clear();
+                });
+            }
+        } finally {
+            g.pose().popPose();
         }
-        Map<String, Object> choice = map(m(), "choice");
-        if (phase().equals("CHOOSE_FIRST") && choice != null) {
-            g.fill(0, 0, width, height, 0xA0000000);
-            g.drawCenteredString(font, "Orc perk: who goes first?", width / 2, height / 2 - 20, 0xFFFFE080);
-            return;
+    }
+
+    private void dim(GuiGraphics g) { g.fill(0, 0, VW, VH, 0xC0000000); }
+
+    private void drawResult(GuiGraphics g, int mx, int my) {
+        dim(g);
+        String w = str(m(), "winner");
+        int x = VW / 2 - 140, y = 90;
+        panel(g, x, y, 280, 170);
+        String title = w.equals("me") ? "Victory!" : w.equals("them") ? "Defeat" : "Draw";
+        g.pose().pushPose();
+        g.pose().translate(VW / 2f, y + 10, 0);
+        g.pose().scale(2, 2, 1);
+        g.drawCenteredString(font, title, 0, 0, w.equals("me") ? 0xFFFFE080 : 0xFFE0E0E0);
+        g.pose().popPose();
+        // Round-by-round scores
+        @SuppressWarnings("unchecked") List<Object> mine = (List<Object>) me().get("rounds");
+        @SuppressWarnings("unchecked") List<Object> theirs = (List<Object>) them().get("rounds");
+        int ty = y + 38;
+        text(g, "You", x + 120, ty, 0xFF9FFF9F);
+        small(g, str(them(), "name"), x + 180, ty + 1, 90, 0xFFFF9F9F);
+        if (mine != null && theirs != null) {
+            for (int i = 0; i < Math.min(mine.size(), theirs.size()); i++) {
+                ty += 12;
+                int a = ((Double) mine.get(i)).intValue(), b = ((Double) theirs.get(i)).intValue();
+                text(g, "Round " + (i + 1), x + 30, ty, 0xFFBBBBBB);
+                text(g, String.valueOf(a), x + 120, ty, a > b ? 0xFFFFE080 : 0xFFFFFFFF);
+                text(g, String.valueOf(b), x + 180, ty, b > a ? 0xFFFFE080 : 0xFFFFFFFF);
+            }
         }
-        if (phase().equals("REDRAW") && num(me, "redrawsLeft") > 0) {
-            g.fill(0, 0, width, height - 36, 0xA0000000);
-            g.drawCenteredString(font, "Redraw up to " + num(me, "redrawsLeft") + " card(s): click a card to swap it.", width / 2, 20, 0xFFFFE080);
-            drawOptions(g, list(me, "hand"), mx, my, false);
-            return;
-        }
-        if (phase().equals("REDRAW")) {
-            g.drawCenteredString(font, "Waiting for your opponent…", width / 2, height / 2, 0xFFFFE080);
-            return;
-        }
-        if (choice != null) {
-            g.fill(0, 0, width, height - 36, 0xA0000000);
-            g.drawCenteredString(font, choiceTitle(str(choice, "kind"), num(choice, "count")), width / 2, 20, 0xFFFFE080);
-            drawOptions(g, list(choice, "options"), mx, my, true);
-        }
+        wrapped(g, str(m(), "result"), x + 14, y + 112, 252, 0xFFFFFFFF);
+        button(g, VW / 2 - 40, y + 142, 80, 20, "Close", true, mx, my, () -> {
+            Net.toServer(Net.MatchAction.of("close"));
+            ClientHooks.match = null;
+            onClose();
+        });
     }
 
     private static String choiceTitle(String kind, int count) {
         switch (kind) {
-            case "MEDIC": return "Pick a unit to bring back";
+            case "MEDIC": return "Medic: pick a unit from your graveyard to play";
             case "LEADER_WEATHER": return "Pick a weather card to play";
-            case "LEADER_OWN_GRAVE": return "Pick a card from your graveyard";
+            case "LEADER_OWN_GRAVE": return "Pick a card from your graveyard to take back";
             case "LEADER_ENEMY_GRAVE": return "Pick a card from your opponent's graveyard";
             case "DISCARD_TWO": return "Pick 2 cards to discard";
-            case "PICK_FROM_DECK": return "Pick a card from your deck";
-            case "PEEK": return "Cards in your opponent's hand";
+            case "PICK_FROM_DECK": return "Pick any card from your deck";
+            case "PEEK": return "Three cards from your opponent's hand";
             default: return "Pick " + count;
         }
     }
 
-    private void drawOptions(GuiGraphics g, List<Map<String, Object>> opts, int mx, int my, boolean selectable) {
-        int cw = 48, ch = 70, gap = 6;
-        int perRow = Math.max(1, (width - 40) / (cw + gap));
+    private void drawOptions(GuiGraphics g, List<Map<String, Object>> opts, int mx, int my, int top) {
+        int cw = 52, ch = 74, gap = 6;
+        int perRow = Math.min(10, opts.size());
+        if (perRow == 0) return;
         int rows = (opts.size() + perRow - 1) / perRow;
-        int y0 = Math.max(36, (height - 36 - rows * (ch + gap)) / 2);
+        int y0 = top + Math.max(0, (320 - top - rows * (ch + gap)) / 2);
         for (int i = 0; i < opts.size(); i++) {
             int inRow = Math.min(perRow, opts.size() - (i / perRow) * perRow);
-            int x0 = (width - inRow * (cw + gap)) / 2;
+            int x0 = (VW - inRow * (cw + gap) + gap) / 2;
             int x = x0 + (i % perRow) * (cw + gap), y = y0 + (i / perRow) * (ch + gap);
             CardDef d = def(str(opts.get(i), "key"));
             if (d == null) continue;
             int uid = num(opts.get(i), "uid");
             boolean hov = in(mx, my, x, y, cw, ch);
-            CardArt.draw(g, d, x, y, cw, ch, Integer.MIN_VALUE, hov || picks.contains(uid), x + cw / 2f - mx, y + 10 - my);
+            g.pose().pushPose();
+            g.pose().translate(0, 0, (i % perRow) * CardArt.Z_STEP);
+            CardArt.draw(g, d, x, y, cw, ch, Integer.MIN_VALUE, hov || picks.contains(uid), x + cw / 2f - mx, y + 15 - my);
+            g.pose().popPose();
             hits.add(new Hit(x, y, cw, ch, "option", uid, true, null));
-            if (hov) hovered = d;
+            if (hov) preview(d, Integer.MIN_VALUE);
         }
-    }
-
-    private void drawPreview(GuiGraphics g, CardDef d, int strength, int mx, int my) {
-        int w = 76, h = 108;
-        int x = mx + 12 + w > width ? mx - w - 12 : mx + 12;
-        int y = Math.max(2, Math.min(height - h - 50, my - h / 2));
-        g.pose().pushPose();
-        g.pose().translate(0, 0, 400);
-        CardArt.draw(g, d, x, y, w, h, strength, false, x + w / 2f - mx, y + 20 - my);
-        List<Component> tip = new ArrayList<>();
-        tip.add(Component.literal(d.name));
-        for (String s : Texts.describe(d)) tip.add(Component.literal(s).withStyle(ChatFormatting.GRAY));
-        g.pose().popPose();
-        g.renderComponentTooltip(font, tip, x - 8, y + h + 14);
     }
 
     // ------------------------------------------------------------------ input
 
     private CardDef selectedDef() {
         if (selected < 0) return null;
-        for (Map<String, Object> c : list(map(m(), "me"), "hand")) if (num(c, "uid") == selected) return def(str(c, "key"));
+        for (Map<String, Object> c : list(me(), "hand")) if (num(c, "uid") == selected) return def(str(c, "key"));
         return null;
     }
 
@@ -359,30 +402,24 @@ public final class MatchScreen extends Screen {
             if (d.isAgile()) return mine && !row.equals("siege");
             return mine && row.equals(d.placement);
         }
-        if (d.has("horn") || d.has("mardroeme")) {
-            Map<String, Object> r = map(map(map(m(), "me"), "rows"), row);
-            return mine && str(r, "special").isEmpty();
-        }
+        if (d.has("horn") || d.has("mardroeme")) return mine && str(map(map(me(), "rows"), row), "special").isEmpty();
         return !d.has("decoy");
     }
 
     @Override
-    public boolean mouseClicked(double mx, double my, int button) {
-        if (super.mouseClicked(mx, my, button)) return true;
+    protected boolean clicked(double mx, double my, int button) {
         if (m() == null || over()) return false;
         if (button == 1) { selected = -1; return true; }
-        Map<String, Object> me = map(m(), "me");
-        // Overlays first
-        if (phase().equals("REDRAW") && num(me, "redrawsLeft") > 0) {
+        if (redrawing()) {
             for (Hit h : hits) if (h.kind.equals("option") && h.contains(mx, my)) {
                 Net.toServer(new Net.MatchAction("redraw", h.uid, "", -1, new int[0]));
                 return true;
             }
             return false;
         }
-        Map<String, Object> choice = map(m(), "choice");
-        if (choice != null) {
-            int count = num(choice, "count");
+        Map<String, Object> ch = choice();
+        if (ch != null) {
+            int count = num(ch, "count");
             for (Hit h : hits) if (h.kind.equals("option") && h.contains(mx, my) && count > 0) {
                 if (picks.contains(h.uid)) picks.remove((Integer) h.uid);
                 else {
@@ -394,17 +431,16 @@ public final class MatchScreen extends Screen {
             return false;
         }
         if (!bool(m(), "myTurn")) return false;
-        // Topmost hits were added last.
         for (int i = hits.size() - 1; i >= 0; i--) {
             Hit h = hits.get(i);
             if (!h.contains(mx, my)) continue;
             switch (h.kind) {
                 case "hand":
-                    if (h.uid == selected) { playSelected(null); return true; }
-                    selected = h.uid;
+                    if (h.uid == selected) playSelected(null);
+                    else selected = h.uid;
                     return true;
                 case "leader":
-                    if (bool(me, "leaderUsable")) Net.toServer(Net.MatchAction.of("leader"));
+                    if (bool(me(), "leaderUsable")) Net.toServer(Net.MatchAction.of("leader"));
                     return true;
                 case "board": {
                     CardDef sel = selectedDef();
@@ -413,7 +449,7 @@ public final class MatchScreen extends Screen {
                         selected = -1;
                         return true;
                     }
-                    break; // fall through to the row underneath
+                    break;
                 }
                 case "row": {
                     CardDef sel = selectedDef();
@@ -431,12 +467,8 @@ public final class MatchScreen extends Screen {
 
     private void playSelected(String row) {
         CardDef d = selectedDef();
-        if (d == null) return;
-        if (d.has("decoy")) return;
-        if (row == null) {
-            if (d.isUnit() && !d.isAgile()) row = d.placement;
-            else if (d.isUnit() || d.has("horn") || d.has("mardroeme")) return;
-        }
+        if (d == null || d.has("decoy")) return;
+        if (row == null && (d.isAgile() || d.has("horn") || d.has("mardroeme"))) return;
         Net.toServer(new Net.MatchAction("play", selected, d.isUnit() && !d.isAgile() ? "" : (row == null ? "" : row), -1, new int[0]));
         selected = -1;
     }
@@ -447,12 +479,11 @@ public final class MatchScreen extends Screen {
 
     @Override
     public void onClose() {
-        if (m() != null && !over()) ClientHooks.matchHidden = true;
-        if (m() != null && !over() && minecraft != null && minecraft.player != null)
-            minecraft.player.displayClientMessage(Component.literal("The match is still on. Press K to return, or /gwent forfeit."), true);
+        if (m() != null && !over()) {
+            ClientHooks.matchHidden = true;
+            if (minecraft != null && minecraft.player != null)
+                minecraft.player.displayClientMessage(Component.literal("The match is still on. Press K to return, or /gwent forfeit."), true);
+        }
         super.onClose();
     }
-
-    @Override
-    public boolean isPauseScreen() { return false; }
 }

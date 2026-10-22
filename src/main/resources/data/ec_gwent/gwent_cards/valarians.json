@@ -10,7 +10,8 @@
    "type": "leader",
    "ability": "play_weather:fog",
    "count": 1,
-   "entity": "valarian_conquest:valarian_officer"
+   "entity": "valarian_conquest:soldier",
+   "item": "minecraft:golden_sword"
   },
   {
    "id": "the_valarian_king_lord_commander",
@@ -19,7 +20,8 @@
    "type": "leader",
    "ability": "clear_weather",
    "count": 1,
-   "entity": "valarian_conquest:valarian_officer"
+   "entity": "valarian_conquest:soldier",
+   "item": "minecraft:golden_sword"
   },
   {
    "id": "the_valarian_king_heir_to_the_crown",
@@ -28,7 +30,8 @@
    "type": "leader",
    "ability": "scorch_row:ranged",
    "count": 1,
-   "entity": "valarian_conquest:valarian_officer"
+   "entity": "valarian_conquest:soldier",
+   "item": "minecraft:golden_sword"
   },
   {
    "id": "the_valarian_king_the_siegemaster",
@@ -37,7 +40,8 @@
    "type": "leader",
    "ability": "double_row:siege",
    "count": 1,
-   "entity": "valarian_conquest:valarian_officer"
+   "entity": "valarian_conquest:soldier",
+   "item": "minecraft:golden_sword"
   },
   {
    "id": "the_valarian_king_the_steel_forged",
@@ -46,7 +50,8 @@
    "type": "leader",
    "ability": "scorch_row:siege",
    "count": 1,
-   "entity": "valarian_conquest:valarian_officer"
+   "entity": "valarian_conquest:soldier",
+   "item": "minecraft:golden_sword"
   },
   {
    "id": "valarian_troll",
@@ -68,7 +73,8 @@
    "strength": 10,
    "abilities": [],
    "count": 1,
-   "entity": "valarian_conquest:valarian_officer"
+   "entity": "valarian_conquest:soldier",
+   "item": "minecraft:diamond_sword"
   },
   {
    "id": "valarian_guard_captain",
@@ -79,7 +85,8 @@
    "strength": 10,
    "abilities": [],
    "count": 1,
-   "entity": "valarian_conquest:valarian_guard"
+   "entity": "valarian_conquest:soldier",
+   "item": "minecraft:netherite_axe"
   },
   {
    "id": "valarian_master_archer",
@@ -90,7 +97,8 @@
    "strength": 10,
    "abilities": [],
    "count": 1,
-   "entity": "valarian_conquest:valarian_archer"
+   "entity": "valarian_conquest:archer",
+   "item": "minecraft:bow"
   },
   {
    "id": "valarian_pikeman",
@@ -103,7 +111,8 @@
     "bond"
    ],
    "count": 3,
-   "entity": "valarian_conquest:valarian_spearman"
+   "entity": "valarian_conquest:soldier",
+   "item": "minecraft:trident"
   },
   {
    "id": "valarian_crossbowman",
@@ -116,7 +125,8 @@
     "bond"
    ],
    "count": 3,
-   "entity": "valarian_conquest:crossbowman"
+   "entity": "valarian_conquest:archer",
+   "item": "minecraft:crossbow"
   },
   {
    "id": "valarian_levy",
@@ -129,7 +139,8 @@
     "bond"
    ],
    "count": 4,
-   "entity": "valarian_conquest:male_citizen"
+   "entity": "valarian_conquest:male_citizen",
+   "item": "minecraft:wooden_sword"
   },
   {
    "id": "catapult",
@@ -155,7 +166,8 @@
     "spy"
    ],
    "count": 1,
-   "entity": "valarian_conquest:soldier"
+   "entity": "valarian_conquest:soldier",
+   "item": "minecraft:stone_axe"
   },
   {
    "id": "valarian_spymaster",
@@ -168,7 +180,8 @@
     "spy"
    ],
    "count": 1,
-   "entity": "valarian_conquest:valarian_officer"
+   "entity": "valarian_conquest:male_citizen",
+   "item": "minecraft:spyglass"
   },
   {
    "id": "valarian_informant",
@@ -194,7 +207,8 @@
     "medic"
    ],
    "count": 1,
-   "entity": "valarian_conquest:female_citizen"
+   "entity": "valarian_conquest:female_citizen",
+   "item": "minecraft:golden_apple"
   },
   {
    "id": "valarian_siege_engineer",
@@ -207,7 +221,8 @@
     "morale"
    ],
    "count": 3,
-   "entity": "valarian_conquest:male_citizen"
+   "entity": "valarian_conquest:male_citizen",
+   "item": "minecraft:iron_pickaxe"
   },
   {
    "id": "ballista",
@@ -251,7 +266,8 @@
    "strength": 1,
    "abilities": [],
    "count": 2,
-   "entity": "valarian_conquest:soldier"
+   "entity": "valarian_conquest:soldier",
+   "item": "minecraft:stone_sword"
   },
   {
    "id": "valarian_axeman",
@@ -286,7 +302,8 @@
    "strength": 5,
    "abilities": [],
    "count": 1,
-   "entity": "valarian_conquest:valarian_spearman"
+   "entity": "valarian_conquest:soldier",
+   "item": "minecraft:iron_shovel"
   },
   {
    "id": "valarian_longbowman",
@@ -297,7 +314,8 @@
    "strength": 6,
    "abilities": [],
    "count": 1,
-   "entity": "valarian_conquest:archer"
+   "entity": "valarian_conquest:archer",
+   "item": "minecraft:bow"
   },
   {
    "id": "valarian_archer",
@@ -308,7 +326,7 @@
    "strength": 5,
    "abilities": [],
    "count": 1,
-   "entity": "valarian_conquest:valarian_archer"
+   "entity": "valarian_conquest:archer"
   },
   {
    "id": "valarian_marksman",
@@ -319,7 +337,8 @@
    "strength": 5,
    "abilities": [],
    "count": 1,
-   "entity": "valarian_conquest:crossbowman"
+   "entity": "valarian_conquest:archer",
+   "item": "minecraft:crossbow"
   },
   {
    "id": "valarian_hunter",
@@ -330,7 +349,8 @@
    "strength": 4,
    "abilities": [],
    "count": 1,
-   "entity": "valarian_conquest:archer"
+   "entity": "valarian_conquest:archer",
+   "item": "minecraft:bow"
   },
   {
    "id": "valarian_javelineer",

@@ -62,6 +62,7 @@ public final class View {
         field(b, "deckCount", s.deck.size());
         field(b, "redrawsLeft", g.phase == Game.Phase.REDRAW && !s.redrawDone ? s.redrawsLeft : 0);
         b.append("\"grave\":").append(cards(s.grave)).append(',');
+        b.append("\"rounds\":").append(s.roundScores.toString().replace(" ", "")).append(',');
         if (mine) b.append("\"hand\":").append(cards(s.hand)).append(',');
         b.append("\"rows\":{");
         boolean first = true;
