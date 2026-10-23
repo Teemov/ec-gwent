@@ -241,6 +241,7 @@ public final class MatchScreen extends CanvasScreen {
         drawBanner(g);
         if (coinActive()) { if (betReveal) drawBets(g); else drawCoin(g); }
         else drawOverlays(g, mx, my);
+        drawForfeitPrompt(g);
         lastPos.clear();
         lastPos.putAll(framePos);
         anims.entrySet().removeIf(e -> Util.getMillis() - e.getValue().start > ANIM_MS + 50 && !framePos.containsKey(e.getKey()));
@@ -623,6 +624,24 @@ public final class MatchScreen extends CanvasScreen {
         g.pose().translate((BOARD_X0 + BOARD_X1) / 2f - font.width(banner) * s / 2f, cy - 7, 0);
         g.pose().scale(s, s, 1);
         g.drawString(font, banner, 0, 0, color, true);
+        g.pose().popPose();
+    }
+
+    /** "Press Esc again to forfeit" while the forfeit is armed. */
+    private void drawForfeitPrompt(GuiGraphics g) {
+        long t = Util.getMillis() - forfeitArmed;
+        if (forfeitArmed == 0 || t >= 3000 || over()) return;
+        float a = t > 2600 ? (3000 - t) / 400f : 1;
+        int alpha = (int) (a * 255);
+        g.pose().pushPose();
+        g.pose().translate(0, 0, CanvasScreen.Z_PREVIEW + 500);
+        int w = 230, x = VW / 2 - w / 2, y = 150;
+        g.fill(x, y, x + w, y + 46, (int) (a * 0xE0) << 24);
+        g.fill(x, y, x + w, y + 1, (alpha << 24) | 0xC9A227);
+        g.fill(x, y + 45, x + w, y + 46, (alpha << 24) | 0xC9A227);
+        g.drawCenteredString(font, "Forfeit the match?", VW / 2, y + 9, (alpha << 24) | 0xFF9F9F);
+        g.drawCenteredString(font, "Press Esc again to forfeit", VW / 2, y + 22, (alpha << 24) | 0xFFFFFF);
+        small(g, "or wait to keep playing", VW / 2 - 40, y + 34, 100, (alpha << 24) | 0xAAAAAA);
         g.pose().popPose();
     }
 
@@ -1083,6 +1102,22 @@ public final class MatchScreen extends CanvasScreen {
     public boolean keyPressed(int key, int scan, int mods) {
         if (key == 32) { // Space: hold to pass
             if (spaceHeld == 0) spaceHeld = Util.getMillis();
+            return true;
+        }
+        if (key == 256 && m() != null && !over()) { // Escape mid-match: like the Forfeit button, press twice
+            if (Util.getMillis() - forfeitArmed < 3000) {
+                forfeitArmed = 0;
+                Net.toServer(Net.MatchAction.of("forfeit"));
+            } else {
+                forfeitArmed = Util.getMillis();
+                selected = -1;
+            }
+            return true;
+        }
+        if (key == 256 && over()) { // Escape on the result screen closes it
+            Net.toServer(Net.MatchAction.of("close"));
+            ClientHooks.match = null;
+            onClose();
             return true;
         }
         return super.keyPressed(key, scan, mods);
