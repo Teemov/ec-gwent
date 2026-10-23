@@ -4,5 +4,6 @@
  "entity": "easy_npc:humanoid",
  "faction": "islanders",
  "quality": 0.4,
- "reward": "neutral:stuve"
+ "reward": "neutral:stuve",
+ "difficulty": "moderate"
 }

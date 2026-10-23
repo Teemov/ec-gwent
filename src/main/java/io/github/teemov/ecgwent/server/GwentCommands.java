@@ -53,7 +53,10 @@ public final class GwentCommands {
                         .then(Commands.argument("players", EntityArgument.players())
                                 .then(Commands.argument("opponent", StringArgumentType.word())
                                         .suggests((c, b) -> SharedSuggestionProvider.suggest(GwentData.opponents().keySet(), b))
-                                        .executes(GwentCommands::challenge))))
+                                        .executes(c -> challenge(c, null))
+                                        .then(Commands.argument("difficulty", StringArgumentType.word())
+                                                .suggests((c, b) -> SharedSuggestionProvider.suggest(List.of("easy", "moderate", "hard"), b))
+                                                .executes(c -> challenge(c, StringArgumentType.getString(c, "difficulty")))))))
                 .then(Commands.literal("give").requires(s -> s.hasPermission(2))
                         .then(Commands.argument("players", EntityArgument.players())
                                 .then(Commands.argument("card", StringArgumentType.greedyString())
@@ -137,11 +140,16 @@ public final class GwentCommands {
         return l;
     }
 
-    private static int challenge(CommandContext<CommandSourceStack> c) throws CommandSyntaxException {
+    private static int challenge(CommandContext<CommandSourceStack> c, String difficulty) throws CommandSyntaxException {
         String op = StringArgumentType.getString(c, "opponent");
+        io.github.teemov.ecgwent.engine.Ai.Difficulty level = io.github.teemov.ecgwent.engine.Ai.Difficulty.parse(difficulty, null);
+        if (difficulty != null && level == null) {
+            c.getSource().sendFailure(Component.literal("Difficulty must be easy, moderate or hard"));
+            return 0;
+        }
         int ok = 0;
         for (ServerPlayer p : EntityArgument.getPlayers(c, "players")) {
-            String err = Matches.challengeNpc(p, op);
+            String err = Matches.challengeNpc(p, op, level);
             if (err == null) ok++;
             else c.getSource().sendFailure(Component.literal(err));
         }

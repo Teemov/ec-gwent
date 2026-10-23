@@ -4,5 +4,6 @@
  "entity": "easy_npc:humanoid",
  "faction": "illagers",
  "quality": 0.5,
- "reward": "neutral:ronny"
+ "reward": "neutral:ronny",
+ "difficulty": "moderate"
 }

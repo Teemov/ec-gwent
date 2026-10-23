@@ -68,6 +68,7 @@ public final class Matches {
         UUID opponentUuid;
         final String reward;
         final Deck opponentDeck;
+        Ai.Difficulty difficulty = Ai.Difficulty.HARD;
         final int[] bets = new int[2];
         final Vec3[] startPos = new Vec3[2];
         final Object[] startLevel = new Object[2];
@@ -110,6 +111,11 @@ public final class Matches {
 
     /** /gwent challenge: a story NPC opponent. */
     public static String challengeNpc(ServerPlayer p, String opponentId) {
+        return challengeNpc(p, opponentId, null);
+    }
+
+    /** {@code level} overrides the opponent file's difficulty (null = use the file). */
+    public static String challengeNpc(ServerPlayer p, String opponentId, Ai.Difficulty level) {
         GwentData.Opponent op = GwentData.opponents().get(opponentId);
         if (op == null) return "Unknown opponent " + opponentId;
         if (!Access.allowed(p)) return p.getName().getString() + " hasn't unlocked Gwent yet (/gwent unlock)";
@@ -127,9 +133,11 @@ public final class Matches {
         String entity = op.npc != null ? "npc:" + op.npc + "|" + op.entity : op.entity;
         Match match = new Match(p.getUUID(), new Game(GwentData.cards(), mine, p.getName().getString(), theirs, op.name, rng.nextLong()),
                 Kind.NPC, opponentId, entity, reward, theirs);
+        match.difficulty = level != null ? level : op.difficulty;
         try { if (op.npc != null) match.opponentUuid = UUID.fromString(op.npc); } catch (IllegalArgumentException ignored) {}
         start(p.server, match);
-        p.sendSystemMessage(Component.literal(op.name + " accepts your challenge!"
+        String lvl = match.difficulty.id();
+        p.sendSystemMessage(Component.literal(op.name + " accepts your challenge! (" + Character.toUpperCase(lvl.charAt(0)) + lvl.substring(1) + ")"
                 + (reward != null ? " Win to earn their card." : " (No card to win this time.)")).withStyle(ChatFormatting.GOLD));
         return null;
     }
@@ -165,6 +173,7 @@ public final class Matches {
         Match match = new Match(p.getUUID(), new Game(GwentData.cards(), mine, p.getName().getString(), theirs, name, rng.nextLong()),
                 Kind.VILLAGER, "villager", "entity:" + v.getId() + "|minecraft:villager", null, theirs);
         match.opponentUuid = v.getUUID();
+        match.difficulty = Ai.Difficulty.forVillagerLevel(level);
         start(p.server, match);
     }
 
@@ -334,7 +343,7 @@ public final class Matches {
             if (--m.aiWait > 0 || !aiHasMove(m.game)) continue;
             m.aiWait = AI_DELAY;
             try {
-                Ai.act(m.game, 1);
+                Ai.act(m.game, 1, m.difficulty, rng);
             } catch (RuntimeException e) {
                 EcGwent.LOGGER.error("Gwent AI error", e);
                 try { m.game.pass(1); } catch (IllegalStateException ignored) {}

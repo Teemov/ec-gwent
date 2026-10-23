@@ -4,5 +4,6 @@
  "entity": "easy_npc:humanoid",
  "faction": "valarians",
  "quality": 0.25,
- "reward": "neutral:amanda_the_fairy"
+ "reward": "neutral:amanda_the_fairy",
+ "difficulty": "easy"
 }

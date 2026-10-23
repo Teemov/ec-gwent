@@ -4,5 +4,6 @@
  "entity": "easy_npc:humanoid",
  "faction": "valarians",
  "quality": 0.9,
- "reward": "neutral:valarian_commander"
+ "reward": "neutral:valarian_commander",
+ "difficulty": "moderate"
 }

@@ -4,5 +4,6 @@
  "entity": "easy_npc:humanoid",
  "faction": "illagers",
  "quality": 0.85,
- "reward": "neutral:head_mage"
+ "reward": "neutral:head_mage",
+ "difficulty": "hard"
 }

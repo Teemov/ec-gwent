@@ -35,6 +35,8 @@ public final class GwentData {
     /** A story NPC you can challenge. */
     public static final class Opponent {
         public final String id, name, npc, entity, reward;
+        /** How well this NPC plays (opponent file "difficulty": easy / moderate / hard; default moderate). */
+        public io.github.teemov.ecgwent.engine.Ai.Difficulty difficulty = io.github.teemov.ecgwent.engine.Ai.Difficulty.MODERATE;
         public final Deck deck;
 
         Opponent(String id, String name, String npc, String entity, String reward, Deck deck) {
@@ -81,8 +83,10 @@ public final class GwentData {
                 String id = e.getKey().getPath();
                 try {
                     Map<String, Object> o = (Map<String, Object>) Json.parse(e.getValue().toString());
-                    map.put(id, new Opponent(id, (String) o.get("name"), (String) o.get("npc"),
-                            (String) o.getOrDefault("entity", "easy_npc:humanoid"), (String) o.get("reward"), null));
+                    Opponent op = new Opponent(id, (String) o.get("name"), (String) o.get("npc"),
+                            (String) o.getOrDefault("entity", "easy_npc:humanoid"), (String) o.get("reward"), null);
+                    op.difficulty = io.github.teemov.ecgwent.engine.Ai.Difficulty.parse((String) o.get("difficulty"), op.difficulty);
+                    map.put(id, op);
                     pending.put(id, o);
                 } catch (RuntimeException ex) {
                     EcGwent.LOGGER.error("Bad opponent file {}: {}", e.getKey(), ex.toString());

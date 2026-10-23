@@ -4,5 +4,6 @@
  "entity": "easy_npc:humanoid",
  "faction": "monsters",
  "quality": 0.3,
- "reward": "neutral:protput"
+ "reward": "neutral:protput",
+ "difficulty": "easy"
 }

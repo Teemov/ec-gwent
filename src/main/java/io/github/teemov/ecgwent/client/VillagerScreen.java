@@ -27,6 +27,9 @@ public final class VillagerScreen extends CanvasScreen {
         String lvl = level >= 1 && level < LEVELS.length ? LEVELS[level] + " " : "";
         text(g, lvl + name, x + 70, y + 12, 0xFFFFE9A0);
         wrapped(g, "wants to play Gwent for 2 emeralds.", x + 70, y + 26, 180, 0xFFDDDDDD);
+        String diff = level <= 2 ? "Easy opponent" : level == 3 ? "Moderate opponent" : "Hard opponent";
+        int col = level <= 2 ? 0xFF80FF80 : level == 3 ? 0xFFFFE080 : 0xFFFF8080;
+        small(g, diff, x + 70, y + 84, 180, col);
         wrapped(g, "Win: your 2 emeralds back plus a prize. Lose: the villager keeps them. "
                 + "Experienced villagers play stronger decks.", x + 70, y + 42, 180, 0xFFAAAAAA);
         button(g, x + 20, y + 98, 110, 20, "Play", true, mx, my, () -> {

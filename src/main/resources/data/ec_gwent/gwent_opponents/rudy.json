@@ -4,5 +4,6 @@
  "entity": "easy_npc:humanoid",
  "faction": "valarians",
  "quality": 0.35,
- "reward": "neutral:rudy_the_bartender"
+ "reward": "neutral:rudy_the_bartender",
+ "difficulty": "easy"
 }

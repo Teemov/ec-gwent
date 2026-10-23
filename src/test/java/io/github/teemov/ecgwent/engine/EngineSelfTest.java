@@ -143,6 +143,32 @@ public final class EngineSelfTest {
         expect(newWins > oldWins, "new AI beats the old one");
         expect(newDumped * 4 < oldDumped + 4, "new AI doesn't empty its hand in round 1");
 
+        // Difficulty levels must be ordered: hard > moderate > easy.
+        Ai.Difficulty[][] pairs = {{Ai.Difficulty.HARD, Ai.Difficulty.MODERATE}, {Ai.Difficulty.MODERATE, Ai.Difficulty.EASY}, {Ai.Difficulty.HARD, Ai.Difficulty.EASY}};
+        for (Ai.Difficulty[] pair : pairs) {
+            int aWins = 0, bWins = 0, n = Integer.parseInt(System.getProperty("tiers", "1000"));
+            Random tr = new Random(7);
+            for (int i = 0; i < n; i++) {
+                String fa = CardRegistry.PLAYABLE_FACTIONS.get(tr.nextInt(5)), fb = CardRegistry.PLAYABLE_FACTIONS.get(tr.nextInt(5));
+                double q = 0.3 + tr.nextDouble() * 0.6;
+                Deck a = Decks.random(reg, fa, q, tr), b = Decks.random(reg, fb, q, tr);
+                long seed = tr.nextLong();
+                for (int seat = 0; seat < 2; seat++) {
+                    Game tg = new Game(reg, a, "A", b, "B", seed);
+                    Ai.Difficulty l0 = seat == 0 ? pair[0] : pair[1], l1 = seat == 0 ? pair[1] : pair[0];
+                    int guard = 0;
+                    while (tg.phase != Game.Phase.OVER && guard++ < 3000)
+                        if (!(Ai.act(tg, 0, l0, tr) | Ai.act(tg, 1, l1, tr))) break;
+                    expect(tg.phase == Game.Phase.OVER, "tier match ended");
+                    int firstSide = seat == 0 ? 0 : 1;
+                    if (tg.winner != null && tg.winner == firstSide) aWins++;
+                    else if (tg.winner != null && tg.winner == 1 - firstSide) bWins++;
+                }
+            }
+            System.out.printf("%s vs %s: %.1f%% of decided matches%n", pair[0], pair[1], 100.0 * aWins / Math.max(1, aWins + bWins));
+            expect(aWins > bWins, pair[0] + " beats " + pair[1]);
+        }
+
         // Bets: the higher bet starts, equal bets use the coin.
         for (int i = 0; i < 20; i++) {
             Game bg = new Game(reg, Decks.starter(reg, "valarians"), "A", Decks.starter(reg, "monsters"), "B", i, 3, 10);

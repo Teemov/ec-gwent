@@ -21,7 +21,7 @@ hidden. `/gwent config requireUnlock false` turns this off so everyone can play.
 | Card book (collection, deck builder) | **K**, or `/gwent book`. The first time, you pick a starting faction and get its starter deck |
 | Back to a running match | **K** |
 | Challenge a player | Sneak + right-click them (or `/gwent duel <player> [bet]`). Each player picks their own bet (0-64 emeralds): the higher bet goes first, equal bets toss a coin, the winner takes both bets. Walking more than 32 blocks away or leaving counts as a loss. Each move has a 1-minute timer: running out passes (or keeps your hand / makes the default pick). A player can only consider one challenge at a time |
-| Challenge a villager | Sneak + right-click an adult villager. Costs 2 emeralds; higher-level villagers play stronger decks. The villager stands still and faces you while you play. Villagers and story NPCs can play several people at once (they face the latest challenger) |
+| Challenge a villager | Sneak + right-click an adult villager. Costs 2 emeralds. Novice and apprentice villagers play easy, journeymen moderate, experts and masters hard, with stronger decks too. The villager stands still and faces you while you play. Villagers and story NPCs can play several people at once (they face the latest challenger) |
 | Give up a match | Press Esc twice (the first press asks), the Forfeit button, or `/gwent forfeit` |
 | Safety | While a match runs, you and your opponent (player, villager or NPC) take no damage, except from `/kill` and the void. It ends with the match |
 
@@ -35,7 +35,7 @@ row, horns and Junk Brew on one of your rows, a Decoy on one of your units. Righ
 | `/gwent unlock <players> [silent]` | Give players access to Gwent (with a short chat message unless `silent`). Put it in a quest reward |
 | `/gwent lock <players>` | Take access away again (their cards are kept) |
 | `/gwent config requireUnlock true\|false` | Whether players need to be unlocked first (default true) |
-| `/gwent challenge <players> <opponent>` | Start a match against a story NPC. Put this on an Easy NPC dialog button: `/gwent challenge @initiator stuve` |
+| `/gwent challenge <players> <opponent> [easy\|moderate\|hard]` | Start a match against a story NPC. Put this on an Easy NPC dialog button: `/gwent challenge @initiator stuve`. The difficulty overrides the opponent file |
 | `/gwent config villagerReward emeralds\|cards` | What beating a villager gives besides the returned bet: an extra emerald (default) or a random card from its deck |
 | `/gwent give <players> <card>` | Give a card, e.g. `neutral:stuve` |
 | `/gwent giveall <players>` | Every card at its full copy count (testing) |
@@ -46,7 +46,10 @@ row, horns and Junk Brew on one of your rows, a Decoy on one of your units. Righ
 
 - `data/ec_gwent/gwent_cards/<faction>.json`: the cards. Strength, row, abilities and copies follow Witcher 3.
 - `data/ec_gwent/gwent_opponents/<id>.json`: story-NPC opponents:
-  `{"name", "npc": "<Easy NPC UUID>", "faction", "quality": 0..1, "reward": "<card key>"}`.
+  `{"name", "npc": "<Easy NPC UUID>", "faction", "quality": 0..1, "reward": "<card key>", "difficulty": "easy|moderate|hard"}`.
+  Difficulty: easy plays greedily and makes random moves, moderate mixes strategy with impulsive moves, hard plays
+  for the best of three. The shipped opponents are hard when they reward a hero card, moderate for special cards,
+  easy for plain units.
   Instead of `quality` you can give a fixed deck with `"leader"` and `"cards": [...]`.
   The first win against an opponent gives the reward card; rematches give nothing.
 

@@ -4,5 +4,6 @@
  "entity": "easy_npc:humanoid",
  "faction": "monsters",
  "quality": 0.55,
- "reward": "neutral:bug_hunter"
+ "reward": "neutral:bug_hunter",
+ "difficulty": "hard"
 }

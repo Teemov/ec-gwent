@@ -3,6 +3,8 @@ package io.github.teemov.ecgwent.engine;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * The computer opponent. Tries each legal move on a copy of the game, scores the result by points gained
@@ -14,28 +16,82 @@ public final class Ai {
 
     private Ai() {}
 
-    /** Does whatever this side has to do right now (choice, redraw or turn). Returns false if it had nothing to do. */
+    /** How well the computer plays. */
+    public enum Difficulty {
+        EASY, MODERATE, HARD;
+
+        public static Difficulty parse(String s, Difficulty fallback) {
+            if (s == null) return fallback;
+            switch (s.toLowerCase()) {
+                case "easy": return EASY;
+                case "moderate": case "medium": case "normal": return MODERATE;
+                case "hard": return HARD;
+                default: return fallback;
+            }
+        }
+
+        /** Villager trade levels: novice/apprentice easy, journeyman moderate, expert/master hard. */
+        public static Difficulty forVillagerLevel(int level) {
+            return level <= 2 ? EASY : level == 3 ? MODERATE : HARD;
+        }
+
+        public String id() { return name().toLowerCase(); }
+    }
+
+    /** Does whatever this side has to do right now (hard difficulty). */
     public static boolean act(Game g, int side) {
+        return act(g, side, Difficulty.HARD, ThreadLocalRandom.current());
+    }
+
+    /** Does whatever this side has to do right now (choice, redraw or turn). Returns false if it had nothing to do. */
+    public static boolean act(Game g, int side, Difficulty level, Random rnd) {
         switch (g.phase) {
             case CHOOSE_FIRST:
                 if (g.choice.side != side) return false;
-                g.chooseFirst(side, false); // going second is the advantage
+                g.chooseFirst(side, level == Difficulty.EASY && rnd.nextBoolean()); // going second is the advantage
                 return true;
             case REDRAW:
                 if (g.sides[side].redrawDone) return false;
-                redraw(g, side);
+                if (level == Difficulty.EASY) g.finishRedraw(side);
+                else redraw(g, side);
                 return true;
             case CHOICE:
                 if (g.choice.side != side) return false;
-                answer(g, side);
+                if (level == Difficulty.EASY && g.choice.count > 0 && rnd.nextInt(2) == 0) answerRandom(g, side, rnd);
+                else answer(g, side);
                 return true;
             case PLAY:
                 if (g.current != side) return false;
-                g.apply(side, chooseMove(g, side));
+                g.apply(side, chooseMove(g, side, level, rnd));
                 return true;
             default:
                 return false;
         }
+    }
+
+    static Game.Move chooseMove(Game g, int side, Difficulty level, Random rnd) {
+        switch (level) {
+            case EASY: {
+                if (rnd.nextInt(100) < 35) {
+                    List<Game.Move> moves = new ArrayList<>(g.legalMoves(side));
+                    moves.removeIf(m -> m.kind == Game.Move.Kind.PASS || m.kind == Game.Move.Kind.LEADER);
+                    if (!moves.isEmpty()) return moves.get(rnd.nextInt(moves.size()));
+                }
+                return chooseGreedy(g, side);
+            }
+            case MODERATE:
+                return rnd.nextInt(100) < 30 ? chooseGreedy(g, side) : chooseMove(g, side);
+            default:
+                return chooseMove(g, side);
+        }
+    }
+
+    private static void answerRandom(Game g, int side, Random rnd) {
+        List<Card> opts = new ArrayList<>(g.choice.options);
+        java.util.Collections.shuffle(opts, rnd);
+        List<Integer> picks = new ArrayList<>();
+        for (int i = 0; i < g.choice.count && i < opts.size(); i++) picks.add(opts.get(i).uid);
+        g.choose(side, picks);
     }
 
     private static void redraw(Game g, int side) {
@@ -253,5 +309,67 @@ public final class Ai {
             t = bestGame;
         }
         return null;
+    }
+    /** The original greedy AI (chases every round): the core of the easy level. */
+    private static Game.Move chooseGreedy(Game g, int side) {
+        Side me = g.sides[side], op = g.sides[1 - side];
+        int diff = g.score(side) - g.score(1 - side);
+        boolean winsDraws = me.perk(g.reg, "win_draws") && !op.perk(g.reg, "win_draws");
+        boolean ahead = diff > 0 || (diff == 0 && winsDraws);
+        boolean mustWin = me.gems == 1; // losing this round loses the match
+        int myCards = me.hand.size(), opCards = op.hand.size();
+
+        List<Game.Move> moves = new ArrayList<>(g.legalMoves(side));
+        moves.removeIf(m -> m.kind == Game.Move.Kind.PASS);
+        if (moves.isEmpty()) return Game.Move.pass();
+
+        // Score every move once.
+        List<Object[]> scored = new ArrayList<>();
+        for (Game.Move m : moves) {
+            Game t;
+            try {
+                t = simulate(g, side, m);
+            } catch (IllegalStateException e) {
+                continue;
+            }
+            int v = evaluate(g, t, side);
+            if (m.kind == Game.Move.Kind.LEADER && g.round == 1) v -= 3; // keep the leader for later if it's no better
+            int newDiff = t.score(side) - t.score(1 - side);
+            if (t.phase == Game.Phase.OVER || t.round != g.round) newDiff = diff; // move ended the round
+            scored.add(new Object[]{m, v, newDiff});
+        }
+        if (scored.isEmpty()) return Game.Move.pass();
+        scored.sort((x, y) -> Integer.compare((int) y[1], (int) x[1]));
+        Game.Move best = (Game.Move) scored.get(0)[0];
+
+        if (op.passed) {
+            if (ahead) return Game.Move.pass();
+            // Cheapest move that takes the lead.
+            Object[] cheapest = null;
+            for (Object[] s : scored) {
+                int nd = (int) s[2];
+                if (nd > 0 || (nd == 0 && winsDraws)) {
+                    if (cheapest == null || (int) s[1] > (int) cheapest[1]) cheapest = s;
+                }
+            }
+            if (cheapest != null) return (Game.Move) cheapest[0];
+            // Can we still catch up at all?
+            int potential = 0;
+            for (Card c : me.hand) if (c.def.isUnit()) potential += c.def.strength;
+            if (potential + diff <= 0 && !mustWin) return Game.Move.pass();
+            return best;
+        }
+
+        if (!mustWin) {
+            // Comfortable lead and no card disadvantage: make the opponent spend cards.
+            if (diff >= 15 && myCards >= opCards - 1) return Game.Move.pass();
+            // Hopeless first round: save cards for the next ones.
+            if (g.round == 1 && diff <= -25 && myCards >= opCards) return Game.Move.pass();
+            // Already won a round: don't throw cards at a losing round.
+            if (op.gems == 1 && diff <= -15) return Game.Move.pass();
+        } else if (ahead && opCards == 0) {
+            return Game.Move.pass();
+        }
+        return best;
     }
 }

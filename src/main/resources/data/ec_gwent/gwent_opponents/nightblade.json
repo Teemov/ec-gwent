@@ -4,5 +4,6 @@
  "entity": "easy_npc:humanoid",
  "faction": "orcs",
  "quality": 0.65,
- "reward": "neutral:nightblade"
+ "reward": "neutral:nightblade",
+ "difficulty": "hard"
 }

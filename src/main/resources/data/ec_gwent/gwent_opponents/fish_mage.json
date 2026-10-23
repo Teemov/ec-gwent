@@ -4,5 +4,6 @@
  "entity": "easy_npc:humanoid",
  "faction": "islanders",
  "quality": 0.7,
- "reward": "neutral:fish_mage"
+ "reward": "neutral:fish_mage",
+ "difficulty": "hard"
 }

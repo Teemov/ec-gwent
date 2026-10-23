@@ -4,5 +4,6 @@
  "entity": "easy_npc:humanoid",
  "faction": "orcs",
  "quality": 0.75,
- "reward": "neutral:ignis"
+ "reward": "neutral:ignis",
+ "difficulty": "hard"
 }
