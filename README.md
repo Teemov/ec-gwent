@@ -8,6 +8,12 @@ A Minecraft-themed reskin of Gwent from The Witcher 3, for the **Expanded Civili
 
 This is a **client + server** mod: every player needs it installed.
 
+## Unlocking
+
+Gwent is unlocked per player by the storyline. Until `/gwent unlock <players>` has run for a player, the mod stays
+out of their way: K does nothing, sneak + right-click on villagers works as in vanilla, and the `/gwent` commands are
+hidden. `/gwent config requireUnlock false` turns this off so everyone can play.
+
 ## Playing
 
 | What | How |
@@ -25,6 +31,9 @@ row, horns and Junk Brew on one of your rows, a Decoy on one of your units. Righ
 
 | Command | Purpose |
 |---|---|
+| `/gwent unlock <players> [silent]` | Give players access to Gwent (with a short chat message unless `silent`). Put it in a quest reward |
+| `/gwent lock <players>` | Take access away again (their cards are kept) |
+| `/gwent config requireUnlock true\|false` | Whether players need to be unlocked first (default true) |
 | `/gwent challenge <players> <opponent>` | Start a match against a story NPC. Put this on an Easy NPC dialog button: `/gwent challenge @initiator stuve` |
 | `/gwent config villagerReward emeralds\|cards` | What beating a villager gives besides the returned bet: an extra emerald (default) or a random card from its deck |
 | `/gwent give <players> <card>` | Give a card, e.g. `neutral:stuve` |

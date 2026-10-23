@@ -15,16 +15,22 @@ public final class ServerHooks {
 
     public static void syncCards(ServerPlayer p) {
         Net.toPlayer(p, new Net.SyncCards(GwentData.cardJson()));
+        syncAccess(p);
+    }
+
+    public static void syncAccess(ServerPlayer p) {
+        Net.toPlayer(p, new Net.AccessState(Access.allowed(p)));
     }
 
     public static void sendBook(ServerPlayer p, boolean open) {
         if (p == null) return;
         if (open && Matches.reopen(p)) return; // K during a match brings the board back
+        if (!Access.allowed(p)) return;        // not unlocked yet: K does nothing
         Net.toPlayer(p, new Net.BookData(Collection.get(p).copy(), open));
     }
 
     public static void pickStarter(ServerPlayer p, String faction) {
-        if (p == null || !CardRegistry.PLAYABLE_FACTIONS.contains(faction) || Collection.started(p)) return;
+        if (p == null || !Access.allowed(p) || !CardRegistry.PLAYABLE_FACTIONS.contains(faction) || Collection.started(p)) return;
         Collection.start(p, GwentData.cards(), faction);
         p.sendSystemMessage(Component.literal("You received the " + GwentData.cards().factionName(faction)
                 + " starter deck. Win matches to collect more cards.").withStyle(ChatFormatting.GOLD));
@@ -32,7 +38,7 @@ public final class ServerHooks {
     }
 
     public static void saveDeck(ServerPlayer p, String faction, String leader, List<String> cards) {
-        if (p == null || !Collection.started(p)) return;
+        if (p == null || !Access.allowed(p) || !Collection.started(p)) return;
         Deck d = new Deck(faction, leader, cards);
         String err = d.validate(GwentData.cards(), Collection.owned(p));
         if (err != null) {

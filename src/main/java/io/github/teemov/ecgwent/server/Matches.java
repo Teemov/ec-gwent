@@ -86,6 +86,7 @@ public final class Matches {
     public static String challengeNpc(ServerPlayer p, String opponentId) {
         GwentData.Opponent op = GwentData.opponents().get(opponentId);
         if (op == null) return "Unknown opponent " + opponentId;
+        if (!Access.allowed(p)) return p.getName().getString() + " hasn't unlocked Gwent yet (/gwent unlock)";
         if (inMatch(p)) return p.getName().getString() + " is already playing";
         String[] why = new String[1];
         Deck mine = Collection.playable(p, GwentData.cards(), why);
@@ -123,7 +124,7 @@ public final class Matches {
     }
 
     public static void acceptVillager(ServerPlayer p, int entityId) {
-        if (p == null || inMatch(p)) return;
+        if (p == null || inMatch(p) || !Access.allowed(p)) return;
         Entity e = p.level().getEntity(entityId);
         if (!(e instanceof Villager v) || v.isBaby() || e.distanceToSqr(p) > 100) return;
         String[] why = new String[1];

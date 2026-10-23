@@ -44,6 +44,10 @@ public final class Collection {
 
     public static boolean started(Player p) { return get(p).getBoolean("started"); }
 
+    public static boolean unlocked(Player p) { return get(p).getBoolean("unlocked"); }
+
+    public static void setUnlocked(Player p, boolean v) { get(p).putBoolean("unlocked", v); }
+
     public static Map<String, Integer> owned(Player p) {
         CompoundTag o = get(p).getCompound("owned");
         Map<String, Integer> m = new HashMap<>();

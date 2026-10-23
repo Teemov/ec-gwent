@@ -29,17 +29,17 @@ public final class GwentCommands {
 
     public static void register(CommandDispatcher<CommandSourceStack> d) {
         d.register(Commands.literal("gwent")
-                .then(Commands.literal("version").executes(c -> {
+                .then(Commands.literal("version").requires(Access::allowed).executes(c -> {
                     String v = ModList.get().getModContainerById(EcGwent.MODID).map(m -> m.getModInfo().getVersion().toString()).orElse("?");
                     c.getSource().sendSuccess(() -> Component.literal("EC Gwent " + v + ", " + GwentData.cards().all().size()
                             + " cards, " + GwentData.opponents().size() + " opponents"), false);
                     return 1;
                 }))
-                .then(Commands.literal("book").executes(c -> {
+                .then(Commands.literal("book").requires(Access::allowed).executes(c -> {
                     ServerHooks.sendBook(c.getSource().getPlayerOrException(), true);
                     return 1;
                 }))
-                .then(Commands.literal("forfeit").executes(c -> {
+                .then(Commands.literal("forfeit").requires(Access::allowed).executes(c -> {
                     ServerPlayer p = c.getSource().getPlayerOrException();
                     Matches.action(p, io.github.teemov.ecgwent.net.Net.MatchAction.of("forfeit"));
                     return 1;
@@ -56,6 +56,12 @@ public final class GwentCommands {
                                         .executes(c -> give(c, 1)))))
                 .then(Commands.literal("giveall").requires(s -> s.hasPermission(2))
                         .then(Commands.argument("players", EntityArgument.players()).executes(GwentCommands::giveAll)))
+                .then(Commands.literal("unlock").requires(s -> s.hasPermission(2))
+                        .then(Commands.argument("players", EntityArgument.players())
+                                .executes(c -> setUnlocked(c, true, false))
+                                .then(Commands.literal("silent").executes(c -> setUnlocked(c, true, true)))))
+                .then(Commands.literal("lock").requires(s -> s.hasPermission(2))
+                        .then(Commands.argument("players", EntityArgument.players()).executes(c -> setUnlocked(c, false, true))))
                 .then(Commands.literal("reset").requires(s -> s.hasPermission(2))
                         .then(Commands.argument("players", EntityArgument.players()).executes(c -> {
                             for (ServerPlayer p : EntityArgument.getPlayers(c, "players")) Collection.reset(p);
@@ -64,10 +70,24 @@ public final class GwentCommands {
                         })))
                 .then(Commands.literal("config").requires(s -> s.hasPermission(2))
                         .executes(c -> {
-                            String r = GwentConfig.get(c.getSource().getServer()).villagerReward;
-                            c.getSource().sendSuccess(() -> Component.literal("villagerReward = " + r), false);
+                            GwentConfig cfg = GwentConfig.get(c.getSource().getServer());
+                            c.getSource().sendSuccess(() -> Component.literal("villagerReward = " + cfg.villagerReward
+                                    + ", requireUnlock = " + cfg.requireUnlock), false);
                             return 1;
                         })
+                        .then(Commands.literal("requireUnlock")
+                                .then(Commands.argument("value", com.mojang.brigadier.arguments.BoolArgumentType.bool()).executes(c -> {
+                                    GwentConfig cfg = GwentConfig.get(c.getSource().getServer());
+                                    cfg.requireUnlock = com.mojang.brigadier.arguments.BoolArgumentType.getBool(c, "value");
+                                    cfg.setDirty();
+                                    for (ServerPlayer p : c.getSource().getServer().getPlayerList().getPlayers()) {
+                                        Access.refreshCommands(p);
+                                        ServerHooks.syncAccess(p);
+                                    }
+                                    c.getSource().sendSuccess(() -> Component.literal(cfg.requireUnlock
+                                            ? "Players need /gwent unlock before they can play." : "Everyone can play Gwent."), true);
+                                    return 1;
+                                })))
                         .then(Commands.literal("villagerReward")
                                 .then(Commands.argument("value", StringArgumentType.word())
                                         .suggests((c, b) -> SharedSuggestionProvider.suggest(List.of("emeralds", "cards"), b))
@@ -84,6 +104,20 @@ public final class GwentCommands {
                                                     + (v.equals("cards") ? "a card" : "an extra emerald") + "."), true);
                                             return 1;
                                         })))));
+    }
+
+    private static int setUnlocked(CommandContext<CommandSourceStack> c, boolean on, boolean silent) throws CommandSyntaxException {
+        java.util.Collection<ServerPlayer> ps = EntityArgument.getPlayers(c, "players");
+        for (ServerPlayer p : ps) {
+            boolean was = Collection.unlocked(p);
+            Collection.setUnlocked(p, on);
+            Access.refreshCommands(p);
+            ServerHooks.syncAccess(p);
+            if (on && !was && !silent)
+                p.sendSystemMessage(Component.literal("You've learned to play Gwent! Press K to open your card book.").withStyle(ChatFormatting.GOLD));
+        }
+        c.getSource().sendSuccess(() -> Component.literal((on ? "Unlocked" : "Locked") + " Gwent for " + ps.size() + " player(s)."), true);
+        return ps.size();
     }
 
     private static List<String> cardKeys() {

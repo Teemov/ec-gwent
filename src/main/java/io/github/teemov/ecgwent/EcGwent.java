@@ -86,6 +86,8 @@ public class EcGwent {
     public void onInteract(PlayerInteractEvent.EntityInteract e) {
         if (e.getHand() != InteractionHand.MAIN_HAND || !(e.getTarget() instanceof Villager v) || v.isBaby()
                 || !e.getEntity().isShiftKeyDown()) return;
+        if (e.getEntity() instanceof ServerPlayer sp && !io.github.teemov.ecgwent.server.Access.allowed(sp)) return;
+        if (e.getLevel().isClientSide && !io.github.teemov.ecgwent.client.ClientAccess.unlocked()) return;
         e.setCanceled(true);
         e.setCancellationResult(InteractionResult.SUCCESS);
         if (e.getEntity() instanceof ServerPlayer p) Matches.offerVillager(p, v);

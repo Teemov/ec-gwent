@@ -89,6 +89,9 @@ public final class Net {
         CHANNEL.messageBuilder(MatchView.class, id++, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder((m, b) -> writeString(b, m.json)).decoder(b -> new MatchView(readString(b)))
                 .consumerMainThread((m, ctx) -> client(() -> () -> ClientHooks.matchView(m.json))).add();
+        CHANNEL.messageBuilder(AccessState.class, id++, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder((m, b) -> b.writeBoolean(m.unlocked)).decoder(b -> new AccessState(b.readBoolean()))
+                .consumerMainThread((m, ctx) -> io.github.teemov.ecgwent.client.ClientAccess.set(m.unlocked)).add();
         CHANNEL.messageBuilder(VillagerOffer.class, id++, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder((m, b) -> { b.writeVarInt(m.entityId); b.writeUtf(m.name); b.writeVarInt(m.level); })
                 .decoder(b -> new VillagerOffer(b.readVarInt(), b.readUtf(128), b.readVarInt()))
@@ -149,6 +152,11 @@ public final class Net {
     public static final class MatchView {
         final String json;
         public MatchView(String json) { this.json = json; }
+    }
+
+    public static final class AccessState {
+        final boolean unlocked;
+        public AccessState(boolean unlocked) { this.unlocked = unlocked; }
     }
 
     public static final class VillagerOffer {
