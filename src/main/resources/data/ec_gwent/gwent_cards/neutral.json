@@ -16,11 +16,16 @@
    "count": 1,
    "entity": "easy_npc:humanoid",
    "muster": "trusty_horse",
-   "npc": "85212c7d-1551-4da0-906f-19f1f20618fe"
+   "npc": "85212c7d-1551-4da0-906f-19f1f20618fe",
+   "image": "ec_gwent:textures/cards/neutral/head_mage.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "nightblade",
-   "name": "Nightblade",
+   "name": "Sven",
    "w3": "Cirilla Fiona Elen Riannon",
    "type": "hero",
    "row": "close",
@@ -31,7 +36,12 @@
    "count": 1,
    "entity": "easy_npc:humanoid",
    "muster": "trusty_horse",
-   "npc": "3fda027b-6055-4656-9506-b6864f884822"
+   "npc": "3fda027b-6055-4656-9506-b6864f884822",
+   "image": "ec_gwent:textures/cards/neutral/nightblade.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "fish_mage",
@@ -45,11 +55,16 @@
    ],
    "count": 1,
    "entity": "easy_npc:humanoid",
-   "npc": "2d637c69-8343-4d55-bad8-db1b640ba5d9"
+   "npc": "2d637c69-8343-4d55-bad8-db1b640ba5d9",
+   "image": "ec_gwent:textures/cards/neutral/fish_mage.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "ignis",
-   "name": "Ignis",
+   "name": "Eric",
    "w3": "Triss Merigold",
    "type": "hero",
    "row": "close",
@@ -57,7 +72,12 @@
    "abilities": [],
    "count": 1,
    "entity": "easy_npc:humanoid",
-   "npc": "46f38b6c-ef52-487a-b0a6-aa9a2015615d"
+   "npc": "46f38b6c-ef52-487a-b0a6-aa9a2015615d",
+   "image": "ec_gwent:textures/cards/neutral/ignis.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "bug_hunter",
@@ -71,11 +91,16 @@
    ],
    "count": 1,
    "entity": "easy_npc:humanoid",
-   "npc": "6c6957de-5e48-472a-9929-33b5912dba88"
+   "npc": "6c6957de-5e48-472a-9929-33b5912dba88",
+   "image": "ec_gwent:textures/cards/neutral/bug_hunter.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "the_dragon",
-   "name": "The Dragon",
+   "name": "Harald",
    "w3": "Villentretenmerth",
    "type": "unit",
    "row": "close",
@@ -84,7 +109,12 @@
     "scorch_close"
    ],
    "count": 1,
-   "entity": "minecraft:ender_dragon"
+   "entity": "minecraft:ender_dragon",
+   "image": "ec_gwent:textures/cards/neutral/the_dragon.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "stuve",
@@ -98,11 +128,16 @@
    ],
    "count": 1,
    "entity": "easy_npc:humanoid",
-   "npc": "3046f8c8-c88c-43dd-9ac8-571f8bce1dbc"
+   "npc": "3046f8c8-c88c-43dd-9ac8-571f8bce1dbc",
+   "image": "ec_gwent:textures/cards/neutral/stuve.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "rudy_the_bartender",
-   "name": "Rudy the Bartender",
+   "name": "Achilles",
    "w3": "Zoltan Chivay",
    "type": "unit",
    "row": "close",
@@ -110,11 +145,16 @@
    "abilities": [],
    "count": 1,
    "entity": "easy_npc:humanoid",
-   "npc": "c6055f21-3ad1-4eed-be3c-643d05db898e"
+   "npc": "c6055f21-3ad1-4eed-be3c-643d05db898e",
+   "image": "ec_gwent:textures/cards/neutral/rudy_the_bartender.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "amanda_the_fairy",
-   "name": "Amanda the Fairy",
+   "name": "Northtown Guard",
    "w3": "Vesemir",
    "type": "unit",
    "row": "close",
@@ -122,11 +162,16 @@
    "abilities": [],
    "count": 1,
    "entity": "easy_npc:humanoid",
-   "npc": "21919ac4-65a3-4a5c-937b-7407efd8c80c"
+   "npc": "21919ac4-65a3-4a5c-937b-7407efd8c80c",
+   "image": "ec_gwent:textures/cards/neutral/amanda_the_fairy.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "protput",
-   "name": "Protput",
+   "name": "Tower",
    "w3": "Emiel Regis Rohellec Terzieff",
    "type": "unit",
    "row": "close",
@@ -134,11 +179,16 @@
    "abilities": [],
    "count": 1,
    "entity": "easy_npc:humanoid",
-   "npc": "839acacb-e1e3-4a3c-b7b5-3599d8e3e410"
+   "npc": "839acacb-e1e3-4a3c-b7b5-3599d8e3e410",
+   "image": "ec_gwent:textures/cards/neutral/protput.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "valarian_commander",
-   "name": "Valarian Commander",
+   "name": "Tongbi",
    "w3": "Olgierd von Everec",
    "type": "unit",
    "row": "agile",
@@ -148,7 +198,12 @@
    ],
    "count": 1,
    "entity": "easy_npc:humanoid",
-   "npc": "b608d984-66a1-47be-8527-6a78e32930f9"
+   "npc": "b608d984-66a1-47be-8527-6a78e32930f9",
+   "image": "ec_gwent:textures/cards/neutral/valarian_commander.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "ronny",
@@ -163,7 +218,12 @@
    "count": 1,
    "entity": "easy_npc:humanoid",
    "muster": "ronny",
-   "npc": "f69d3898-5bcb-4080-9768-cf5a4a7fe995"
+   "npc": "f69d3898-5bcb-4080-9768-cf5a4a7fe995",
+   "image": "ec_gwent:textures/cards/neutral/ronny.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "donny",
@@ -178,7 +238,12 @@
    "count": 3,
    "entity": "easy_npc:humanoid",
    "muster": "ronny",
-   "npc": "97a1956b-9c47-4488-9f31-fb74c43ea191"
+   "npc": "97a1956b-9c47-4488-9f31-fb74c43ea191",
+   "image": "ec_gwent:textures/cards/neutral/donny.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "cow",
@@ -192,11 +257,16 @@
    ],
    "count": 1,
    "entity": "minecraft:cow",
-   "avenger": "village_defense_golem"
+   "avenger": "village_defense_golem",
+   "image": "ec_gwent:textures/cards/neutral/cow.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "village_defense_golem",
-   "name": "Village Defense Golem",
+   "name": "Carialis Guard",
    "w3": "Bovine Defense Force",
    "type": "unit",
    "row": "close",
@@ -204,7 +274,12 @@
    "abilities": [],
    "count": 0,
    "entity": "minecraft:iron_golem",
-   "summoned_only": true
+   "summoned_only": true,
+   "image": "ec_gwent:textures/cards/neutral/village_defense_golem.png",
+   "image_size": [
+    144,
+    200
+   ]
   },
   {
    "id": "trusty_horse",
@@ -216,7 +291,12 @@
    "abilities": [],
    "count": 1,
    "entity": "minecraft:horse",
-   "muster": "trusty_horse"
+   "muster": "trusty_horse",
+   "image": "ec_gwent:textures/cards/neutral/trusty_horse.png",
+   "image_size": [
+    144,
+    200
+   ]
   }
  ]
 }

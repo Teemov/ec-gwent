@@ -218,20 +218,20 @@ Faction perk: two random units return from the graveyard at the start of round 3
 | Card | Witcher 3 | Row | Str | Ability | Copies | Mob |
 |---|---|---|---|---|---|---|
 | Head Mage | Geralt of Rivia | close | 15 | Hero, Muster (group `trusty_horse`) | 1 | `easy_npc:humanoid` |
-| Nightblade | Cirilla Fiona Elen Riannon | close | 15 | Hero, Muster (group `trusty_horse`) | 1 | `easy_npc:humanoid` |
+| Sven | Cirilla Fiona Elen Riannon | close | 15 | Hero, Muster (group `trusty_horse`) | 1 | `easy_npc:humanoid` |
 | Fish Mage | Yennefer of Vengerberg | ranged | 7 | Hero, Medic | 1 | `easy_npc:humanoid` |
-| Ignis | Triss Merigold | close | 7 | Hero | 1 | `easy_npc:humanoid` |
+| Eric | Triss Merigold | close | 7 | Hero | 1 | `easy_npc:humanoid` |
 | Bug Hunter | Mysterious Elf (Avallac'h) | close | 0 | Hero, Spy | 1 | `easy_npc:humanoid` |
-| The Dragon | Villentretenmerth | close | 7 | Scorch – Close | 1 | `minecraft:ender_dragon` |
+| Harald | Villentretenmerth | close | 7 | Scorch – Close | 1 | `minecraft:ender_dragon` |
 | Stuve | Dandelion | close | 2 | Horn | 1 | `easy_npc:humanoid` |
-| Rudy the Bartender | Zoltan Chivay | close | 5 |  | 1 | `easy_npc:humanoid` |
-| Amanda the Fairy | Vesemir | close | 6 |  | 1 | `easy_npc:humanoid` |
-| Protput | Emiel Regis Rohellec Terzieff | close | 5 |  | 1 | `easy_npc:humanoid` |
-| Valarian Commander | Olgierd von Everec | agile | 6 | Morale | 1 | `easy_npc:humanoid` |
+| Achilles | Zoltan Chivay | close | 5 |  | 1 | `easy_npc:humanoid` |
+| Northtown Guard | Vesemir | close | 6 |  | 1 | `easy_npc:humanoid` |
+| Tower | Emiel Regis Rohellec Terzieff | close | 5 |  | 1 | `easy_npc:humanoid` |
+| Tongbi | Olgierd von Everec | agile | 6 | Morale | 1 | `easy_npc:humanoid` |
 | Ronny | Gaunter O'Dimm | siege | 2 | Muster (group `ronny`) | 1 | `easy_npc:humanoid` |
 | Donny | Gaunter O'Dimm – Darkness | ranged | 4 | Muster (group `ronny`) | 3 | `easy_npc:humanoid` |
 | Cow | Cow | ranged | 0 | Avenger (becomes village_defense_golem) | 1 | `minecraft:cow` |
-| Village Defense Golem | Bovine Defense Force | close | 8 |  (only summoned) | 0 | `minecraft:iron_golem` |
+| Carialis Guard | Bovine Defense Force | close | 8 |  (only summoned) | 0 | `minecraft:iron_golem` |
 | Trusty Horse | Roach | close | 3 |  (group `trusty_horse`) | 1 | `minecraft:horse` |
 
 ## Special (24 cards)
