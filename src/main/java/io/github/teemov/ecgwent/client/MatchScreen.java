@@ -63,6 +63,10 @@ public final class MatchScreen extends CanvasScreen {
     private String lastTurnKey = "";
     private int lastMyGems = 2, lastTheirGems = 2, lastRound = 1;
     private boolean lastTheyPassed;
+    // Coin toss
+    private static final long COIN_MS = 2700, COIN_FLIP_MS = 1500;
+    private long coinStart;
+    private boolean coinFirstMe;
     // Weather effects
     private boolean hadWeather;
     private long clearBurst;
@@ -158,6 +162,17 @@ public final class MatchScreen extends CanvasScreen {
         lastTheirGems = theirGems;
         lastRound = round;
         lastTheyPassed = bool(them(), "passed");
+        if (!ClientHooks.coinDone && m().containsKey("firstMe") && !over()) {
+            ClientHooks.coinDone = true;
+            coinFirstMe = bool(m(), "firstMe");
+            if (bool(m(), "coinToss")) {
+                coinStart = Util.getMillis();
+                net.minecraft.client.Minecraft.getInstance().getSoundManager().play(
+                        net.minecraft.client.resources.sounds.SimpleSoundInstance.forUI(net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_GOLD, 1.4f));
+            } else {
+                banners.add(coinFirstMe ? "You go first" : "Opponent goes first");
+            }
+        }
     }
 
     private boolean isGraveTop(int uid) {
@@ -194,7 +209,7 @@ public final class MatchScreen extends CanvasScreen {
         deferred.clear();
         framePos.clear();
         if (m() == null) return;
-        boolean overlay = over() || redrawing() || choice() != null || phase().equals("CHOOSE_FIRST") || phase().equals("REDRAW");
+        boolean overlay = coinActive() || over() || redrawing() || choice() != null || phase().equals("CHOOSE_FIRST") || phase().equals("REDRAW");
         boolean interactive = !overlay;
 
         drawTable(g);
@@ -217,7 +232,8 @@ public final class MatchScreen extends CanvasScreen {
         g.pose().popPose();
 
         drawBanner(g);
-        drawOverlays(g, mx, my);
+        if (coinActive()) drawCoin(g);
+        else drawOverlays(g, mx, my);
         lastPos.clear();
         lastPos.putAll(framePos);
         anims.entrySet().removeIf(e -> Util.getMillis() - e.getValue().start > ANIM_MS + 50 && !framePos.containsKey(e.getKey()));
@@ -580,6 +596,92 @@ public final class MatchScreen extends CanvasScreen {
         g.pose().popPose();
     }
 
+    // ---------------------------------------------------------------- coin toss
+
+    private boolean coinActive() { return coinStart > 0 && Util.getMillis() - coinStart < COIN_MS; }
+
+    private boolean coinLanded;
+
+    /** A coin flips into the air, spins and lands on the side of whoever goes first. */
+    private void drawCoin(GuiGraphics g) {
+        long t = Util.getMillis() - coinStart;
+        g.pose().pushPose();
+        g.pose().translate(0, 0, CanvasScreen.Z_OVERLAY);
+        g.fill(0, 0, VW, VH, 0xB0000000);
+        g.drawCenteredString(font, "Coin toss", VW / 2, 70, 0xFFFFE9A0);
+        // Legend: which face is whose
+        String myF = str(me(), "faction"), theirF = str(them(), "faction");
+        int lx = VW / 2 - 110;
+        disc(g, lx, 98, 6, 0xFFC9A227); disc(g, lx, 98, 4, Texts.FACTION_COLOR.getOrDefault(myF, 0xFF555555));
+        small(g, "You: " + ClientHooks.cards.factionName(myF), lx + 10, 95, 90, 0xFFDDDDDD);
+        int rx = VW / 2 + 20;
+        disc(g, rx, 98, 6, 0xFFC9A227); disc(g, rx, 98, 4, Texts.FACTION_COLOR.getOrDefault(theirF, 0xFF555555));
+        small(g, str(them(), "name") + ": " + ClientHooks.cards.factionName(theirF), rx + 10, 95, 100, 0xFFDDDDDD);
+
+        float f = Math.min(1, t / (float) COIN_FLIP_MS);
+        float eased = 1 - (1 - f) * (1 - f);
+        double angle = eased * (Math.PI * 10 + (coinFirstMe ? 0 : Math.PI));
+        int cx = VW / 2, base = 200, r = 26;
+        int cy = base - (int) (Math.sin(Math.PI * f) * 80);
+        double cos = Math.cos(angle);
+        boolean front = cos >= 0;
+        int face = Texts.FACTION_COLOR.getOrDefault(front ? myF : theirF, 0xFF555555);
+        float squash = (float) Math.max(0.06, Math.abs(cos));
+        // Shadow on the table
+        int sw = (int) (r * (0.6f + 0.4f * (1 - (base - cy) / 80f)));
+        for (int dy = -3; dy <= 3; dy++) {
+            int w = (int) (sw * Math.sqrt(1 - dy * dy / 9.0));
+            g.fill(cx - w, base + r + 8 + dy, cx + w, base + r + 9 + dy, 0x50000000);
+        }
+        // Coin: rim, face and emblem, squashed horizontally as it spins
+        ellipse(g, cx, cy, r * squash + 1, r + 1, 0xFF3A2A10);
+        ellipse(g, cx, cy, r * squash, r, 0xFFC9A227);
+        ellipse(g, cx, cy, r * squash * 0.82f, r * 0.82f, (face & 0x00FFFFFF) | 0xFF000000);
+        ellipse(g, cx, cy, r * squash * 0.42f, r * 0.42f, 0xFFE9C84A);
+        if (squash > 0.5f) { // a crown on your side, a skull-ish mark on theirs
+            int c = 0xFF3A2A10;
+            if (front) {
+                g.fill(cx - 5, cy + 1, cx + 6, cy + 4, c);
+                g.fill(cx - 5, cy - 3, cx - 3, cy + 1, c);
+                g.fill(cx - 1, cy - 4, cx + 2, cy + 1, c);
+                g.fill(cx + 4, cy - 3, cx + 6, cy + 1, c);
+            } else {
+                g.fill(cx - 4, cy - 4, cx + 5, cy + 2, c);
+                g.fill(cx - 2, cy + 2, cx + 3, cy + 5, c);
+                g.fill(cx - 3, cy - 2, cx - 1, cy, 0xFFE9C84A);
+                g.fill(cx + 2, cy - 2, cx + 4, cy, 0xFFE9C84A);
+            }
+        }
+        if (f >= 1) {
+            if (!coinLanded) {
+                coinLanded = true;
+                net.minecraft.client.Minecraft.getInstance().getSoundManager().play(
+                        net.minecraft.client.resources.sounds.SimpleSoundInstance.forUI(net.minecraft.sounds.SoundEvents.CHAIN_PLACE, 1.6f));
+            }
+            float a = Math.min(1, (t - COIN_FLIP_MS) / 300f);
+            int alpha = (int) (a * 255) << 24;
+            String msg = coinFirstMe ? "You go first!" : str(them(), "name") + " goes first";
+            g.pose().pushPose();
+            g.pose().translate(VW / 2f - font.width(msg), 262, 0);
+            g.pose().scale(2, 2, 1);
+            g.drawString(font, msg, 0, 0, alpha | (coinFirstMe ? 0xFFE080 : 0xFF9F9F), true);
+            g.pose().popPose();
+        } else {
+            g.drawCenteredString(font, "Flipping a coin…", VW / 2, 268, 0xFFBBBBBB);
+        }
+        g.pose().popPose();
+    }
+
+    private static void ellipse(GuiGraphics g, int cx, int cy, float rx, float ry, int color) {
+        int ir = (int) Math.ceil(ry);
+        for (int dy = -ir; dy <= ir; dy++) {
+            double k = 1 - (dy * dy) / (double) (ry * ry);
+            if (k < 0) continue;
+            int w = (int) Math.round(rx * Math.sqrt(k));
+            g.fill(cx - w, cy + dy, cx + w + 1, cy + dy + 1, color);
+        }
+    }
+
     // ---------------------------------------------------------------- weather effects (see-through, over the cards)
 
     private void drawWeatherFx(GuiGraphics g) {
@@ -822,6 +924,7 @@ public final class MatchScreen extends CanvasScreen {
 
     @Override
     protected boolean clicked(double mx, double my, int button) {
+        if (coinActive()) return true;
         if (m() == null || over()) return false;
         if (button == 1) { selected = -1; return true; }
         if (redrawing()) {

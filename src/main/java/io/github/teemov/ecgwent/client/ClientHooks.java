@@ -16,6 +16,8 @@ public final class ClientHooks {
     public static Map<String, Object> match;
     /** The player closed the board mid-match; updates don't reopen it until K is pressed. */
     public static boolean matchHidden;
+    /** The start-of-match coin toss has been shown for the current match. */
+    public static boolean coinDone;
 
     private ClientHooks() {}
 
@@ -45,7 +47,7 @@ public final class ClientHooks {
     public static void matchView(String json) {
         boolean fresh = match == null || match.containsKey("winner");
         match = (Map<String, Object>) Json.parse(json);
-        if (fresh) matchHidden = false;
+        if (fresh) { matchHidden = false; coinDone = false; }
         Minecraft mc = Minecraft.getInstance();
         if (mc.screen instanceof MatchScreen s) s.refresh();
         else if (!matchHidden || match.containsKey("winner")) mc.setScreen(new MatchScreen());
@@ -57,6 +59,12 @@ public final class ClientHooks {
         matchHidden = false;
         Minecraft.getInstance().setScreen(new MatchScreen());
         return true;
+    }
+
+    public static void duelOffer(java.util.UUID from, String name, int bet) {
+        Minecraft mc = Minecraft.getInstance();
+        if (matchRunning()) return;
+        mc.setScreen(new DuelScreen(from, name, bet));
     }
 
     public static void villagerOffer(int entityId, String name, int level) {

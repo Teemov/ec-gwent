@@ -69,6 +69,10 @@ public final class Net {
         CHANNEL.messageBuilder(AcceptVillager.class, id++, NetworkDirection.PLAY_TO_SERVER)
                 .encoder((m, b) -> b.writeVarInt(m.entityId)).decoder(b -> new AcceptVillager(b.readVarInt()))
                 .consumerMainThread((m, ctx) -> Matches.acceptVillager(ctx.get().getSender(), m.entityId)).add();
+        CHANNEL.messageBuilder(DuelAnswer.class, id++, NetworkDirection.PLAY_TO_SERVER)
+                .encoder((m, b) -> { b.writeUUID(m.from); b.writeBoolean(m.accept); })
+                .decoder(b -> new DuelAnswer(b.readUUID(), b.readBoolean()))
+                .consumerMainThread((m, ctx) -> Matches.answerDuel(ctx.get().getSender(), m.from, m.accept)).add();
         // ---------------------------------------------------------------- server -> client
         CHANNEL.messageBuilder(SyncCards.class, id++, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder((m, b) -> {
@@ -89,6 +93,10 @@ public final class Net {
         CHANNEL.messageBuilder(MatchView.class, id++, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder((m, b) -> writeString(b, m.json)).decoder(b -> new MatchView(readString(b)))
                 .consumerMainThread((m, ctx) -> client(() -> () -> ClientHooks.matchView(m.json))).add();
+        CHANNEL.messageBuilder(DuelOffer.class, id++, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder((m, b) -> { b.writeUUID(m.from); b.writeUtf(m.name); b.writeVarInt(m.bet); })
+                .decoder(b -> new DuelOffer(b.readUUID(), b.readUtf(64), b.readVarInt()))
+                .consumerMainThread((m, ctx) -> client(() -> () -> ClientHooks.duelOffer(m.from, m.name, m.bet))).add();
         CHANNEL.messageBuilder(AccessState.class, id++, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder((m, b) -> b.writeBoolean(m.unlocked)).decoder(b -> new AccessState(b.readBoolean()))
                 .consumerMainThread((m, ctx) -> io.github.teemov.ecgwent.client.ClientAccess.set(m.unlocked)).add();
@@ -152,6 +160,19 @@ public final class Net {
     public static final class MatchView {
         final String json;
         public MatchView(String json) { this.json = json; }
+    }
+
+    public static final class DuelAnswer {
+        final java.util.UUID from;
+        final boolean accept;
+        public DuelAnswer(java.util.UUID from, boolean accept) { this.from = from; this.accept = accept; }
+    }
+
+    public static final class DuelOffer {
+        final java.util.UUID from;
+        final String name;
+        final int bet;
+        public DuelOffer(java.util.UUID from, String name, int bet) { this.from = from; this.name = name; this.bet = bet; }
     }
 
     public static final class AccessState {

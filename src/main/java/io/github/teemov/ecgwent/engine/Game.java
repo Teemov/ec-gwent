@@ -58,6 +58,9 @@ public final class Game {
     public int round = 1;
     public int current;
     private int roundStarter;
+    /** Who starts round 1 (-1 until decided) and whether a coin toss decided it. */
+    public int firstStarter = -1;
+    public boolean coinToss;
     public Choice choice;
     /** null while running; -1 for a drawn match, else the winning side. */
     public Integer winner;
@@ -100,6 +103,8 @@ public final class Game {
             choice = new Choice(chooser, ChoiceKind.FIRST_PLAYER, List.of(), 1);
         } else {
             roundStarter = rng.nextBoolean() ? 0 : 1;
+            firstStarter = roundStarter;
+            coinToss = true;
             say(-1, sides[roundStarter].name + " won the coin toss and goes first.");
             phase = Phase.REDRAW;
         }
@@ -114,6 +119,8 @@ public final class Game {
         round = g.round;
         current = g.current;
         roundStarter = g.roundStarter;
+        firstStarter = g.firstStarter;
+        coinToss = g.coinToss;
         choice = g.choice;
         winner = g.winner;
         doubleSpies = g.doubleSpies;
@@ -149,6 +156,7 @@ public final class Game {
     public void chooseFirst(int side, boolean meFirst) {
         check(phase == Phase.CHOOSE_FIRST && choice.side == side, "Not your choice");
         roundStarter = meFirst ? side : 1 - side;
+        firstStarter = roundStarter;
         choice = null;
         say(-1, sides[side].name + " lets " + sides[roundStarter].name + " go first.");
         phase = Phase.REDRAW;

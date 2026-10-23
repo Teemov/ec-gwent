@@ -199,6 +199,13 @@ public final class CardArt {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null) return null;
         if (spec.equals("self")) return mc.player;
+        if (spec.startsWith("player:")) {
+            try {
+                return mc.level.getPlayerByUUID(UUID.fromString(spec.substring(7)));
+            } catch (IllegalArgumentException e) {
+                return null;
+            }
+        }
         String key = spec + (heldItem == null ? "" : "#" + heldItem);
         if (cache.containsKey(key)) return cache.get(key);
         String type = spec;

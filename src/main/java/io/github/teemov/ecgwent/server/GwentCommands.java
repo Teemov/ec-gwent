@@ -39,6 +39,11 @@ public final class GwentCommands {
                     ServerHooks.sendBook(c.getSource().getPlayerOrException(), true);
                     return 1;
                 }))
+                .then(Commands.literal("duel").requires(Access::allowed)
+                        .then(Commands.argument("player", EntityArgument.player())
+                                .executes(c -> duel(c, 0))
+                                .then(Commands.argument("bet", IntegerArgumentType.integer(0, Matches.MAX_DUEL_BET))
+                                        .executes(c -> duel(c, IntegerArgumentType.getInteger(c, "bet"))))))
                 .then(Commands.literal("forfeit").requires(Access::allowed).executes(c -> {
                     ServerPlayer p = c.getSource().getPlayerOrException();
                     Matches.action(p, io.github.teemov.ecgwent.net.Net.MatchAction.of("forfeit"));
@@ -104,6 +109,12 @@ public final class GwentCommands {
                                                     + (v.equals("cards") ? "a card" : "an extra emerald") + "."), true);
                                             return 1;
                                         })))));
+    }
+
+    private static int duel(CommandContext<CommandSourceStack> c, int bet) throws CommandSyntaxException {
+        String err = Matches.inviteDuel(c.getSource().getPlayerOrException(), EntityArgument.getPlayer(c, "player"), bet);
+        if (err != null) { c.getSource().sendFailure(Component.literal(err)); return 0; }
+        return 1;
     }
 
     private static int setUnlocked(CommandContext<CommandSourceStack> c, boolean on, boolean silent) throws CommandSyntaxException {
