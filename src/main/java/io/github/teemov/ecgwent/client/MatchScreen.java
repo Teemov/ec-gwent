@@ -63,6 +63,10 @@ public final class MatchScreen extends CanvasScreen {
     private String lastTurnKey = "";
     private int lastMyGems = 2, lastTheirGems = 2, lastRound = 1;
     private boolean lastTheyPassed;
+    // PvP move timer: seconds left when the last snapshot arrived
+    private int timeLeft = -1;
+    private long timeAt;
+    private int lastTickSecond = -1;
     // Coin toss
     private static final long COIN_MS = 2700, COIN_FLIP_MS = 1500;
     private long coinStart;
@@ -112,6 +116,8 @@ public final class MatchScreen extends CanvasScreen {
     /** Called when a new snapshot arrives. */
     public void refresh() {
         if (m() == null) return;
+        timeLeft = m().containsKey("timeLeft") ? num(m(), "timeLeft") : -1;
+        timeAt = Util.getMillis();
         if (choice() == null) picks.clear();
         if (selected >= 0 && list(me(), "hand").stream().noneMatch(c -> num(c, "uid") == selected)) selected = -1;
 
@@ -241,6 +247,7 @@ public final class MatchScreen extends CanvasScreen {
         drawBanner(g);
         if (coinActive()) { if (betReveal) drawBets(g); else drawCoin(g); }
         else drawOverlays(g, mx, my);
+        drawMoveTimer(g);
         drawForfeitPrompt(g);
         lastPos.clear();
         lastPos.putAll(framePos);
@@ -625,6 +632,46 @@ public final class MatchScreen extends CanvasScreen {
         g.pose().scale(s, s, 1);
         g.drawString(font, banner, 0, 0, color, true);
         g.pose().popPose();
+    }
+
+    /** Whose move it is in a duel, and how long they have left. Shown above overlays too (redraw, picks). */
+    private void drawMoveTimer(GuiGraphics g) {
+        if (timeLeft < 0 || over() || coinActive()) return;
+        int left = (int) Math.max(0, timeLeft - (Util.getMillis() - timeAt) / 1000);
+        boolean mine = myMoveDue();
+        String who = phase().equals("REDRAW") ? "Starting hand" : mine ? "Your move" : "Their move";
+        boolean urgent = left <= 10;
+        if (mine && urgent && left != lastTickSecond && left > 0) {
+            lastTickSecond = left;
+            net.minecraft.client.Minecraft.getInstance().getSoundManager().play(
+                    net.minecraft.client.resources.sounds.SimpleSoundInstance.forUI(net.minecraft.sounds.SoundEvents.NOTE_BLOCK_HAT.value(), 1.6f));
+        }
+        g.pose().pushPose();
+        g.pose().translate(0, 0, CanvasScreen.Z_PREVIEW + 400);
+        int x = 524, y = 132, w = 90, h = 44;
+        g.fill(x, y, x + w, y + h, 0xE0140C06);
+        int edge = urgent ? ((Util.getMillis() / 250) % 2 == 0 ? 0xFFE04040 : 0xFF802020) : 0xFFC9A227;
+        outline(g, x, y, w, h, edge);
+        small(g, who, x + 6, y + 5, w - 12, mine ? 0xFFFFE080 : 0xFFBBBBBB);
+        String t = (left / 60) + ":" + String.format("%02d", left % 60);
+        g.pose().pushPose();
+        g.pose().translate(x + w / 2f - font.width(t), y + 17, 0);
+        g.pose().scale(2, 2, 1);
+        g.drawString(font, t, 0, 0, urgent ? 0xFFFF6060 : 0xFFFFFFFF, true);
+        g.pose().popPose();
+        // bar
+        float frac = Math.min(1, left / 60f);
+        g.fill(x + 4, y + h - 5, x + w - 4, y + h - 3, 0xFF3A2A1A);
+        g.fill(x + 4, y + h - 5, x + 4 + (int) ((w - 8) * frac), y + h - 3, urgent ? 0xFFE04040 : 0xFFC9A227);
+        g.pose().popPose();
+    }
+
+    /** True when this player is the one who has to act now. */
+    private boolean myMoveDue() {
+        if (phase().equals("REDRAW")) return num(me(), "redrawsLeft") > 0;
+        if (choice() != null || (phase().equals("CHOOSE_FIRST") && choice() != null)) return true;
+        if (m().containsKey("waiting")) return false;
+        return myTurn();
     }
 
     /** "Press Esc again to forfeit" while the forfeit is armed. */

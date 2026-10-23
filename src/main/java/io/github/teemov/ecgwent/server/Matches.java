@@ -42,6 +42,8 @@ public final class Matches {
     /** Duellists who end up further apart than this forfeit (the one who walked away loses). */
     private static final double DUEL_RANGE = 32;
     private static final int INVITE_TICKS = 20 * 60;
+    /** PvP: a minute per move; running out passes (or makes the pending pick). The start screens get a few extra seconds. */
+    private static final int MOVE_TICKS = 20 * 60, START_GRACE = 20 * 4;
 
     private static final Map<UUID, Match> matches = new HashMap<>();
     /** Pending duel invitations: invited player → invitation. */
@@ -73,6 +75,8 @@ public final class Matches {
         boolean finished;
         final String[] result = new String[2];
         int closeTimer = -1;
+        /** Server tick of the last change, and the tick by which the due move must be made (duels). */
+        long startTick, deadline;
 
         Match(UUID player, Game game, Kind kind, String opponentId, String opponentPortrait, String reward, Deck opponentDeck) {
             players[0] = player;
@@ -173,6 +177,9 @@ public final class Matches {
         if (!Access.allowed(to)) return to.getName().getString() + " doesn't play Gwent (yet).";
         if (inMatch(from)) return "You're already in a match.";
         if (inMatch(to)) return to.getName().getString() + " is already playing.";
+        Invite pending = invites.get(to.getUUID());
+        if (pending != null && !pending.from.equals(from.getUUID()) && from.server.getTickCount() <= pending.expiresTick)
+            return to.getName().getString() + " is already considering another challenge.";
         if (bet < 0 || bet > MAX_DUEL_BET) return "Bets go from 0 to " + MAX_DUEL_BET + " emeralds.";
         if (from.level() != to.level() || from.distanceTo(to) > 16) return "Stand closer to " + to.getName().getString() + " to challenge them.";
         String[] why = new String[1];
@@ -231,6 +238,8 @@ public final class Matches {
     }
 
     private static void start(MinecraftServer server, Match m) {
+        m.startTick = server.getTickCount();
+        m.deadline = m.startTick + MOVE_TICKS + START_GRACE;
         for (UUID p : m.players) if (p != null) matches.put(p, m);
         sendAll(server, m);
     }
@@ -266,7 +275,10 @@ public final class Matches {
                 default -> { return; }
             }
         } catch (IllegalStateException e) {
+            // An illegal move changes nothing (and doesn't reset the move timer).
             p.displayClientMessage(Component.literal(e.getMessage()).withStyle(ChatFormatting.RED), true);
+            send(p, m);
+            return;
         }
         if (m.game.phase == Game.Phase.PLAY) m.aiWait = Math.max(m.aiWait, AI_DELAY);
         afterChange(p.server, m);
@@ -315,6 +327,7 @@ public final class Matches {
             }
             if (m.kind == Kind.DUEL) {
                 checkDuelRange(server, m);
+                checkMoveTimer(server, m);
                 continue;
             }
             holdOpponent(server, m);
@@ -333,6 +346,9 @@ public final class Matches {
     /** The villager or NPC stands still and faces the player for as long as the match runs. Nothing is stored on it. */
     private static void holdOpponent(MinecraftServer server, Match m) {
         if (m.opponentUuid == null) return;
+        // Several players can play the same villager or NPC: it faces whoever challenged it last.
+        for (Match o : matches.values())
+            if (o != m && !o.finished && m.opponentUuid.equals(o.opponentUuid) && o.startTick > m.startTick) return;
         ServerPlayer p = server.getPlayerList().getPlayer(m.players[0]);
         if (p == null) return;
         Entity e = p.serverLevel().getEntity(m.opponentUuid);
@@ -346,6 +362,36 @@ public final class Matches {
         }
         mob.setDeltaMovement(0, Math.min(0, mob.getDeltaMovement().y), 0);
         mob.getLookControl().setLookAt(p, 30f, 30f);
+    }
+
+    /** PvP move timer: whoever has to act and runs out of time passes (or gets the sensible default pick). */
+    private static void checkMoveTimer(MinecraftServer server, Match m) {
+        if (server.getTickCount() < m.deadline) return;
+        Game g = m.game;
+        try {
+            switch (g.phase) {
+                case PLAY -> {
+                    int side = g.current;
+                    g.log.add(g.sides[side].name + " ran out of time.");
+                    g.logSide.add(-1);
+                    g.pass(side);
+                }
+                case REDRAW -> {
+                    for (int side = 0; side < 2; side++) if (!g.sides[side].redrawDone) g.finishRedraw(side);
+                }
+                case CHOICE, CHOOSE_FIRST -> {
+                    if (g.choice != null) {
+                        g.log.add(g.sides[g.choice.side].name + " ran out of time.");
+                        g.logSide.add(-1);
+                        Ai.act(g, g.choice.side);
+                    }
+                }
+                default -> { return; }
+            }
+        } catch (RuntimeException e) {
+            EcGwent.LOGGER.error("Gwent move timer", e);
+        }
+        afterChange(server, m);
     }
 
     /** A duellist who walks away (or changes dimension) forfeits. */
@@ -372,6 +418,7 @@ public final class Matches {
     }
 
     private static void afterChange(MinecraftServer server, Match m) {
+        if (m.kind == Kind.DUEL) m.deadline = server.getTickCount() + MOVE_TICKS;
         if (m.game.phase == Game.Phase.OVER && !m.finished) finish(server, m);
         sendAll(server, m);
     }
@@ -386,7 +433,8 @@ public final class Matches {
 
     private static void send(ServerPlayer p, Match m) {
         int side = Math.max(0, m.sideOf(p.getUUID()));
-        Net.toPlayer(p, new Net.MatchView(View.of(m.game, side, m.portrait[side], m.result[side])));
+        int timeLeft = m.kind == Kind.DUEL && !m.finished ? (int) Math.max(0, (m.deadline - p.server.getTickCount()) / 20) : -1;
+        Net.toPlayer(p, new Net.MatchView(View.of(m.game, side, m.portrait[side], m.result[side], timeLeft)));
     }
 
     private static void finish(MinecraftServer server, Match m) {

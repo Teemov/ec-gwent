@@ -10,7 +10,13 @@ public final class View {
     private View() {}
 
     public static String of(Game g, int me, String opponentEntity, String result) {
+        return of(g, me, opponentEntity, result, -1);
+    }
+
+    /** {@code timeLeft}: seconds left for the move that is due now (PvP move timer), or -1 for no timer. */
+    public static String of(Game g, int me, String opponentEntity, String result, int timeLeft) {
         StringBuilder b = new StringBuilder("{");
+        if (timeLeft >= 0) field(b, "timeLeft", timeLeft);
         field(b, "phase", g.phase.name());
         field(b, "round", g.round);
         field(b, "coinToss", g.coinToss);

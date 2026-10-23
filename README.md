@@ -20,8 +20,8 @@ hidden. `/gwent config requireUnlock false` turns this off so everyone can play.
 |---|---|
 | Card book (collection, deck builder) | **K**, or `/gwent book`. The first time, you pick a starting faction and get its starter deck |
 | Back to a running match | **K** |
-| Challenge a player | Sneak + right-click them (or `/gwent duel <player> [bet]`). Each player picks their own bet (0-64 emeralds): the higher bet goes first, equal bets toss a coin, the winner takes both bets. Walking more than 32 blocks away or leaving counts as a loss |
-| Challenge a villager | Sneak + right-click an adult villager. Costs 2 emeralds; higher-level villagers play stronger decks. The villager stands still and faces you while you play |
+| Challenge a player | Sneak + right-click them (or `/gwent duel <player> [bet]`). Each player picks their own bet (0-64 emeralds): the higher bet goes first, equal bets toss a coin, the winner takes both bets. Walking more than 32 blocks away or leaving counts as a loss. Each move has a 1-minute timer: running out passes (or keeps your hand / makes the default pick). A player can only consider one challenge at a time |
+| Challenge a villager | Sneak + right-click an adult villager. Costs 2 emeralds; higher-level villagers play stronger decks. The villager stands still and faces you while you play. Villagers and story NPCs can play several people at once (they face the latest challenger) |
 | Give up a match | Press Esc twice (the first press asks), the Forfeit button, or `/gwent forfeit` |
 | Safety | While a match runs, you and your opponent (player, villager or NPC) take no damage, except from `/kill` and the void. It ends with the match |
 
