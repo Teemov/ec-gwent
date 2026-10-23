@@ -100,6 +100,49 @@ public final class EngineSelfTest {
         System.out.println("Strong deck beat weak deck in " + strongWins + "/400");
         expect(strongWins > 280, "deck quality matters");
 
+        // New AI vs the previous one: same decks, both seatings.
+        int newWins = 0, oldWins = 0, h2h = Integer.parseInt(System.getProperty("h2h", "1500"));
+        long newR1Spent = 0, oldR1Spent = 0, r1Count = 0, newDumped = 0, oldDumped = 0;
+        for (int i = 0; i < h2h; i++) {
+            String fa = CardRegistry.PLAYABLE_FACTIONS.get(rng.nextInt(5)), fb = CardRegistry.PLAYABLE_FACTIONS.get(rng.nextInt(5));
+            double q = 0.3 + rng.nextDouble() * 0.6;
+            Deck a = Decks.random(reg, fa, q, rng), b = Decks.random(reg, fb, q, rng);
+            long seed = rng.nextLong();
+            for (int seat = 0; seat < 2; seat++) {
+                Game hg = new Game(reg, a, "A", b, "B", seed);
+                int newSide = seat;
+                int[] handAtStart = new int[2];
+                boolean r1Recorded = false;
+                int guard = 0;
+                while (hg.phase != Game.Phase.OVER && guard++ < 3000) {
+                    if (hg.phase == Game.Phase.PLAY && hg.round == 1 && handAtStart[0] == 0 && handAtStart[1] == 0) {
+                        handAtStart[0] = hg.sides[0].hand.size();
+                        handAtStart[1] = hg.sides[1].hand.size();
+                    }
+                    if (!r1Recorded && hg.round == 2) {
+                        r1Recorded = true;
+                        r1Count++;
+                        newR1Spent += handAtStart[newSide] - hg.sides[newSide].hand.size();
+                        oldR1Spent += handAtStart[1 - newSide] - hg.sides[1 - newSide].hand.size();
+                        int nh = hg.sides[newSide].hand.size(), oh = hg.sides[1 - newSide].hand.size();
+                        if (nh <= 2 && oh >= 5) newDumped++;
+                        if (oh <= 2 && nh >= 5) oldDumped++;
+                    }
+                    boolean acted = (newSide == 0 ? Ai.act(hg, 0) : BaselineAi.act(hg, 0)) | (newSide == 1 ? Ai.act(hg, 1) : BaselineAi.act(hg, 1));
+                    if (!acted) break;
+                }
+                expect(hg.phase == Game.Phase.OVER, "head-to-head match ended");
+                if (hg.winner != null && hg.winner == newSide) newWins++;
+                else if (hg.winner != null && hg.winner == 1 - newSide) oldWins++;
+            }
+        }
+        System.out.printf("New AI vs old AI: %d wins, %d losses, %d draws (%.1f%% of decided)%n", newWins, oldWins,
+                2 * h2h - newWins - oldWins, 100.0 * newWins / Math.max(1, newWins + oldWins));
+        System.out.printf("Cards spent in round 1: new AI %.2f, old AI %.2f%n", newR1Spent / (double) r1Count, oldR1Spent / (double) r1Count);
+        System.out.printf("Left round 1 with <=2 cards vs >=5: new AI %.1f%%, old AI %.1f%%%n", 100.0 * newDumped / r1Count, 100.0 * oldDumped / r1Count);
+        expect(newWins > oldWins, "new AI beats the old one");
+        expect(newDumped * 4 < oldDumped + 4, "new AI doesn't empty its hand in round 1");
+
         // Bets: the higher bet starts, equal bets use the coin.
         for (int i = 0; i < 20; i++) {
             Game bg = new Game(reg, Decks.starter(reg, "valarians"), "A", Decks.starter(reg, "monsters"), "B", i, 3, 10);

@@ -104,20 +104,47 @@ public final class Ai {
         return t;
     }
 
+    /** How much a card is worth keeping for later rounds. Spies are free (they draw cards), heroes are saved. */
+    static int keepValue(CardDef d) {
+        if (d.has("spy")) return -8;
+        int v = d.strength;
+        if (d.isHero()) v += 4;
+        if (d.has("medic")) v += 3;
+        if (d.has("muster")) v += 2;
+        if (d.type == CardDef.Type.WEATHER) v = 4;
+        if (d.has("scorch") && !d.isUnit()) v = 7;
+        if (d.has("horn") && !d.isUnit()) v = 6;
+        if (d.has("decoy")) v = 4;
+        return v;
+    }
+
+    private static int cost(Game g, int side, Game.Move m) {
+        if (m.kind == Game.Move.Kind.LEADER) return g.round == 3 || g.sides[side].gems == 1 ? 0 : 5;
+        Card c = Game.find(g.sides[side].hand, m.uid);
+        return c == null ? 0 : keepValue(c.def);
+    }
+
+    private record Scored(Game.Move move, int value, int newDiff, int cost) {}
+
+    /**
+     * Picks a move with the whole match in mind: the aim is to win two rounds, and the card that matters is the one
+     * still in hand for the deciding round. Round 1 is won cheaply or given up cheaply; a won round is followed by
+     * an early pass; a round that decides the match is fought with everything.
+     */
     static Game.Move chooseMove(Game g, int side) {
         Side me = g.sides[side], op = g.sides[1 - side];
         int diff = g.score(side) - g.score(1 - side);
         boolean winsDraws = me.perk(g.reg, "win_draws") && !op.perk(g.reg, "win_draws");
         boolean ahead = diff > 0 || (diff == 0 && winsDraws);
-        boolean mustWin = me.gems == 1; // losing this round loses the match
+        boolean mustWin = me.gems == 1;            // losing this round loses the match
+        boolean decisive = mustWin || op.gems == 1; // winning or losing this round decides a lot
         int myCards = me.hand.size(), opCards = op.hand.size();
 
         List<Game.Move> moves = new ArrayList<>(g.legalMoves(side));
         moves.removeIf(m -> m.kind == Game.Move.Kind.PASS);
         if (moves.isEmpty()) return Game.Move.pass();
 
-        // Score every move once.
-        List<Object[]> scored = new ArrayList<>();
+        List<Scored> scored = new ArrayList<>();
         for (Game.Move m : moves) {
             Game t;
             try {
@@ -126,43 +153,105 @@ public final class Ai {
                 continue;
             }
             int v = evaluate(g, t, side);
-            if (m.kind == Game.Move.Kind.LEADER && g.round == 1) v -= 3; // keep the leader for later if it's no better
-            int newDiff = t.score(side) - t.score(1 - side);
-            if (t.phase == Game.Phase.OVER || t.round != g.round) newDiff = diff; // move ended the round
-            scored.add(new Object[]{m, v, newDiff});
+            int nd = t.phase == Game.Phase.OVER || t.round != g.round ? diff : t.score(side) - t.score(1 - side);
+            int c = cost(g, side, m);
+            // Outside the deciding round, keeping strong cards matters as much as the points they bring now.
+            if (!mustWin) v -= Math.max(0, c - 4) / (decisive ? 3 : 2);
+            if (m.kind == Game.Move.Kind.LEADER && !decisive) v -= 4;
+            scored.add(new Scored(m, v, nd, c));
         }
         if (scored.isEmpty()) return Game.Move.pass();
-        scored.sort((x, y) -> Integer.compare((int) y[1], (int) x[1]));
-        Game.Move best = (Game.Move) scored.get(0)[0];
+        scored.sort((x, y) -> Integer.compare(y.value, x.value));
+        Scored best = scored.get(0);
+        Scored spy = null;
+        for (Scored s : scored) if (s.cost < 0 && (spy == null || s.value > spy.value)) spy = s;
 
+        // ---- The opponent has passed: take the round only if it's worth the cards.
         if (op.passed) {
             if (ahead) return Game.Move.pass();
-            // Cheapest move that takes the lead.
-            Object[] cheapest = null;
-            for (Object[] s : scored) {
-                int nd = (int) s[2];
-                if (nd > 0 || (nd == 0 && winsDraws)) {
-                    if (cheapest == null || (int) s[1] > (int) cheapest[1]) cheapest = s;
-                }
-            }
-            if (cheapest != null) return (Game.Move) cheapest[0];
-            // Can we still catch up at all?
-            int potential = 0;
-            for (Card c : me.hand) if (c.def.isUnit()) potential += c.def.strength;
-            if (potential + diff <= 0 && !mustWin) return Game.Move.pass();
-            return best;
+            Scored cheapest = cheapestLead(scored, winsDraws);
+            if (cheapest != null) return cheapest.move;
+            int budget = decisive ? 99 : Math.max(1, myCards - opCards + 1);
+            Game.Move first = greedyWin(g, side, budget, winsDraws);
+            return first != null ? first : Game.Move.pass();
         }
 
-        if (!mustWin) {
-            // Comfortable lead and no card disadvantage: make the opponent spend cards.
-            if (diff >= 15 && myCards >= opCards - 1) return Game.Move.pass();
-            // Hopeless first round: save cards for the next ones.
-            if (g.round == 1 && diff <= -25 && myCards >= opCards) return Game.Move.pass();
-            // Already won a round: don't throw cards at a losing round.
-            if (op.gems == 1 && diff <= -15) return Game.Move.pass();
-        } else if (ahead && opCards == 0) {
-            return Game.Move.pass();
+        // ---- The round decides the match: fight, but don't throw cards away.
+        if (mustWin) {
+            if (ahead && opCards == 0) return Game.Move.pass();
+            if (!ahead) {
+                Scored cheapest = cheapestLead(scored, winsDraws);
+                if (cheapest != null) return cheapest.move;
+            }
+            return best.move;
         }
-        return best;
+
+        // ---- We already won a round: make the opponent spend cards. Spies first, then pass.
+        if (op.gems == 1) {
+            if (spy != null) return spy.move;
+            if (myCards >= opCards - 1 || ahead) return Game.Move.pass();
+            return cheapestUseful(scored, best).move;
+        }
+
+        // ---- Round 1 (both still on two gems): win it cheaply or give it up cheaply.
+        if (spy != null && spy.value > 0) return spy.move;
+        int cardEdge = myCards - opCards;
+        if (myCards <= 3) return Game.Move.pass();      // never empty the hand before the decisive rounds
+        if (ahead && cardEdge >= 0) return Game.Move.pass();          // they must spend to win it
+        if (ahead && diff >= 12 && cardEdge >= -1) return Game.Move.pass();
+        if (!ahead && cardEdge <= -2) return Game.Move.pass();        // already overspent: let it go
+        if (!ahead) {
+            Scored cheapest = cheapestLead(scored, winsDraws);
+            if (cheapest != null) return cheapest.move;
+            // Can't take the lead with one card: only keep going if it's close.
+            if (-diff > 15) return Game.Move.pass();
+        }
+        return cheapestUseful(scored, best).move;
+    }
+
+    /** The cheapest move (by keep value) that puts us in the lead. */
+    private static Scored cheapestLead(List<Scored> scored, boolean winsDraws) {
+        Scored pick = null;
+        for (Scored s : scored) {
+            boolean leads = s.newDiff > 0 || (s.newDiff == 0 && winsDraws);
+            if (leads && (pick == null || s.cost < pick.cost || (s.cost == pick.cost && s.value > pick.value))) pick = s;
+        }
+        return pick;
+    }
+
+    /** A reasonable cheap move: among moves almost as good as the best, the one that spends the least. */
+    private static Scored cheapestUseful(List<Scored> scored, Scored best) {
+        Scored pick = best;
+        for (Scored s : scored) if (s.value >= best.value - 3 && s.cost < pick.cost) pick = s;
+        return pick;
+    }
+
+    /** First move of the shortest greedy line that takes the lead within {@code budget} cards (opponent has passed). */
+    private static Game.Move greedyWin(Game g, int side, int budget, boolean winsDraws) {
+        Game t = g.copy();
+        Game.Move first = null;
+        for (int step = 0; step < budget; step++) {
+            if (t.phase != Game.Phase.PLAY || t.current != side) return null;
+            Game.Move bestMove = null;
+            Game bestGame = null;
+            int bestDiff = Integer.MIN_VALUE;
+            for (Game.Move m : t.legalMoves(side)) {
+                if (m.kind == Game.Move.Kind.PASS) continue;
+                Game u;
+                try {
+                    u = simulate(t, side, m);
+                } catch (IllegalStateException e) {
+                    continue;
+                }
+                if (u.phase == Game.Phase.OVER || u.round != t.round) continue;
+                int d = u.score(side) - u.score(1 - side);
+                if (d > bestDiff) { bestDiff = d; bestMove = m; bestGame = u; }
+            }
+            if (bestMove == null) return null;
+            if (first == null) first = bestMove;
+            if (bestDiff > 0 || (bestDiff == 0 && winsDraws)) return first;
+            t = bestGame;
+        }
+        return null;
     }
 }
