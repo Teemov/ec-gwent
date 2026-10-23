@@ -14,6 +14,9 @@ public final class View {
         field(b, "phase", g.phase.name());
         field(b, "round", g.round);
         field(b, "coinToss", g.coinToss);
+        field(b, "startByBet", g.startByBet);
+        field(b, "myBet", g.bets[me]);
+        field(b, "theirBet", g.bets[1 - me]);
         if (g.firstStarter >= 0) field(b, "firstMe", g.firstStarter == me);
         field(b, "myTurn", g.phase == Game.Phase.PLAY && g.current == me);
         field(b, "weather", weather(g));

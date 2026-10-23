@@ -61,6 +61,9 @@ public final class Game {
     /** Who starts round 1 (-1 until decided) and whether a coin toss decided it. */
     public int firstStarter = -1;
     public boolean coinToss;
+    /** Emeralds each side put on the match, and whether the higher bet decided who starts. */
+    public final int[] bets = new int[2];
+    public boolean startByBet;
     public Choice choice;
     /** null while running; -1 for a drawn match, else the winning side. */
     public Integer winner;
@@ -76,6 +79,14 @@ public final class Game {
     public final List<Integer> logSide = new ArrayList<>();
 
     public Game(CardRegistry reg, Deck a, String nameA, Deck b, String nameB, long seed) {
+        this(reg, a, nameA, b, nameB, seed, 0, 0);
+    }
+
+    /**
+     * A match with bets (duels). The higher bet goes first; equal bets fall back to the normal rules
+     * (the Orc perk, else a coin toss).
+     */
+    public Game(CardRegistry reg, Deck a, String nameA, Deck b, String nameB, long seed, int betA, int betB) {
         this.reg = reg;
         this.rng = new Random(seed);
         Deck[] decks = {a, b};
@@ -96,8 +107,16 @@ public final class Game {
             }
         }
         for (Side s : sides) draw(s, "extra_draw".equals(s.leaderAbility()) ? 11 : 10);
+        bets[0] = betA;
+        bets[1] = betB;
         boolean orc0 = sides[0].perk(reg, "choose_first_player"), orc1 = sides[1].perk(reg, "choose_first_player");
-        if (orc0 != orc1) {
+        if (betA != betB) {
+            roundStarter = betA > betB ? 0 : 1;
+            firstStarter = roundStarter;
+            startByBet = true;
+            say(-1, sides[roundStarter].name + " bet the most and goes first.");
+            phase = Phase.REDRAW;
+        } else if (orc0 != orc1) {
             int chooser = orc0 ? 0 : 1;
             phase = Phase.CHOOSE_FIRST;
             choice = new Choice(chooser, ChoiceKind.FIRST_PLAYER, List.of(), 1);
@@ -121,6 +140,9 @@ public final class Game {
         roundStarter = g.roundStarter;
         firstStarter = g.firstStarter;
         coinToss = g.coinToss;
+        startByBet = g.startByBet;
+        bets[0] = g.bets[0];
+        bets[1] = g.bets[1];
         choice = g.choice;
         winner = g.winner;
         doubleSpies = g.doubleSpies;

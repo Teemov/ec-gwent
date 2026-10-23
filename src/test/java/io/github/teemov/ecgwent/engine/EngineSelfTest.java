@@ -100,6 +100,14 @@ public final class EngineSelfTest {
         System.out.println("Strong deck beat weak deck in " + strongWins + "/400");
         expect(strongWins > 280, "deck quality matters");
 
+        // Bets: the higher bet starts, equal bets use the coin.
+        for (int i = 0; i < 20; i++) {
+            Game bg = new Game(reg, Decks.starter(reg, "valarians"), "A", Decks.starter(reg, "monsters"), "B", i, 3, 10);
+            expect(bg.firstStarter == 1 && bg.startByBet && !bg.coinToss, "higher bet starts");
+            Game eq = new Game(reg, Decks.starter(reg, "valarians"), "A", Decks.starter(reg, "monsters"), "B", i, 5, 5);
+            expect(eq.coinToss && !eq.startByBet, "equal bets toss a coin");
+        }
+
         System.out.println(failures == 0 ? "ALL TESTS PASSED" : failures + " FAILURES");
         if (failures > 0) System.exit(1);
     }

@@ -67,6 +67,8 @@ public final class MatchScreen extends CanvasScreen {
     private static final long COIN_MS = 2700, COIN_FLIP_MS = 1500;
     private long coinStart;
     private boolean coinFirstMe;
+    /** The start was decided by the bets, not a coin. */
+    private boolean betReveal;
     // Weather effects
     private boolean hadWeather;
     private long clearBurst;
@@ -165,7 +167,12 @@ public final class MatchScreen extends CanvasScreen {
         if (!ClientHooks.coinDone && m().containsKey("firstMe") && !over()) {
             ClientHooks.coinDone = true;
             coinFirstMe = bool(m(), "firstMe");
-            if (bool(m(), "coinToss")) {
+            if (bool(m(), "startByBet")) {
+                coinStart = Util.getMillis();
+                betReveal = true;
+                net.minecraft.client.Minecraft.getInstance().getSoundManager().play(
+                        net.minecraft.client.resources.sounds.SimpleSoundInstance.forUI(net.minecraft.sounds.SoundEvents.AMETHYST_BLOCK_CHIME, 1.2f));
+            } else if (bool(m(), "coinToss")) {
                 coinStart = Util.getMillis();
                 net.minecraft.client.Minecraft.getInstance().getSoundManager().play(
                         net.minecraft.client.resources.sounds.SimpleSoundInstance.forUI(net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_GOLD, 1.4f));
@@ -232,7 +239,7 @@ public final class MatchScreen extends CanvasScreen {
         g.pose().popPose();
 
         drawBanner(g);
-        if (coinActive()) drawCoin(g);
+        if (coinActive()) { if (betReveal) drawBets(g); else drawCoin(g); }
         else drawOverlays(g, mx, my);
         lastPos.clear();
         lastPos.putAll(framePos);
@@ -483,16 +490,31 @@ public final class MatchScreen extends CanvasScreen {
         g.pose().popPose();
     }
 
-    /** The back of a card in the faction's colour. */
+    /** The back of a card in the faction's own scheme: silver frame, the side-bar colour and a cream diamond. */
     private static void cardBack(GuiGraphics g, String faction, int x, int y, int w, int h) {
-        int c = Texts.FACTION_COLOR.getOrDefault(faction, 0xFF555555);
-        g.fill(x, y, x + w, y + h, 0xFF1A120A);
-        g.fill(x + 1, y + 1, x + w - 1, y + h - 1, 0xFFC9A227);
-        g.fill(x + 2, y + 2, x + w - 2, y + h - 2, c);
-        g.fill(x + 4, y + 4, x + w - 4, y + h - 4, (c & 0x00FFFFFF) | 0xFF000000);
-        int cx = x + w / 2, cy = y + h / 2;
-        for (int i = 0; i < 8; i++) g.fill(cx - i, cy - 8 + i, cx + i + 1, cy - 7 + i, 0x60FFE0A0);
-        for (int i = 0; i < 8; i++) g.fill(cx - 7 + i, cy + i, cx + 8 - i, cy + i + 1, 0x60FFE0A0);
+        int[] c = Texts.back(faction);
+        int frame = c[0], field = c[1], symbol = c[2], dark = 0xFF221A1E;
+        g.fill(x, y, x + w, y + h, dark);
+        g.fill(x + 1, y + 1, x + w - 1, y + h - 1, frame);
+        g.fill(x + 2, y + 2, x + w - 2, y + h - 2, dark);
+        g.fill(x + 3, y + 3, x + w - 3, y + h - 3, field);
+        // a thin inner line in the frame colour
+        g.fill(x + 5, y + 5, x + w - 5, y + 6, (frame & 0x00FFFFFF) | 0x80000000);
+        g.fill(x + 5, y + h - 6, x + w - 5, y + h - 5, (frame & 0x00FFFFFF) | 0x80000000);
+        g.fill(x + 5, y + 5, x + 6, y + h - 5, (frame & 0x00FFFFFF) | 0x80000000);
+        g.fill(x + w - 6, y + 5, x + w - 5, y + h - 5, (frame & 0x00FFFFFF) | 0x80000000);
+        // diamond: dark outline, cream body, small centre in the field colour
+        int cx = x + w / 2, cy = y + h / 2, r = Math.min(w, h) / 3;
+        diamond(g, cx, cy, r + 1, dark);
+        diamond(g, cx, cy, r, symbol);
+        diamond(g, cx, cy, Math.max(1, r / 3), field);
+    }
+
+    private static void diamond(GuiGraphics g, int cx, int cy, int r, int color) {
+        for (int dy = -r; dy <= r; dy++) {
+            int w = r - Math.abs(dy);
+            g.fill(cx - w, cy + dy, cx + w + 1, cy + dy + 1, color);
+        }
     }
 
     private void drawControls(GuiGraphics g, int mx, int my, boolean interactive) {
@@ -668,6 +690,45 @@ public final class MatchScreen extends CanvasScreen {
             g.pose().popPose();
         } else {
             g.drawCenteredString(font, "Flipping a coin…", VW / 2, 268, 0xFFBBBBBB);
+        }
+        g.pose().popPose();
+    }
+
+    /** Both bets side by side; the higher one lights up and that player goes first. */
+    private void drawBets(GuiGraphics g) {
+        long t = Util.getMillis() - coinStart;
+        g.pose().pushPose();
+        g.pose().translate(0, 0, CanvasScreen.Z_OVERLAY);
+        g.fill(0, 0, VW, VH, 0xB0000000);
+        g.drawCenteredString(font, "The bets are in", VW / 2, 80, 0xFFFFE9A0);
+        int mine = num(m(), "myBet"), theirs = num(m(), "theirBet");
+        float reveal = Math.min(1, t / 900f);
+        String[] names = {"You", str(them(), "name")};
+        int[] bets = {mine, theirs};
+        for (int i = 0; i < 2; i++) {
+            int cx = VW / 2 + (i == 0 ? -80 : 80), cy = 160;
+            boolean winner = (i == 0) == coinFirstMe;
+            boolean lit = t > 1100 && winner;
+            panel(g, cx - 50, cy - 40, 100, 86);
+            if (lit) { g.fill(cx - 49, cy - 39, cx + 49, cy + 45, 0x40FFD070); }
+            g.drawCenteredString(font, names[i], cx, cy - 32, i == 0 ? 0xFF9FFF9F : 0xFFFF9F9F);
+            int shown = Math.round(bets[i] * reveal);
+            g.pose().pushPose();
+            g.pose().translate(cx - 12, cy - 18, 0);
+            g.pose().scale(1.5f, 1.5f, 1);
+            g.renderItem(new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.EMERALD), 0, 0);
+            g.pose().popPose();
+            g.pose().pushPose();
+            g.pose().translate(cx, cy + 14, 0);
+            g.pose().scale(2, 2, 1);
+            g.drawCenteredString(font, String.valueOf(shown), 0, 0, lit ? 0xFFFFE080 : 0xFFFFFFFF);
+            g.pose().popPose();
+        }
+        if (t > 1100) {
+            float a = Math.min(1, (t - 1100) / 300f);
+            String msg = coinFirstMe ? "You bet the most and go first!" : str(them(), "name") + " bet the most and goes first";
+            g.drawCenteredString(font, msg, VW / 2, 228, ((int) (a * 255) << 24) | (coinFirstMe ? 0xFFE080 : 0xFF9F9F));
+            g.drawCenteredString(font, "Pot: " + (mine + theirs) + " emeralds", VW / 2, 242, ((int) (a * 255) << 24) | 0x80FF80);
         }
         g.pose().popPose();
     }

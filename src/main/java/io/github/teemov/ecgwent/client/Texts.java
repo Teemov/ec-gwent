@@ -15,6 +15,18 @@ public final class Texts {
             "islanders", 0xFF2A6A6A, "neutral", 0xFF6A5A3A, "special", 0xFF5A3A6A);
     public static final int HERO_GOLD = 0xFFC9A227;
 
+    /** Card-back colours taken from the card art: frame, side-bar field, symbol. */
+    private static final Map<String, int[]> BACK = Map.of(
+            "valarians", new int[]{0xFFC4C8D0, 0xFFB86426, 0xFFECE0C6},
+            "orcs", new int[]{0xFFC4C8D0, 0xFF7A221E, 0xFFE2D6B4},
+            "monsters", new int[]{0xFFC4C8D0, 0xFF482C5C, 0xFFD6E6BE},
+            "illagers", new int[]{0xFFC4C8D0, 0xFF383E46, 0xFFE2D6B4},
+            "islanders", new int[]{0xFFC4C8D0, 0xFF166E7C, 0xFFE2D6B4},
+            "special", new int[]{0xFFE2B46E, 0xFF425064, 0xFFE2B46E},
+            "neutral", new int[]{0xFFC4C8D0, 0xFF6A5A3A, 0xFFE2D6B4});
+
+    public static int[] back(String faction) { return BACK.getOrDefault(faction, BACK.get("neutral")); }
+
     private static final Map<String, String> ABILITY = Map.ofEntries(
             Map.entry("bond", "Tight Bond: strength multiplied by the number of identical cards in its row."),
             Map.entry("morale", "Morale: +1 to every other unit in its row."),

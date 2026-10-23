@@ -66,7 +66,7 @@ public final class Matches {
         UUID opponentUuid;
         final String reward;
         final Deck opponentDeck;
-        int bet;
+        final int[] bets = new int[2];
         final Vec3[] startPos = new Vec3[2];
         final Object[] startLevel = new Object[2];
         int aiWait = AI_START_DELAY;
@@ -181,11 +181,11 @@ public final class Matches {
         invites.put(to.getUUID(), new Invite(from.getUUID(), bet, from.server.getTickCount() + INVITE_TICKS));
         Net.toPlayer(to, new Net.DuelOffer(from.getUUID(), from.getName().getString(), bet));
         from.sendSystemMessage(Component.literal("You challenged " + to.getName().getString() + " to Gwent"
-                + (bet > 0 ? " for " + bet + " emeralds each." : ".")).withStyle(ChatFormatting.GOLD));
+                + (bet > 0 ? ", betting " + bet + " emeralds." : ".")).withStyle(ChatFormatting.GOLD));
         return null;
     }
 
-    public static void answerDuel(ServerPlayer to, UUID fromId, boolean accept) {
+    public static void answerDuel(ServerPlayer to, UUID fromId, boolean accept, int myBet) {
         if (to == null) return;
         Invite inv = invites.get(to.getUUID());
         if (inv == null || !inv.from.equals(fromId)) return;
@@ -205,19 +205,24 @@ public final class Matches {
         if (err == null && b == null) err = why[0];
         if (err == null && (inMatch(from) || inMatch(to))) err = "One of you is already playing.";
         if (err == null && (from.level() != to.level() || from.distanceTo(to) > 16)) err = "You're too far apart.";
-        if (err == null && inv.bet > 0 && (from.getInventory().countItem(Items.EMERALD) < inv.bet || to.getInventory().countItem(Items.EMERALD) < inv.bet))
-            err = "Both players need " + inv.bet + " emeralds.";
+        if (err == null && (myBet < 0 || myBet > MAX_DUEL_BET)) err = "Bets go from 0 to " + MAX_DUEL_BET + " emeralds.";
+        if (err == null && inv.bet > 0 && from.getInventory().countItem(Items.EMERALD) < inv.bet)
+            err = from.getName().getString() + " no longer has " + inv.bet + " emeralds.";
+        if (err == null && myBet > 0 && to.getInventory().countItem(Items.EMERALD) < myBet)
+            err = to.getName().getString() + " doesn't have " + myBet + " emeralds.";
         if (err != null) {
             to.sendSystemMessage(Component.literal(err).withStyle(ChatFormatting.YELLOW));
             from.sendSystemMessage(Component.literal(err).withStyle(ChatFormatting.YELLOW));
             return;
         }
-        if (inv.bet > 0) { takeEmeralds(from, inv.bet); takeEmeralds(to, inv.bet); }
-        Match match = new Match(from.getUUID(), new Game(GwentData.cards(), a, from.getName().getString(), b, to.getName().getString(), rng.nextLong()),
+        if (inv.bet > 0) takeEmeralds(from, inv.bet);
+        if (myBet > 0) takeEmeralds(to, myBet);
+        Match match = new Match(from.getUUID(), new Game(GwentData.cards(), a, from.getName().getString(), b, to.getName().getString(), rng.nextLong(), inv.bet, myBet),
                 Kind.DUEL, "duel", "player:" + to.getUUID(), null, b);
         match.players[1] = to.getUUID();
         match.portrait[1] = "player:" + from.getUUID();
-        match.bet = inv.bet;
+        match.bets[0] = inv.bet;
+        match.bets[1] = myBet;
         match.startPos[0] = from.position();
         match.startPos[1] = to.position();
         match.startLevel[0] = from.level();
@@ -312,6 +317,7 @@ public final class Matches {
                 checkDuelRange(server, m);
                 continue;
             }
+            holdOpponent(server, m);
             if (--m.aiWait > 0 || !aiHasMove(m.game)) continue;
             m.aiWait = AI_DELAY;
             try {
@@ -322,6 +328,24 @@ public final class Matches {
             }
             afterChange(server, m);
         }
+    }
+
+    /** The villager or NPC stands still and faces the player for as long as the match runs. Nothing is stored on it. */
+    private static void holdOpponent(MinecraftServer server, Match m) {
+        if (m.opponentUuid == null) return;
+        ServerPlayer p = server.getPlayerList().getPlayer(m.players[0]);
+        if (p == null) return;
+        Entity e = p.serverLevel().getEntity(m.opponentUuid);
+        if (!(e instanceof net.minecraft.world.entity.Mob mob)) return;
+        mob.getNavigation().stop();
+        if (mob instanceof Villager v) {
+            v.getBrain().eraseMemory(net.minecraft.world.entity.ai.memory.MemoryModuleType.WALK_TARGET);
+            v.getBrain().eraseMemory(net.minecraft.world.entity.ai.memory.MemoryModuleType.PATH);
+            v.getBrain().setMemory(net.minecraft.world.entity.ai.memory.MemoryModuleType.LOOK_TARGET,
+                    new net.minecraft.world.entity.ai.behavior.EntityTracker(p, true));
+        }
+        mob.setDeltaMovement(0, Math.min(0, mob.getDeltaMovement().y), 0);
+        mob.getLookControl().setLookAt(p, 30f, 30f);
     }
 
     /** A duellist who walks away (or changes dimension) forfeits. */
@@ -405,17 +429,18 @@ public final class Matches {
                 }
             }
             case DUEL -> {
+                int pot = m.bets[0] + m.bets[1];
                 for (int side = 0; side < 2; side++) {
                     ServerPlayer sp = server.getPlayerList().getPlayer(m.players[side]);
                     String other = m.game.sides[1 - side].name;
                     if (w < 0) {
-                        m.result[side] = m.bet > 0 ? "A draw: you get your " + m.bet + " emeralds back." : "A draw!";
-                        if (sp != null && m.bet > 0) give(sp, m.bet);
+                        m.result[side] = m.bets[side] > 0 ? "A draw: you get your " + m.bets[side] + " emeralds back." : "A draw!";
+                        if (sp != null && m.bets[side] > 0) give(sp, m.bets[side]);
                     } else if (w == side) {
-                        m.result[side] = m.bet > 0 ? "You beat " + other + " and win " + (2 * m.bet) + " emeralds!" : "You beat " + other + "!";
-                        if (sp != null && m.bet > 0) give(sp, 2 * m.bet);
+                        m.result[side] = pot > 0 ? "You beat " + other + " and win " + pot + " emeralds!" : "You beat " + other + "!";
+                        if (sp != null && pot > 0) give(sp, pot);
                     } else {
-                        m.result[side] = other + " wins" + (m.bet > 0 ? " the " + (2 * m.bet) + " emeralds." : ".");
+                        m.result[side] = other + " wins" + (pot > 0 ? " the " + pot + " emeralds." : ".");
                     }
                 }
             }

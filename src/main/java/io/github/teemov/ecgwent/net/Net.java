@@ -70,9 +70,20 @@ public final class Net {
                 .encoder((m, b) -> b.writeVarInt(m.entityId)).decoder(b -> new AcceptVillager(b.readVarInt()))
                 .consumerMainThread((m, ctx) -> Matches.acceptVillager(ctx.get().getSender(), m.entityId)).add();
         CHANNEL.messageBuilder(DuelAnswer.class, id++, NetworkDirection.PLAY_TO_SERVER)
-                .encoder((m, b) -> { b.writeUUID(m.from); b.writeBoolean(m.accept); })
-                .decoder(b -> new DuelAnswer(b.readUUID(), b.readBoolean()))
-                .consumerMainThread((m, ctx) -> Matches.answerDuel(ctx.get().getSender(), m.from, m.accept)).add();
+                .encoder((m, b) -> { b.writeUUID(m.from); b.writeBoolean(m.accept); b.writeVarInt(m.bet); })
+                .decoder(b -> new DuelAnswer(b.readUUID(), b.readBoolean(), b.readVarInt()))
+                .consumerMainThread((m, ctx) -> Matches.answerDuel(ctx.get().getSender(), m.from, m.accept, m.bet)).add();
+        CHANNEL.messageBuilder(DuelInvite.class, id++, NetworkDirection.PLAY_TO_SERVER)
+                .encoder((m, b) -> { b.writeUUID(m.target); b.writeVarInt(m.bet); })
+                .decoder(b -> new DuelInvite(b.readUUID(), b.readVarInt()))
+                .consumerMainThread((m, ctx) -> {
+                    net.minecraft.server.level.ServerPlayer from = ctx.get().getSender();
+                    net.minecraft.server.level.ServerPlayer to = from == null ? null : from.server.getPlayerList().getPlayer(m.target);
+                    if (from == null || to == null) return;
+                    String err = Matches.inviteDuel(from, to, m.bet);
+                    if (err != null) from.displayClientMessage(net.minecraft.network.chat.Component.literal(err)
+                            .withStyle(net.minecraft.ChatFormatting.YELLOW), true);
+                }).add();
         // ---------------------------------------------------------------- server -> client
         CHANNEL.messageBuilder(SyncCards.class, id++, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder((m, b) -> {
@@ -165,7 +176,14 @@ public final class Net {
     public static final class DuelAnswer {
         final java.util.UUID from;
         final boolean accept;
-        public DuelAnswer(java.util.UUID from, boolean accept) { this.from = from; this.accept = accept; }
+        final int bet;
+        public DuelAnswer(java.util.UUID from, boolean accept, int bet) { this.from = from; this.accept = accept; this.bet = bet; }
+    }
+
+    public static final class DuelInvite {
+        final java.util.UUID target;
+        final int bet;
+        public DuelInvite(java.util.UUID target, int bet) { this.target = target; this.bet = bet; }
     }
 
     public static final class DuelOffer {

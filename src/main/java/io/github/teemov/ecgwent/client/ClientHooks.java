@@ -67,6 +67,11 @@ public final class ClientHooks {
         mc.setScreen(new DuelScreen(from, name, bet));
     }
 
+    public static void openChallenge(java.util.UUID target, String name) {
+        if (matchRunning()) return;
+        Minecraft.getInstance().setScreen(new DuelScreen(target, name, -1));
+    }
+
     public static void villagerOffer(int entityId, String name, int level) {
         Minecraft.getInstance().setScreen(new VillagerScreen(entityId, name, level));
     }

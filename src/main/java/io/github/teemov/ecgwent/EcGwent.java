@@ -81,20 +81,20 @@ public class EcGwent {
         if (Matches.isProtected(e.getEntity())) e.setCanceled(true);
     }
 
-    /** Sneak + right-click another player: invite them to a friendly duel (/gwent duel <player> <bet> for stakes). */
+    /** Sneak + right-click another player: pick a bet and challenge them (or /gwent duel <player> [bet]). */
     @SubscribeEvent
     public void onInteractPlayer(PlayerInteractEvent.EntityInteract e) {
-        if (e.getHand() != InteractionHand.MAIN_HAND || !(e.getTarget() instanceof net.minecraft.world.entity.player.Player)
+        if (e.getHand() != InteractionHand.MAIN_HAND || !(e.getTarget() instanceof net.minecraft.world.entity.player.Player target)
                 || !e.getEntity().isShiftKeyDown()) return;
         if (e.getLevel().isClientSide) {
             if (!io.github.teemov.ecgwent.client.ClientAccess.unlocked()) return;
+            java.util.UUID id = target.getUUID();
+            String name = target.getName().getString();
+            net.minecraftforge.fml.DistExecutor.unsafeRunWhenOn(net.minecraftforge.api.distmarker.Dist.CLIENT,
+                    () -> () -> io.github.teemov.ecgwent.client.ClientHooks.openChallenge(id, name));
         } else if (!io.github.teemov.ecgwent.server.Access.allowed((ServerPlayer) e.getEntity())) return;
         e.setCanceled(true);
         e.setCancellationResult(InteractionResult.SUCCESS);
-        if (e.getEntity() instanceof ServerPlayer p && e.getTarget() instanceof ServerPlayer target) {
-            String err = Matches.inviteDuel(p, target, 0);
-            if (err != null) p.displayClientMessage(net.minecraft.network.chat.Component.literal(err).withStyle(net.minecraft.ChatFormatting.YELLOW), true);
-        }
     }
 
     /** Sneak + right-click a villager to challenge it. */
