@@ -56,6 +56,14 @@ A card can use a hand-made face instead of the generated one: add `"image": "ec_
 and `"image_size": [width, height]` to it (the Valarian troops use 144×200 pixel art). The printed strength is part of the
 image; when the strength on the board differs, a green or red badge shows the current value over it.
 
+## Match music
+
+When a match starts, all other music (background music and jukeboxes) stops and a random match theme loops until the
+match ends, then fades out; new music is held back meanwhile. It follows the Music volume slider. Themes are the
+variants of the `ec_gwent:music.match` sound event in `assets/ec_gwent/sounds.json`: add another track by putting an
+OGG Vorbis file in `assets/ec_gwent/sounds/music/` (lowercase name) and listing it there with `"stream": true`.
+A resource pack can add or replace tracks the same way.
+
 ## Code
 
 - `engine/`: the rules engine, AI and deck generation. Pure Java with no Minecraft code, tested by

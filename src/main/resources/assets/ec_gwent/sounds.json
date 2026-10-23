@@ -1,0 +1,7 @@
+{
+  "music.match": {
+    "sounds": [
+      { "name": "ec_gwent:music/match_theme_1", "stream": true }
+    ]
+  }
+}

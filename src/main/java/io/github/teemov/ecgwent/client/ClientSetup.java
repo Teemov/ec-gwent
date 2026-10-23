@@ -27,13 +27,21 @@ public final class ClientSetup {
     public static final class ForgeEvents {
         @SubscribeEvent
         public static void loggingOut(net.minecraftforge.client.event.ClientPlayerNetworkEvent.LoggingOut e) {
+            MatchMusic.stopNow();
             ClientHooks.match = null;
             ClientHooks.matchHidden = false;
+        }
+
+        /** Other music stays silent while the match theme plays. */
+        @SubscribeEvent
+        public static void playSound(net.minecraftforge.client.event.sound.PlaySoundEvent e) {
+            if (e.getSound() != null && !MatchMusic.allow(e.getSound())) e.setSound(null);
         }
 
         @SubscribeEvent
         public static void tick(TickEvent.ClientTickEvent e) {
             if (e.phase != TickEvent.Phase.END) return;
+            MatchMusic.tick();
             while (BOOK_KEY.consumeClick()) {
                 if (Minecraft.getInstance().screen == null && !ClientHooks.openMatchIfRunning()) Net.toServer(new Net.RequestBook());
             }
