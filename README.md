@@ -18,7 +18,7 @@ hidden. `/gwent config requireUnlock false` turns this off so everyone can play.
 
 | What | How |
 |---|---|
-| Card book (collection, deck builder) | **K**, or `/gwent book`. The first time, you pick a starting faction and get its starter deck |
+| Card book (collection, deck builder) | **K**, or `/gwent book`. The first time, you pick a starting faction and get its starter deck. Turn pages with the page corners, the arrow keys (or A/D) or the scroll wheel; each section shows how many of its cards you've collected. Click a card to add it to the deck box on the right, click it in the deck box to remove it |
 | Back to a running match | **K** |
 | Challenge a player | Sneak + right-click them (or `/gwent duel <player> [bet]`). Each player picks their own bet (0-64 emeralds): the higher bet goes first, equal bets toss a coin, the winner takes both bets. Walking more than 32 blocks away or leaving counts as a loss. Each move has a 1-minute timer: running out passes (or keeps your hand / makes the default pick). A player can only consider one challenge at a time |
 | Challenge a villager | Sneak + right-click an adult villager. Costs 2 emeralds. Novice and apprentice villagers play easy, journeymen moderate, experts and masters hard, with stronger decks too. The villager stands still and faces you while you play. Villagers and story NPCs can play several people at once (they face the latest challenger) |

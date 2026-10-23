@@ -73,10 +73,12 @@ public final class CardArt {
         int nameH = named ? 11 : 0;
         int artTop = y + 1, artBottom = y + h - 1 - nameH;
         g.fill(x + 1, artTop, x + w - 1, y + h - 1, 0xFF1C1818);
-        scissor(g, x + 1, artTop, x + w - 1, artBottom);
-        backdrop(g, d.faction, x + 1, artTop, w - 2, artBottom - artTop);
-        drawSubject(g, entitySpec(d), d.heldItem, x + 1, artTop, w - 2, artBottom - artTop, lookX, lookY);
-        g.disableScissor();
+        if (!flat) {
+            scissor(g, x + 1, artTop, x + w - 1, artBottom);
+            backdrop(g, d.faction, x + 1, artTop, w - 2, artBottom - artTop);
+            drawSubject(g, entitySpec(d), d.heldItem, x + 1, artTop, w - 2, artBottom - artTop, lookX, lookY);
+            g.disableScissor();
+        }
         // Everything printed on the card sits in front of the model.
         g.pose().pushPose();
         g.pose().translate(0, 0, 200);
@@ -166,7 +168,33 @@ public final class CardArt {
     }
 
     /** Draws a mob (or an item stand-in) filling the box. Spec: "ns:type", "npc:<uuid>|ns:type", "entity:<id>|ns:type". */
+    /** When true, cards skip their 3D model (used while a page is mid-flip and the drawing is squashed). */
+    public static boolean flat;
+
+    /**
+     * A head-and-shoulders portrait: the entity is scaled so the top ~0.85 block (around the eyes) fills the box.
+     * Caller sets the clip to the box.
+     */
+    public static void drawPortrait(GuiGraphics g, String spec, int x, int y, int w, int h, float lookX, float lookY) {
+        Entity e = entity(spec, null);
+        if (!(e instanceof LivingEntity le) || broken.contains(spec)) {
+            drawSubject(g, spec, null, x, y, w, h, lookX, lookY);
+            return;
+        }
+        float eye = le.getEyeHeight(), height = le.getBbHeight();
+        float top = Math.min(height, eye + 0.38f);
+        float span = Math.min(top, 0.85f);
+        int scale = (int) Math.max(4, Math.min(h / span, w / Math.max(0.6f, le.getBbWidth() * 1.1f)));
+        int feetY = y + 2 + Math.round(top * scale);
+        try {
+            InventoryScreen.renderEntityInInventoryFollowsMouse(g, x + w / 2, feetY, scale, lookX, lookY, le);
+        } catch (RuntimeException ex) {
+            broken.add(spec);
+        }
+    }
+
     public static void drawSubject(GuiGraphics g, String spec, String heldItem, int x, int y, int w, int h, float lookX, float lookY) {
+        if (flat) return;
         Entity e = entity(spec, heldItem);
         if (e instanceof LivingEntity le && !broken.contains(spec)) {
             float eh = Math.max(0.3f, le.getBbHeight()), ew = Math.max(0.6f, le.getBbWidth());

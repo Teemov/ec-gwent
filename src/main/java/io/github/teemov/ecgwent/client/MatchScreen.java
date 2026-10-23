@@ -392,7 +392,7 @@ public final class MatchScreen extends CanvasScreen {
         g.fill(px - 1, py - 1, px + pw + 1, py + ph + 1, 0xFF1A120A);
         CardArt.scissor(g, px, py, px + pw, py + ph);
         CardArt.backdrop(g, str(s, "faction"), px, py, pw, ph);
-        CardArt.drawSubject(g, mine ? "self" : str(m(), "opponentEntity"), null, px, py, pw, ph, px + pw / 2f - mx, py + 12 - my);
+        CardArt.drawPortrait(g, mine ? "self" : str(m(), "opponentEntity"), px, py, pw, ph, px + pw / 2f - mx, py + 10 - my);
         g.disableScissor();
         // Name, faction, cards in hand, gems
         int ix = 50;
