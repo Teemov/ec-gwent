@@ -442,6 +442,13 @@ public final class MatchScreen extends CanvasScreen {
 
     private void drawWeather(GuiGraphics g, int mx, int my) {
         inset(g, WEATHER_X, WEATHER_Y, WEATHER_W, WEATHER_H);
+        CardDef sel = selectedDef();
+        if (sel != null && sel.type == CardDef.Type.WEATHER && myTurn()) {
+            boolean hov = in(mx, my, WEATHER_X, WEATHER_Y, WEATHER_W, WEATHER_H);
+            g.fill(WEATHER_X + 1, WEATHER_Y + 1, WEATHER_X + WEATHER_W - 1, WEATHER_Y + WEATHER_H - 1, hov ? 0x60FFD070 : 0x30FFD070);
+            outline(g, WEATHER_X, WEATHER_Y, WEATHER_W, WEATHER_H, 0xC0FFD070);
+            hits.add(new Hit(WEATHER_X, WEATHER_Y, WEATHER_W, WEATHER_H, "weather", -1, true, null));
+        }
         small(g, "Round " + num(m(), "round"), WEATHER_X + 3, WEATHER_Y - 8, 60, 0xFFE0C890);
         List<Map<String, Object>> wc = list(m(), "weatherCards");
         if (wc.isEmpty()) {
@@ -580,6 +587,7 @@ public final class MatchScreen extends CanvasScreen {
         if (sel != null) {
             if (sel.has("decoy")) return "Click one of your units to take it back into your hand.";
             if (sel.has("horn") || sel.has("mardroeme")) return "Click one of your rows.";
+            if (sel.type == CardDef.Type.WEATHER) return "Click " + weatherRows(sel) + " (either side) or the weather slot, or the card again.";
             if (!sel.isUnit()) return "Click the board, or the card again, to play it.";
             if (sel.isAgile()) return "Click your close or ranged row.";
             if (sel.has("spy")) return "Spy: click the highlighted enemy row, or the card again.";
@@ -980,7 +988,24 @@ public final class MatchScreen extends CanvasScreen {
             return mine && row.equals(d.placement);
         }
         if (d.has("horn") || d.has("mardroeme")) return mine && str(map(map(me(), "rows"), row), "special").isEmpty();
-        return !d.has("decoy");
+        if (d.type == CardDef.Type.WEATHER) return weatherHits(d, row);
+        return !d.has("decoy"); // Scorch works on the whole board
+    }
+
+    /** Which rows a weather card affects (Clear Skies: all of them). */
+    private static boolean weatherHits(CardDef d, String row) {
+        if (d.has("clear")) return true;
+        return d.has("frost") && row.equals("close") || d.has("fog") && row.equals("ranged")
+                || d.has("rain") && row.equals("siege") || d.has("storm") && (row.equals("ranged") || row.equals("siege"));
+    }
+
+    private static String weatherRows(CardDef d) {
+        if (d.has("clear")) return "the board";
+        if (d.has("frost")) return "a close-combat row";
+        if (d.has("fog")) return "a ranged row";
+        if (d.has("rain")) return "a siege row";
+        if (d.has("storm")) return "a ranged or siege row";
+        return "the board";
     }
 
     @Override
@@ -1016,6 +1041,9 @@ public final class MatchScreen extends CanvasScreen {
                 case "hand":
                     if (h.uid == selected) playSelected(null);
                     else selected = h.uid;
+                    return true;
+                case "weather":
+                    playSelected(null);
                     return true;
                 case "leader":
                     if (bool(me(), "leaderUsable")) Net.toServer(Net.MatchAction.of("leader"));
