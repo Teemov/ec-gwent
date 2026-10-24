@@ -5,7 +5,6 @@ import net.minecraft.client.gui.GuiGraphics;
 
 /** "Play Gwent with this villager for 2 emeralds?" */
 public final class VillagerScreen extends CanvasScreen {
-    private static final String[] LEVELS = {"", "Novice", "Apprentice", "Journeyman", "Expert", "Master"};
     private final int entityId, level;
     private final String name;
 
@@ -24,12 +23,8 @@ public final class VillagerScreen extends CanvasScreen {
         CardArt.scissor(g, px, py, px + 50, py + 70);
         CardArt.drawSubject(g, "entity:" + entityId + "|minecraft:villager", null, px, py, 50, 70, px + 25 - mx, py + 20 - my);
         g.disableScissor();
-        String lvl = level >= 1 && level < LEVELS.length ? LEVELS[level] + " " : "";
-        text(g, lvl + name, x + 70, y + 12, 0xFFFFE9A0);
+        text(g, name, x + 70, y + 12, 0xFFFFE9A0);
         wrapped(g, "wants to play Gwent for 2 emeralds.", x + 70, y + 26, 180, 0xFFDDDDDD);
-        String diff = level <= 2 ? "Easy opponent" : level == 3 ? "Moderate opponent" : "Hard opponent";
-        int col = level <= 2 ? 0xFF80FF80 : level == 3 ? 0xFFFFE080 : 0xFFFF8080;
-        small(g, diff, x + 70, y + 84, 180, col);
         wrapped(g, "Win: your 2 emeralds back plus a prize. Lose: the villager keeps them. "
                 + "Experienced villagers play stronger decks.", x + 70, y + 42, 180, 0xFFAAAAAA);
         button(g, x + 20, y + 98, 110, 20, "Play", true, mx, my, () -> {
