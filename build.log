@@ -1,0 +1,61 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.8/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Task :compileJava
+/home/runner/work/ec-gwent/ec-gwent/src/main/java/io/github/teemov/ecgwent/EcGwent.java:36: warning: [removal] get() in FMLJavaModLoadingContext has been deprecated and marked for removal
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+                                ^
+/home/runner/work/ec-gwent/ec-gwent/src/main/java/io/github/teemov/ecgwent/net/Net.java:28: warning: [removal] ResourceLocation(String,String) in ResourceLocation has been deprecated and marked for removal
+            new ResourceLocation(EcGwent.MODID, "main"), () -> VERSION, VERSION::equals, VERSION::equals);
+            ^
+/home/runner/work/ec-gwent/ec-gwent/src/main/java/io/github/teemov/ecgwent/client/CardArt.java:107: warning: [removal] ResourceLocation(String) in ResourceLocation has been deprecated and marked for removal
+        g.blit(new ResourceLocation(d.image), x, y, w, h, 0f, 0f, d.imageW, d.imageH, d.imageW, d.imageH);
+               ^
+/home/runner/work/ec-gwent/ec-gwent/src/main/java/io/github/teemov/ecgwent/client/CardArt.java:291: warning: [removal] ResourceLocation(String) in ResourceLocation has been deprecated and marked for removal
+                Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(heldItem));
+                                                           ^
+/home/runner/work/ec-gwent/ec-gwent/src/main/java/io/github/teemov/ecgwent/client/MatchMusic.java:18: warning: [removal] ResourceLocation(String,String) in ResourceLocation has been deprecated and marked for removal
+    private static final SoundEvent THEME = SoundEvent.createVariableRangeEvent(new ResourceLocation(EcGwent.MODID, "music.match"));
+                                                                                ^
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: /home/runner/work/ec-gwent/ec-gwent/src/main/java/io/github/teemov/ecgwent/client/MatchScreen.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+5 warnings
+
+> Task :processResources
+> Task :classes
+> Task :jar
+> Task :downloadMcpConfig
+> Task :extractSrg
+> Task :createMcpToSrg
+> Task :reobfJar
+> Task :jarJar SKIPPED
+> Task :reobfJarJar SKIPPED
+> Task :assemble
+> Task :compileTestJava
+> Task :processTestResources NO-SOURCE
+> Task :testClasses
+> Task :test
+> Task :check
+> Task :build
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1792828248338.json
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.8/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 19s
+9 actionable tasks: 9 executed
+Loaded 185 card definitions
+AI vs AI: side A 1489, side B 1482, draws 29
+Strong deck beat weak deck in 349/400
+New AI vs old AI: 1665 wins, 1268 losses, 67 draws (56.8% of decided)
+Cards spent in round 1: new AI 2.60, old AI 3.50
+Left round 1 with <=2 cards vs >=5: new AI 0.2%, old AI 2.1%
+HARD vs MODERATE: 54.0% of decided matches
+MODERATE vs EASY: 63.6% of decided matches
+HARD vs EASY: 67.5% of decided matches
+ALL TESTS PASSED
